@@ -9,6 +9,6 @@ CREATE TABLE Question (
     option4 VARCHAR(255),
     correct_option INT,
     explanation TEXT,
-    course_id INT,
-    FOREIGN KEY (course_id) REFERENCES Course(course_id)
+    exam_id INT,
+    FOREIGN KEY (exam_id) REFERENCES Exam(exam_id)
 );
