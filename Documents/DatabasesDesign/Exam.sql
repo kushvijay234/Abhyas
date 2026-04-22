@@ -6,5 +6,7 @@ CREATE TABLE Exam (
     category VARCHAR(50),
     level VARCHAR(50),
     duration INT,
-    total_marks INT
+    total_marks INT,
+    course_id INT,
+    FOREIGN KEY (course_id) REFERENCES Course(course_id)
 );
