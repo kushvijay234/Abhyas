@@ -1,0 +1,9 @@
+-- Response Format
+-- Standardize all responses
+
+{
+    "status" : statusCode,
+    "message" : "message",
+    "data" : {},
+    "error" : null
+}
