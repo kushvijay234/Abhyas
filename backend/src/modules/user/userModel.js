@@ -37,19 +37,6 @@ const UserModel = {
     return rows[0];
   },
 
-  getAllUsers: async () => {
-    const [rows] = await db.execute(
-      `SELECT
-        user_id,
-        user_name,
-        email,
-        role,
-        created_at
-       FROM users`,
-    );
-
-    return rows;
-  },
 
   deleteUser: async (user_id) => {
     const [result] = await db.execute(`DELETE FROM users WHERE user_id = ?`, [
@@ -58,7 +45,7 @@ const UserModel = {
 
     return result;
   },
-
+  
   // rest password
   updatePassword: async (email, password) => {
     const [result] = await db.execute(
@@ -70,7 +57,7 @@ const UserModel = {
 
     return result;
   },
-  
+
   updateUserProfile: async (user_id, user_name) => {
     const [result] = await db.execute(
       `UPDATE users

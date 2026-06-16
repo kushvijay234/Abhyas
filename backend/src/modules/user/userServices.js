@@ -59,9 +59,6 @@ const loginUser = async (email, password) => {
   };
 };
 
-const getUsers = async () => {
-  return await UserModel.getAllUsers();
-};
 
 // rest password
 const resetPassword = async (email, password) => {
@@ -117,7 +114,6 @@ const updateProfile = async (user_id, user_name) => {
 module.exports = {
   registerUser,
   loginUser,
-  getUsers,
   resetPassword,
   updateProfile,
 

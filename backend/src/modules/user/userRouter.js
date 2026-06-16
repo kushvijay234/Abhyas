@@ -11,7 +11,6 @@ router.post("/login", UserController.login);
 router.put("/reset-password", UserController.resetPassword);
 
 //Private API
-router.get("/", UserController.getUsers);
 router.put("/profile", authMiddleware, UserController.updateProfile);   
 
 
