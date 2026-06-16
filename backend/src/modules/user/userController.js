@@ -54,9 +54,26 @@ const getUsers = async (req, res) => {
     });
   }
 };
+const resetPassword = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const result = await UserService.resetPassword(
+      email,
+      password
+    );
+
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
 
 module.exports = {
   register,
   login,
   getUsers,
+  resetPassword,
 };

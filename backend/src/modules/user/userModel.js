@@ -7,17 +7,16 @@ const UserModel = {
     const [result] = await db.execute(
       `INSERT INTO users (user_name, email, password, role)
        VALUES (?, ?, ?, ?)`,
-      [user_name, email, password, role]
+      [user_name, email, password, role],
     );
 
     return result;
   },
 
   findByEmail: async (email) => {
-    const [rows] = await db.execute(
-      `SELECT * FROM users WHERE email = ?`,
-      [email]
-    );
+    const [rows] = await db.execute(`SELECT * FROM users WHERE email = ?`, [
+      email,
+    ]);
 
     return rows[0];
   },
@@ -32,7 +31,7 @@ const UserModel = {
         created_at
        FROM users
        WHERE user_id = ?`,
-      [user_id]
+      [user_id],
     );
 
     return rows[0];
@@ -46,16 +45,27 @@ const UserModel = {
         email,
         role,
         created_at
-       FROM users`
+       FROM users`,
     );
 
     return rows;
   },
 
   deleteUser: async (user_id) => {
+    const [result] = await db.execute(`DELETE FROM users WHERE user_id = ?`, [
+      user_id,
+    ]);
+
+    return result;
+  },
+
+  // rest password 
+  updatePassword: async (email, password) => {
     const [result] = await db.execute(
-      `DELETE FROM users WHERE user_id = ?`,
-      [user_id]
+      `UPDATE users
+     SET password = ?
+     WHERE email = ?`,
+      [password, email],
     );
 
     return result;

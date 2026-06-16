@@ -67,8 +67,33 @@ const getUsers = async () => {
   return await UserModel.getAllUsers();
 };
 
+// rest password 
+const resetPassword = async (email, password) => {
+  const user = await UserModel.findByEmail(email);
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const hashedPassword = await bcrypt.hash(
+    password,
+    10
+  );
+
+  await UserModel.updatePassword(
+    email,
+    hashedPassword
+  );
+
+  return {
+    success: true,
+    message: "Password reset successfully",
+  };
+};
+
 module.exports = {
   registerUser,
   loginUser,
   getUsers,
+  resetPassword,
 };
