@@ -7,3 +7,5 @@ CREATE TABLE users (
     role ENUM('student','admin') DEFAULT 'student',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
