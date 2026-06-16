@@ -2,12 +2,12 @@ const db = require("../../config/db");
 
 const UserModel = {
   createUser: async (userData) => {
-    const { full_name, email, password } = userData;
+    const { user_name, email, password, role = "student" } = userData;
 
     const [result] = await db.execute(
-      `INSERT INTO users (full_name,email,password)
-       VALUES (?,?,?)`,
-      [full_name, email, password]
+      `INSERT INTO users (user_name, email, password, role)
+       VALUES (?, ?, ?, ?)`,
+      [user_name, email, password, role]
     );
 
     return result;
@@ -15,18 +15,24 @@ const UserModel = {
 
   findByEmail: async (email) => {
     const [rows] = await db.execute(
-      `SELECT * FROM users WHERE email=?`,
+      `SELECT * FROM users WHERE email = ?`,
       [email]
     );
 
     return rows[0];
   },
 
-  findById: async (id) => {
+  findById: async (user_id) => {
     const [rows] = await db.execute(
-      `SELECT id,full_name,email,role,created_at
-       FROM users WHERE id=?`,
-      [id]
+      `SELECT 
+        user_id,
+        user_name,
+        email,
+        role,
+        created_at
+       FROM users
+       WHERE user_id = ?`,
+      [user_id]
     );
 
     return rows[0];
@@ -34,11 +40,25 @@ const UserModel = {
 
   getAllUsers: async () => {
     const [rows] = await db.execute(
-      `SELECT id,full_name,email,role,created_at
+      `SELECT
+        user_id,
+        user_name,
+        email,
+        role,
+        created_at
        FROM users`
     );
 
     return rows;
+  },
+
+  deleteUser: async (user_id) => {
+    const [result] = await db.execute(
+      `DELETE FROM users WHERE user_id = ?`,
+      [user_id]
+    );
+
+    return result;
   },
 };
 

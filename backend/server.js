@@ -9,7 +9,7 @@ const app = express();
 const pool = require("./src/config/db");
 
 // Routes
-const userRoutes = require("./src/modules/user/user.routes");
+const userRoutes = require("./src/modules/user/userRouter");
 
 // Middlewares
 app.use(cors());
