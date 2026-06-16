@@ -4,8 +4,8 @@
 
 * Signup
 * Sigin
-* Get All Users list
 * Rest Password
+* Update profile Name 
 
 
 

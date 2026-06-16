@@ -59,9 +59,6 @@ const loginUser = async (email, password) => {
   };
 };
 
-const getUsers = async () => {
-  return await UserModel.getAllUsers();
-};
 
 // rest password
 const resetPassword = async (email, password) => {
