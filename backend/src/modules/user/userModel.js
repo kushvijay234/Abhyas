@@ -59,13 +59,24 @@ const UserModel = {
     return result;
   },
 
-  // rest password 
+  // rest password
   updatePassword: async (email, password) => {
     const [result] = await db.execute(
       `UPDATE users
      SET password = ?
      WHERE email = ?`,
       [password, email],
+    );
+
+    return result;
+  },
+  
+  updateUserProfile: async (user_id, user_name) => {
+    const [result] = await db.execute(
+      `UPDATE users
+     SET user_name = ?
+     WHERE user_id = ?`,
+      [user_name, user_id],
     );
 
     return result;

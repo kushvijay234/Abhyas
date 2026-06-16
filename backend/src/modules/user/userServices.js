@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const UserModel = require("../user/userModel");
 
+// Register 
 const registerUser = async (userData) => {
   const existingUser = await UserModel.findByEmail(userData.email);
 
@@ -9,10 +10,7 @@ const registerUser = async (userData) => {
     throw new Error("Email already exists");
   }
 
-  const hashedPassword = await bcrypt.hash(
-    userData.password,
-    10
-  );
+  const hashedPassword = await bcrypt.hash(userData.password, 10);
 
   await UserModel.createUser({
     ...userData,
@@ -24,6 +22,7 @@ const registerUser = async (userData) => {
   };
 };
 
+// Login 
 const loginUser = async (email, password) => {
   const user = await UserModel.findByEmail(email);
 
@@ -31,10 +30,7 @@ const loginUser = async (email, password) => {
     throw new Error("Invalid credentials");
   }
 
-  const isMatch = await bcrypt.compare(
-    password,
-    user.password
-  );
+  const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
     throw new Error("Invalid credentials");
@@ -49,7 +45,7 @@ const loginUser = async (email, password) => {
     process.env.JWT_SECRET,
     {
       expiresIn: "1d",
-    }
+    },
   );
 
   return {
@@ -67,7 +63,7 @@ const getUsers = async () => {
   return await UserModel.getAllUsers();
 };
 
-// rest password 
+// rest password
 const resetPassword = async (email, password) => {
   const user = await UserModel.findByEmail(email);
 
@@ -75,19 +71,46 @@ const resetPassword = async (email, password) => {
     throw new Error("User not found");
   }
 
-  const hashedPassword = await bcrypt.hash(
-    password,
-    10
-  );
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-  await UserModel.updatePassword(
-    email,
-    hashedPassword
-  );
+  await UserModel.updatePassword(email, hashedPassword);
 
   return {
     success: true,
     message: "Password reset successfully",
+  };
+};
+
+const updateProfile = async (user_id, user_name) => {
+  // Validation
+  if (!user_name || user_name.trim() === "") {
+    throw new Error("User name is required");
+  }
+
+  // Check user exists
+  const user = await UserModel.findById(user_id);
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  // Update profile
+  const result = await UserModel.updateUserProfile(
+    user_id,
+    user_name.trim()
+  );
+
+  if (result.affectedRows === 0) {
+    throw new Error("Profile update failed");
+  }
+
+  return {
+    success: true,
+    message: "Profile updated successfully",
+    data: {
+      user_id,
+      user_name: user_name.trim(),
+    },
   };
 };
 
@@ -96,4 +119,6 @@ module.exports = {
   loginUser,
   getUsers,
   resetPassword,
+  updateProfile,
+
 };
