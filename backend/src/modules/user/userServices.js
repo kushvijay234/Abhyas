@@ -114,7 +114,6 @@ const updateProfile = async (user_id, user_name) => {
 module.exports = {
   registerUser,
   loginUser,
-  getUsers,
   resetPassword,
   updateProfile,
 

@@ -78,7 +78,6 @@ const updateProfile = async (req, res) => {
 module.exports = {
   register,
   login,
-  getUsers,
   resetPassword,
   updateProfile,
 };

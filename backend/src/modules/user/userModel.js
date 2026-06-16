@@ -45,7 +45,7 @@ const UserModel = {
 
     return result;
   },
-
+  
   // rest password
   updatePassword: async (email, password) => {
     const [result] = await db.execute(
