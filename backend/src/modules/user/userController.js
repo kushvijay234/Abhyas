@@ -16,7 +16,19 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
+    if (!req.body) {
+      return res.status(400).json({
+        message: "Request body is missing",
+      });
+    }
+
     const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "Email and password are required",
+      });
+    }
 
     const result = await UserService.loginUser(
       email,
@@ -42,9 +54,26 @@ const getUsers = async (req, res) => {
     });
   }
 };
+const resetPassword = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const result = await UserService.resetPassword(
+      email,
+      password
+    );
+
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
 
 module.exports = {
   register,
   login,
   getUsers,
+  resetPassword,
 };
