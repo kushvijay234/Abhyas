@@ -10,3 +10,5 @@ router.get("/analytics", authMiddleware, ResultController.getAnalytics);
 
 router.get("/exam/:exam_id", authMiddleware, ResultController.getExamResult);
 
+router.get("/:id/review", authMiddleware, ResultController.getAnswerReview);
+

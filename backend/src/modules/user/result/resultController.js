@@ -34,3 +34,14 @@ const getExamResult = async (req, res) => {
     res.status(404).json({ success: false, message: error.message });
   }
 };
+
+// My Analytics Summary
+const getAnalytics = async (req, res) => {
+  try {
+    const user_id = req.user.user_id;
+    const result = await ResultService.getAnalytics(user_id);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

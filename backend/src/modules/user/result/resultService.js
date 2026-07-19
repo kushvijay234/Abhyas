@@ -35,3 +35,12 @@ const getExamResult = async (user_id, exam_id) => {
     data: result,
   };
 };
+
+// My Analytics Summary
+const getAnalytics = async (user_id) => {
+  const data = await ResultModel.getAnalytics(user_id);
+  return {
+    success: true,
+    data,
+  };
+};
