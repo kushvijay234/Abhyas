@@ -64,9 +64,30 @@ const updateExam = async(exam_id, examData) => {
     };
 };
 
+// Delete Exam
+const deleteExam = async(exam_id) => {
+    const existing = await ExamModel.getExamById(exam_id);
+
+    if (!existing) {
+        throw new Error("Exam not found");
+    }
+
+    const result = await ExamModel.deleteExam(exam_id);
+
+    if (result.affectedRows === 0) {
+        throw new Error("Exam deletion failed");
+    }
+
+    return {
+        success: true,
+        message: "Exam deleted successfully",
+    };
+};
+
 module.exports = {
     createExam,
     getAllExams,
     getExamById,
     updateExam,
+    deleteExam,
 };

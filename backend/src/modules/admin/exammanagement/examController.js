@@ -54,9 +54,25 @@ const updateExam = async(req, res) => {
         });
     }
 };
+
+// Delete Exam
+const deleteExam = async(req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await ExamService.deleteExam(id);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(404).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
 module.exports = {
     createExam,
     getAllExams,
     getExamById,
     updateExam,
+    deleteExam,
 };

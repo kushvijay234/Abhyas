@@ -17,4 +17,7 @@ router.get("/:id", authMiddleware, adminMiddleware, ExamController.getExamById);
 // Update Exam
 router.put("/:id", authMiddleware, adminMiddleware, ExamController.updateExam);
 
+// Delete Exam
+router.delete("/:id", authMiddleware, adminMiddleware, ExamController.deleteExam);
+
 module.exports = router;

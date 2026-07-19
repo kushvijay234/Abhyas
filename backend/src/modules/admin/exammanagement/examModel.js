@@ -105,9 +105,21 @@ const updateExam = async(exam_id, examData) => {
     return result;
 };
 
+// Delete Exam
+const deleteExam = async(exam_id) => {
+    const [result] = await pool.execute(
+        `DELETE FROM exams WHERE exam_id = ?`, [exam_id]
+    );
+
+    return result;
+};
+
+
+
 module.exports = {
     createExam,
     getAllExams,
     getExamById,
     updateExam,
+    deleteExam,
 };
