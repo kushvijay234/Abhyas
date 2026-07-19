@@ -54,3 +54,30 @@ const deleteUser = async (req, res) => {
         });
     }
 };
+
+const updateUserStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        await AdminService.updateUserStatus(id, status);
+
+        res.status(200).json({
+            success: true,
+            message: "User status updated successfully",
+        });
+
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
+module.exports = {
+    getAllUsers,
+    getUserById,
+    deleteUser,
+    updateUserStatus,
+};

@@ -23,3 +23,24 @@ const deleteUser = async (id) => {
 
     return result;
 };
+
+const updateUserStatus = async (id, status) => {
+    if (status !== 'active' && status !== 'inactive') {
+        throw new Error("Invalid status. Must be active or inactive");
+    }
+
+    const result = await AdminModel.updateUserStatus(id, status);
+
+    if (result.affectedRows === 0) {
+        throw new Error("User not found");
+    }
+
+    return result;
+};
+
+module.exports = {
+    getAllUsers,
+    getUserById,
+    deleteUser,
+    updateUserStatus,
+};

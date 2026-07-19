@@ -13,3 +13,7 @@ router.get("/users/:id", authMiddleware, AdminController.getUserById);
 // Delete User
 router.delete("/users/:id", authMiddleware, AdminController.deleteUser);
 
+// Update User Status
+router.patch("/users/:id/status", authMiddleware, AdminController.updateUserStatus);
+
+module.exports = router;

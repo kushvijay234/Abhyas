@@ -43,3 +43,21 @@ const deleteUser = async (id) => {
 
     return result;
 };
+
+const updateUserStatus = async (id, status) => {
+    const [result] = await pool.query(
+        `UPDATE users
+         SET status = ?
+         WHERE user_id = ?`,
+        [status, id]
+    );
+
+    return result;
+};
+
+module.exports = {
+    getAllUsers,
+    getUserById,
+    deleteUser,
+    updateUserStatus,
+};
