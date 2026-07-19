@@ -15,3 +15,16 @@ const ResultModel = {
     return rows;
   },
 
+getResultById: async (attempt_id, user_id) => {
+    const [rows] = await db.execute(
+      `SELECT ea.*, e.title AS exam_title, e.passing_marks,
+              e.total_marks AS exam_total_marks, e.duration_minutes
+       FROM exam_attempts ea
+       JOIN exams e ON ea.exam_id = e.exam_id
+       WHERE ea.attempt_id = ? AND ea.user_id = ?`,
+      [attempt_id, user_id]
+    );
+    return rows[0];
+  },
+
+  

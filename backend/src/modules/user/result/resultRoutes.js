@@ -1,12 +1,9 @@
-const ResultModel = require("./resultModel");
+const express = require("express");
+const router = express.Router();
 
-// Get All My Results
-const getResults = async (user_id) => {
-  const data = await ResultModel.getMyResults(user_id);
-  return {
-    success: true,
-    count: data.length,
-    data,
-  };
-};
+const ResultController = require("./resultController");
+const authMiddleware = require("../../../middleware/authMiddleware");
 
+router.get("/", authMiddleware, ResultController.getResults);
+
+router.get("/analytics", authMiddleware, ResultController.getAnalytics);
