@@ -39,6 +39,24 @@ const ExamModel = {
         );
         return rows[0];
     },
+    createAttempt: async(user_id, exam_id) => {
+        const [result] = await db.execute(
+            `INSERT INTO exam_attempts (user_id, exam_id, status, started_at)
+       VALUES (?, ?, 'in_progress', NOW())`, [user_id, exam_id]
+        );
+        return result;
+    },
+
+    getAttemptById: async(attempt_id, user_id) => {
+        const [rows] = await db.execute(
+            `SELECT ea.*, e.passing_marks, e.total_marks AS exam_total_marks,
+              e.title AS exam_title, e.exam_id, e.duration_minutes
+       FROM exam_attempts ea
+       JOIN exams e ON ea.exam_id = e.exam_id
+       WHERE ea.attempt_id = ? AND ea.user_id = ?`, [attempt_id, user_id]
+        );
+        return rows[0];
+    },
 };
 
 module.exports = ExamModel;

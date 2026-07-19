@@ -23,8 +23,22 @@ const startExam = async(req, res) => {
     }
 };
 
+// Submit Exam
+const submitExam = async(req, res) => {
+    try {
+        const user_id = req.user.user_id;
+        const { attempt_id } = req.params;
+        const { answers } = req.body; // [{ question_id, selected_option }]
+        const result = await ExamService.submitExam(user_id, attempt_id, answers);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+    }
+};
+
 
 module.exports = {
     getExams,
     startExam,
+    submitExam,
 };

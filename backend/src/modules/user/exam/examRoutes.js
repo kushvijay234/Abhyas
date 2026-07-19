@@ -10,6 +10,9 @@ router.get("/", authMiddleware, ExamController.getExams);
 // Exam History
 router.get("/history", authMiddleware, ExamController.getHistory);
 
+// Start Exam
+router.post("/:exam_id/start", authMiddleware, ExamController.startExam);
+
 
 
 module.exports = router;
