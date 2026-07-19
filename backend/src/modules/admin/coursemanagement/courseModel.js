@@ -89,6 +89,14 @@ const deleteCourse = async(course_id) => {
     return result;
 };
 
+// Assign Course Category
+const assignCourseCategory = async(course_id, category_id) => {
+    const [result] = await pool.execute(
+        `UPDATE courses SET category_id = ? WHERE course_id = ?`, [category_id, course_id]
+    );
+
+    return result;
+};
 
 
 module.exports = {
@@ -97,4 +105,5 @@ module.exports = {
     getCourseById,
     updateCourse,
     deleteCourse,
+    assignCourseCategory,
 };

@@ -15,6 +15,8 @@ router.put("/:id", authMiddleware, adminMiddleware, CourseController.updateCours
 
 router.delete("/:id", authMiddleware, adminMiddleware, CourseController.deleteCourse);
 
+router.put("/:id/categories", authMiddleware, adminMiddleware, CourseController.assignCourseCategory);
+
 
 
 module.exports = router;

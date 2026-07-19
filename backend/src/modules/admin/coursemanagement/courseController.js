@@ -69,10 +69,26 @@ const deleteCourse = async(req, res) => {
     }
 };
 
+// Assign Course Category
+const assignCourseCategory = async(req, res) => {
+    try {
+        const { id } = req.params;
+        const { category_id } = req.body;
+        const result = await CourseService.assignCourseCategory(id, category_id);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
 module.exports = {
     createCourse,
     getAllCourses,
     getCourseById,
     updateCourse,
     deleteCourse,
+    assignCourseCategory,
 };

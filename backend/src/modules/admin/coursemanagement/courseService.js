@@ -90,6 +90,30 @@ const deleteCourse = async(course_id) => {
     };
 };
 
+// Assign Course Category
+const assignCourseCategory = async(course_id, category_id) => {
+    if (!category_id) {
+        throw new Error("Category ID is required");
+    }
+
+    const existing = await CourseModel.getCourseById(course_id);
+
+    if (!existing) {
+        throw new Error("Course not found");
+    }
+
+    const result = await CourseModel.assignCourseCategory(course_id, category_id);
+
+    if (result.affectedRows === 0) {
+        throw new Error("Failed to assign category");
+    }
+
+    return {
+        success: true,
+        message: "Category assigned to course successfully",
+    };
+};
+
 
 module.exports = {
     createCourse,
@@ -97,4 +121,5 @@ module.exports = {
     getCourseById,
     updateCourse,
     deleteCourse,
+    assignCourseCategory,
 };
