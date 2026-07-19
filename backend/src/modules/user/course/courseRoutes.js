@@ -1,0 +1,22 @@
+const express = require("express");
+const router = express.Router();
+
+const CourseController = require("./courseController");
+const authMiddleware = require("../../../middleware/authMiddleware");
+
+// GET /api/users/courses                  → Get All Published Courses (?search=&category_id=)
+router.get("/", authMiddleware, CourseController.getCourses);
+
+// GET /api/users/courses/categories       → Get All Categories
+router.get("/categories", authMiddleware, CourseController.getCategories);
+
+// GET /api/users/courses/my              → My Enrolled Courses
+router.get("/my", authMiddleware, CourseController.getMyCourses);
+
+// GET /api/users/courses/:id             → Get Course Details
+router.get("/:id", authMiddleware, CourseController.getCourseDetails);
+
+// POST /api/users/courses/:id/enroll     → Enroll in Course
+router.post("/:id/enroll", authMiddleware, CourseController.enrollInCourse);
+
+module.exports = router;

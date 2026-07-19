@@ -1,0 +1,58 @@
+const CourseService = require("./courseService");
+
+// Get All Published Courses  (?search=&category_id=)
+const getCourses = async (req, res) => {
+  try {
+    const { search, category_id } = req.query;
+    const result = await CourseService.getCourses(search, category_id);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Get Course Details
+const getCourseDetails = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await CourseService.getCourseDetails(id);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(404).json({ success: false, message: error.message });
+  }
+};
+
+// Get All Categories
+const getCategories = async (req, res) => {
+  try {
+    const result = await CourseService.getCategories();
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// My Enrolled Courses
+const getMyCourses = async (req, res) => {
+  try {
+    const user_id = req.user.user_id;
+    const result = await CourseService.getMyCourses(user_id);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Enroll in Course
+const enrollInCourse = async (req, res) => {
+  try {
+    const user_id = req.user.user_id;
+    const { id } = req.params;
+    const result = await CourseService.enrollInCourse(user_id, id);
+    res.status(201).json(result);
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+module.exports = { getCourses, getCourseDetails, getCategories, getMyCourses, enrollInCourse };
