@@ -35,3 +35,13 @@ const getCategories = async () => {
     data,
   };
 };
+
+// My Enrolled Courses
+const getMyCourses = async (user_id) => {
+  const data = await CourseModel.getMyCourses(user_id);
+  return {
+    success: true,
+    count: data.length,
+    data,
+  };
+};

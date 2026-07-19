@@ -12,3 +12,6 @@ router.get("/categories", authMiddleware, CourseController.getCategories);
 
 // GET /api/users/courses/my              → My Enrolled Courses
 router.get("/my", authMiddleware, CourseController.getMyCourses);
+
+// GET /api/users/courses/:id             → Get Course Details
+router.get("/:id", authMiddleware, CourseController.getCourseDetails);

@@ -54,6 +54,14 @@ const CourseModel = {
     return rows;
   },
 
+  checkEnrollment: async (user_id, course_id) => {
+    const [rows] = await db.execute(
+      `SELECT 1 FROM user_enrollments WHERE user_id = ? AND course_id = ?`,
+      [user_id, course_id]
+    );
+    return rows.length > 0;
+  },
+
 };
 
 module.exports = CourseModel;

@@ -31,3 +31,14 @@ const getCategories = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+// My Enrolled Courses
+const getMyCourses = async (req, res) => {
+  try {
+    const user_id = req.user.user_id;
+    const result = await CourseService.getMyCourses(user_id);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
