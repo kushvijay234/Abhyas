@@ -98,6 +98,21 @@ const getCurriculum = async(req, res) => {
     }
 };
 
+// Save Course Curriculum
+const saveCurriculum = async(req, res) => {
+    try {
+        const { id } = req.params;
+        const { sections } = req.body;
+        const result = await CourseService.saveCurriculum(id, sections);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
 module.exports = {
     createCourse,
     getAllCourses,
@@ -106,4 +121,5 @@ module.exports = {
     deleteCourse,
     assignCourseCategory,
     getCurriculum,
+    saveCurriculum,
 };

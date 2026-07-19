@@ -19,6 +19,8 @@ router.put("/:id/categories", authMiddleware, adminMiddleware, CourseController.
 
 router.get("/:id/curriculum", authMiddleware, adminMiddleware, CourseController.getCurriculum);
 
+router.put("/:id/curriculum", authMiddleware, adminMiddleware, CourseController.saveCurriculum);
+
 
 
 module.exports = router;

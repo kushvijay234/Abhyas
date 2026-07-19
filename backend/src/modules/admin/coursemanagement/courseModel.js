@@ -131,6 +131,53 @@ const getCurriculum = async(course_id) => {
     }));
 };
 
+// Save Course Curriculum (Transaction-safe Bulk Update)
+const saveCurriculum = async(course_id, sections) => {
+    const connection = await pool.getConnection();
+    try {
+        await connection.beginTransaction();
+
+        // 1. Delete all existing sections
+        await connection.execute(`DELETE FROM course_sections WHERE course_id = ?`, [course_id]);
+
+        // 2. Insert new sections and nested items
+        for (let i = 0; i < sections.length; i++) {
+            const section = sections[i];
+            const [secResult] = await connection.execute(
+                `INSERT INTO course_sections (course_id, title, sort_order) VALUES (?, ?, ?)`, [course_id, section.title, i + 1]
+            );
+            const sectionId = secResult.insertId;
+
+            if (section.items && section.items.length > 0) {
+                for (let j = 0; j < section.items.length; j++) {
+                    const item = section.items[j];
+                    await connection.execute(
+                        `INSERT INTO curriculum_items (section_id, title, type, duration, video_url, notes, exam_id, sort_order)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [
+                            sectionId,
+                            item.title,
+                            item.type,
+                            item.duration || null,
+                            item.video_url || null,
+                            item.notes || null,
+                            item.exam_id ? parseInt(item.exam_id) : null,
+                            j + 1
+                        ]
+                    );
+                }
+            }
+        }
+
+        await connection.commit();
+        return { success: true };
+    } catch (error) {
+        await connection.rollback();
+        throw error;
+    } finally {
+        connection.release();
+    }
+};
+
 module.exports = {
     createCourse,
     getAllCourses,
@@ -139,4 +186,5 @@ module.exports = {
     deleteCourse,
     assignCourseCategory,
     getCurriculum,
+    saveCurriculum,
 };

@@ -128,6 +128,19 @@ const getCurriculum = async(course_id) => {
     };
 };
 
+// Save Course Curriculum
+const saveCurriculum = async(course_id, sections) => {
+    const existing = await CourseModel.getCourseById(course_id);
+    if (!existing) {
+        throw new Error("Course not found");
+    }
+
+    await CourseModel.saveCurriculum(course_id, sections);
+    return {
+        success: true,
+        message: "Curriculum saved successfully"
+    };
+};
 
 module.exports = {
     createCourse,
@@ -137,4 +150,5 @@ module.exports = {
     deleteCourse,
     assignCourseCategory,
     getCurriculum,
+    saveCurriculum,
 };
