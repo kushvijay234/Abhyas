@@ -47,3 +47,27 @@ const bulkUploadQuestions = async (questions) => {
     data: { inserted: result.affectedRows },
   };
 };
+
+// Update Question
+const updateQuestion = async (question_id, questionData) => {
+  const existing = await QuestionModel.findQuestionById(question_id);
+
+  if (!existing) {
+    throw new Error("Question not found");
+  }
+
+  if (questionData.correct_option && !["A", "B", "C", "D"].includes(questionData.correct_option)) {
+    throw new Error("Correct option must be A, B, C, or D");
+  }
+
+  const result = await QuestionModel.updateQuestion(question_id, questionData);
+
+  if (result.affectedRows === 0) {
+    throw new Error("Question update failed");
+  }
+
+  return {
+    success: true,
+    message: "Question updated successfully",
+  };
+};

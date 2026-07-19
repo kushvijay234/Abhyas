@@ -49,3 +49,28 @@ const bulkInsertQuestions = async (questions) => {
 
   return result;
 };
+
+
+// Update Question
+const updateQuestion = async (question_id, questionData) => {
+  const {
+    question_text,
+    option_a,
+    option_b,
+    option_c,
+    option_d,
+    correct_option,
+    marks,
+    explanation,
+  } = questionData;
+
+  const [result] = await pool.execute(
+    `UPDATE questions
+     SET question_text = ?, option_a = ?, option_b = ?, option_c = ?,
+         option_d = ?, correct_option = ?, marks = ?, explanation = ?
+     WHERE question_id = ?`,
+    [question_text, option_a, option_b, option_c, option_d, correct_option, marks, explanation, question_id]
+  );
+
+  return result;
+};

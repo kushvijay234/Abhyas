@@ -10,3 +10,6 @@ router.post("/", authMiddleware, adminMiddleware, QuestionController.addQuestion
 
 // Bulk Upload Questions  (body: { questions: [...] })
 router.post("/bulk", authMiddleware, adminMiddleware, QuestionController.bulkUploadQuestions);
+
+// Update Question
+router.put("/:id", authMiddleware, adminMiddleware, QuestionController.updateQuestion);

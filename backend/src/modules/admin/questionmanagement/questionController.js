@@ -25,3 +25,17 @@ const bulkUploadQuestions = async (req, res) => {
     });
   }
 };
+
+// Update Question
+const updateQuestion = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await QuestionService.updateQuestion(id, req.body);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
