@@ -47,8 +47,21 @@ const getAllCourses = async(search = "", status = "") => {
     return rows;
 };
 
+// Get Course By ID
+const getCourseById = async(course_id) => {
+    const [rows] = await pool.execute(
+        `SELECT c.course_id, c.title, c.description, c.thumbnail, c.status,
+            c.category_id, c.duration, cc.name AS category_name, c.created_at
+     FROM courses c
+     LEFT JOIN course_categories cc ON c.category_id = cc.category_id
+     WHERE c.course_id = ?`, [course_id]
+    );
+
+    return rows[0];
+};
 
 module.exports = {
     createCourse,
     getAllCourses,
+    getCourseById,
 };

@@ -9,6 +9,8 @@ router.post("/", authMiddleware, adminMiddleware, CourseController.createCourse)
 
 router.get("/", authMiddleware, adminMiddleware, CourseController.getAllCourses);
 
+router.get("/:id", authMiddleware, adminMiddleware, CourseController.getCourseById);
+
 
 
 module.exports = router;

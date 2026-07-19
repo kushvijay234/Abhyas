@@ -36,8 +36,23 @@ const getAllCourses = async(search, status) => {
     };
 };
 
+// Get Course By ID
+const getCourseById = async(course_id) => {
+    const course = await CourseModel.getCourseById(course_id);
+
+    if (!course) {
+        throw new Error("Course not found");
+    }
+
+    return {
+        success: true,
+        data: course,
+    };
+};
+
 
 module.exports = {
     createCourse,
     getAllCourses,
+    getCourseById,
 };
