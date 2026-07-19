@@ -89,9 +89,20 @@ const viewResult = async(user_id, attempt_id) => {
     };
 };
 
+// Exam History
+const getHistory = async(user_id) => {
+    const data = await ExamModel.getHistory(user_id);
+    return {
+        success: true,
+        count: data.length,
+        data,
+    };
+};
+
 module.exports = {
     getExams,
     startExam,
     submitExam,
     viewResult,
+    getHistory,
 };

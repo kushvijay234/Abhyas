@@ -48,10 +48,22 @@ const viewResult = async(req, res) => {
     }
 };
 
+// Exam History
+const getHistory = async(req, res) => {
+    try {
+        const user_id = req.user.user_id;
+        const result = await ExamService.getHistory(user_id);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 
 module.exports = {
     getExams,
     startExam,
     submitExam,
     viewResult,
+    getHistory,
 };

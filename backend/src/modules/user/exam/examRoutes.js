@@ -16,6 +16,9 @@ router.post("/:exam_id/start", authMiddleware, ExamController.startExam);
 // Submit Exam
 router.post("/:attempt_id/submit", authMiddleware, ExamController.submitExam);
 
+//View Result
+router.get("/:attempt_id/result", authMiddleware, ExamController.viewResult);
+
 
 
 module.exports = router;

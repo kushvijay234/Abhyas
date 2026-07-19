@@ -67,6 +67,18 @@ const ExamModel = {
         );
         return result;
     },
+    getHistory: async(user_id) => {
+        const [rows] = await db.execute(
+            `SELECT ea.attempt_id, ea.score, ea.total_marks, ea.percentage,
+              ea.status, ea.started_at, ea.submitted_at,
+              e.title AS exam_title, e.passing_marks
+       FROM exam_attempts ea
+       JOIN exams e ON ea.exam_id = e.exam_id
+       WHERE ea.user_id = ?
+       ORDER BY ea.started_at DESC`, [user_id]
+        );
+        return rows;
+    },
 };
 
 module.exports = ExamModel;
