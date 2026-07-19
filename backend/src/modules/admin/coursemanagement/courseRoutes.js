@@ -7,6 +7,8 @@ const adminMiddleware = require("../../../middleware/adminMiddleware");
 
 router.post("/", authMiddleware, adminMiddleware, CourseController.createCourse);
 
+router.get("/", authMiddleware, adminMiddleware, CourseController.getAllCourses);
+
 
 
 module.exports = router;

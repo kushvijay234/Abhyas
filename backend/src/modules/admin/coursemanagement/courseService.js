@@ -25,7 +25,19 @@ const createCourse = async(courseData) => {
     };
 };
 
+// Get All Courses
+const getAllCourses = async(search, status) => {
+    const courses = await CourseModel.getAllCourses(search, status);
+
+    return {
+        success: true,
+        count: courses.length,
+        data: courses,
+    };
+};
+
 
 module.exports = {
     createCourse,
+    getAllCourses,
 };
