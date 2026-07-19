@@ -57,6 +57,16 @@ const ExamModel = {
         );
         return rows[0];
     },
+
+    submitAttempt: async(attempt_id, score, total_marks, percentage) => {
+        const [result] = await db.execute(
+            `UPDATE exam_attempts
+       SET status = 'completed', score = ?, total_marks = ?,
+           percentage = ?, submitted_at = NOW()
+       WHERE attempt_id = ?`, [score, total_marks, percentage, attempt_id]
+        );
+        return result;
+    },
 };
 
 module.exports = ExamModel;

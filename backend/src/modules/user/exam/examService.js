@@ -78,9 +78,20 @@ const submitExam = async(user_id, attempt_id, answers) => {
     };
 };
 
+// View Result for a specific attempt
+const viewResult = async(user_id, attempt_id) => {
+    const result = await ExamModel.getAttemptById(attempt_id, user_id);
+    if (!result) throw new Error("Result not found");
+    if (result.status !== "completed") throw new Error("Exam not yet submitted");
+    return {
+        success: true,
+        data: result,
+    };
+};
 
 module.exports = {
     getExams,
     startExam,
     submitExam,
+    viewResult,
 };

@@ -36,9 +36,22 @@ const submitExam = async(req, res) => {
     }
 };
 
+// View Result for a specific attempt
+const viewResult = async(req, res) => {
+    try {
+        const user_id = req.user.user_id;
+        const { attempt_id } = req.params;
+        const result = await ExamService.viewResult(user_id, attempt_id);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(404).json({ success: false, message: error.message });
+    }
+};
+
 
 module.exports = {
     getExams,
     startExam,
     submitExam,
+    viewResult,
 };
