@@ -31,7 +31,29 @@ const getByExam = async(exam_id, limit) => {
     };
 };
 
+// Ranking for a Specific Course
+const getByCourse = async(course_id, limit) => {
+    if (!course_id) throw new Error("course_id is required");
+    const parsedLimit = Math.min(parseInt(limit) || 10, 100);
+
+    const data = await LeaderboardModel.getByCourse(course_id, parsedLimit);
+
+    // Map SQL output keys to frontend expected properties
+    const mapped = data.map(item => ({
+        ...item,
+        completed_exams: item.total_attempts,
+        avg_percentage: item.avg_score
+    }));
+
+    return {
+        success: true,
+        count: mapped.length,
+        data: mapped,
+    };
+};
+
 module.exports = {
     getGlobal,
     getByExam,
+    getByCourse,
 };
