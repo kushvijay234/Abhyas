@@ -74,3 +74,13 @@ const updateQuestion = async (question_id, questionData) => {
 
   return result;
 };
+
+// Delete Question
+const deleteQuestion = async (question_id) => {
+  const [result] = await pool.execute(
+    `DELETE FROM questions WHERE question_id = ?`,
+    [question_id]
+  );
+
+  return result;
+};

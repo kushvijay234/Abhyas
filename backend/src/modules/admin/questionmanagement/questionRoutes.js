@@ -13,3 +13,8 @@ router.post("/bulk", authMiddleware, adminMiddleware, QuestionController.bulkUpl
 
 // Update Question
 router.put("/:id", authMiddleware, adminMiddleware, QuestionController.updateQuestion);
+
+// Delete Question
+router.delete("/:id", authMiddleware, adminMiddleware, QuestionController.deleteQuestion);
+
+module.exports = router;

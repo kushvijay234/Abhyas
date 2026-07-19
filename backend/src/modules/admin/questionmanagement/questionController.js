@@ -39,3 +39,17 @@ const updateQuestion = async (req, res) => {
     });
   }
 };
+
+// Delete Question
+const deleteQuestion = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await QuestionService.deleteQuestion(id);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

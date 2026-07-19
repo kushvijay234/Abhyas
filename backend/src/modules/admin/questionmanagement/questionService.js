@@ -71,3 +71,23 @@ const updateQuestion = async (question_id, questionData) => {
     message: "Question updated successfully",
   };
 };
+
+// Delete Question
+const deleteQuestion = async (question_id) => {
+  const existing = await QuestionModel.findQuestionById(question_id);
+
+  if (!existing) {
+    throw new Error("Question not found");
+  }
+
+  const result = await QuestionModel.deleteQuestion(question_id);
+
+  if (result.affectedRows === 0) {
+    throw new Error("Question deletion failed");
+  }
+
+  return {
+    success: true,
+    message: "Question deleted successfully",
+  };
+};
