@@ -10,4 +10,14 @@ const ProfileModel = {
     return rows[0];
   },
 
+  updateProfile: async (user_id, data) => {
+    const { user_name, phone, bio, avatar } = data;
+    const [result] = await db.execute(
+      `UPDATE users SET user_name = ?, phone = ?, bio = ?, avatar = ?
+       WHERE user_id = ?`,
+      [user_name, phone, bio, avatar, user_id]
+    );
+    return result;
+  },
+
   

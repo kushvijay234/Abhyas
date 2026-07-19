@@ -11,3 +11,14 @@ const getProfile = async (req, res) => {
   }
 };
 
+// Update Profile
+const updateProfile = async (req, res) => {
+  try {
+    const user_id = req.user.user_id;
+    const result = await ProfileService.updateProfile(user_id, req.body);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
