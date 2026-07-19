@@ -40,6 +40,37 @@ const createExam = async(examData) => {
     return result;
 };
 
+// Get All Exams
+const getAllExams = async(search = "", is_published = null) => {
+    let query = `
+    SELECT e.exam_id, e.title, e.description, e.duration_minutes,
+           e.total_marks, e.passing_marks, e.max_attempts,
+           e.is_published, e.start_time, e.end_time, e.created_at,
+           c.title AS course_title
+    FROM exams e
+    LEFT JOIN courses c ON e.course_id = c.course_id
+    WHERE 1=1
+  `;
+
+    const params = [];
+
+    if (search) {
+        query += ` AND (e.title LIKE ? OR e.description LIKE ?)`;
+        params.push(`%${search}%`, `%${search}%`);
+    }
+
+    if (is_published !== null && is_published !== undefined && is_published !== "") {
+        query += ` AND e.is_published = ?`;
+        params.push(Number(is_published));
+    }
+
+    query += ` ORDER BY e.created_at DESC`;
+
+    const [rows] = await pool.query(query, params);
+    return rows;
+};
+
 module.exports = {
     createExam,
+    getAllExams,
 };

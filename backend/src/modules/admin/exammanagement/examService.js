@@ -19,8 +19,21 @@ const createExam = async(examData) => {
     };
 };
 
+// Get All Exams
+const getAllExams = async(search, is_published) => {
+    const exams = await ExamModel.getAllExams(search, is_published);
+
+    return {
+        success: true,
+        count: exams.length,
+        data: exams,
+    };
+};
+
+
 
 
 module.exports = {
     createExam,
+    getAllExams,
 };

@@ -13,6 +13,20 @@ const createExam = async(req, res) => {
     }
 };
 
+// Get All Exams
+const getAllExams = async(req, res) => {
+    try {
+        const { search, is_published } = req.query;
+        const result = await ExamService.getAllExams(search, is_published);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
 module.exports = {
     createExam,
+    getAllExams,
 };
