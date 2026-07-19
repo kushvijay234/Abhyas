@@ -70,7 +70,20 @@ const getAllExams = async(search = "", is_published = null) => {
     return rows;
 };
 
+// Get Exam By ID
+const getExamById = async(exam_id) => {
+    const [rows] = await pool.execute(
+        `SELECT e.*, c.title AS course_title
+     FROM exams e
+     LEFT JOIN courses c ON e.course_id = c.course_id
+     WHERE e.exam_id = ?`, [exam_id]
+    );
+
+    return rows[0];
+};
+
 module.exports = {
     createExam,
     getAllExams,
+    getExamById,
 };

@@ -30,10 +30,22 @@ const getAllExams = async(search, is_published) => {
     };
 };
 
+// Get Exam By ID
+const getExamById = async(exam_id) => {
+    const exam = await ExamModel.getExamById(exam_id);
 
+    if (!exam) {
+        throw new Error("Exam not found");
+    }
 
+    return {
+        success: true,
+        data: exam,
+    };
+};
 
 module.exports = {
     createExam,
     getAllExams,
+    getExamById,
 };

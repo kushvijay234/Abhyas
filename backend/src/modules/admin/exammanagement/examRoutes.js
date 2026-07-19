@@ -10,4 +10,8 @@ router.post("/", authMiddleware, adminMiddleware, ExamController.createExam);
 
 // Get All Exams  (?search=&is_published=1|0)
 router.get("/", authMiddleware, adminMiddleware, ExamController.getAllExams);
+
+// Get Exam By ID
+router.get("/:id", authMiddleware, adminMiddleware, ExamController.getExamById);
+
 module.exports = router;
