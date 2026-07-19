@@ -38,6 +38,24 @@ const getAverageScore = async () => {
   return rows[0].avg_score || 0;
 };
 
+// Top Performing Students
+const getTopPerformingStudents = async (limit = 5) => {
+  const [rows] = await pool.query(
+    `SELECT u.user_id, u.user_name, u.email,
+            ROUND(AVG(r.score), 2) AS avg_score,
+            COUNT(r.result_id)    AS total_attempts,
+            SUM(CASE WHEN r.is_passed = 1 THEN 1 ELSE 0 END) AS total_passed
+     FROM results r
+     JOIN users u ON r.user_id = u.user_id
+     GROUP BY r.user_id, u.user_id, u.user_name, u.email
+     ORDER BY avg_score DESC
+     LIMIT ?`,
+    [limit]
+  );
+
+  return rows;
+};
+
 module.exports = {
   getTotalUsers,
   getTotalCourses,
@@ -45,4 +63,5 @@ module.exports = {
   getTotalQuestions,
   getTotalAttempts,
   getAverageScore,
+  getTopPerformingStudents,
 };
