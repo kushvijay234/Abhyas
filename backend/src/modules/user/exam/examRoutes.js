@@ -7,6 +7,9 @@ const authMiddleware = require("../../../middleware/authMiddleware");
 //  Get All Published Exams 
 router.get("/", authMiddleware, ExamController.getExams);
 
+// Exam History
+router.get("/history", authMiddleware, ExamController.getHistory);
+
 
 
 module.exports = router;
