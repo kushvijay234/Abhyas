@@ -8,12 +8,14 @@ const getDashboardStats = async () => {
     totalExams,
     totalQuestions,
     totalAttempts,
+    averageScore,
   ] = await Promise.all([
     DashboardModel.getTotalUsers(),
     DashboardModel.getTotalCourses(),
     DashboardModel.getTotalExams(),
     DashboardModel.getTotalQuestions(),
     DashboardModel.getTotalAttempts(),
+    DashboardModel.getAverageScore(),
   ]);
 
   return {
@@ -25,6 +27,7 @@ const getDashboardStats = async () => {
         total_exams:     totalExams,
         total_questions: totalQuestions,
         total_attempts:  totalAttempts,
+        average_score:   averageScore,
       },
     },
   };

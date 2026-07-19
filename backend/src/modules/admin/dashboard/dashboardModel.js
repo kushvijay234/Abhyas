@@ -30,10 +30,19 @@ const getTotalAttempts = async () => {
   return rows[0].total;
 };
 
+// Average Score Across All Results
+const getAverageScore = async () => {
+  const [rows] = await pool.execute(
+    `SELECT ROUND(AVG(score), 2) AS avg_score FROM results`
+  );
+  return rows[0].avg_score || 0;
+};
+
 module.exports = {
   getTotalUsers,
   getTotalCourses,
   getTotalExams,
   getTotalQuestions,
   getTotalAttempts,
+  getAverageScore,
 };
