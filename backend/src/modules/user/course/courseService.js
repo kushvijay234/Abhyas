@@ -26,3 +26,12 @@ const getCourseDetails = async (course_id) => {
   };
 };
 
+// Get All Categories
+const getCategories = async () => {
+  const data = await CourseModel.getCategories();
+  return {
+    success: true,
+    count: data.length,
+    data,
+  };
+};

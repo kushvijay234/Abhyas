@@ -33,6 +33,27 @@ const CourseModel = {
     return rows[0];
   },
 
+  getCategories: async () => {
+    const [rows] = await db.execute(
+      `SELECT * FROM categories ORDER BY name ASC`
+    );
+    return rows;
+  },
+
+  getMyCourses: async (user_id) => {
+    const [rows] = await db.execute(
+      `SELECT c.course_id, c.title, c.description, c.thumbnail, c.duration, c.category_id,
+              cat.name AS category_name, ue.enrolled_at
+       FROM user_enrollments ue
+       JOIN courses c ON ue.course_id = c.course_id
+       LEFT JOIN categories cat ON c.category_id = cat.category_id
+       WHERE ue.user_id = ?
+       ORDER BY ue.enrolled_at DESC`,
+      [user_id]
+    );
+    return rows;
+  },
+
 };
 
 module.exports = CourseModel;
