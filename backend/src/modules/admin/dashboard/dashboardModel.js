@@ -24,9 +24,16 @@ const getTotalQuestions = async () => {
   return rows[0].total;
 };
 
+// Total Attempts
+const getTotalAttempts = async () => {
+  const [rows] = await pool.execute(`SELECT COUNT(*) AS total FROM results`);
+  return rows[0].total;
+};
+
 module.exports = {
   getTotalUsers,
   getTotalCourses,
   getTotalExams,
   getTotalQuestions,
+  getTotalAttempts,
 };

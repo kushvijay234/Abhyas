@@ -7,11 +7,13 @@ const getDashboardStats = async () => {
     totalCourses,
     totalExams,
     totalQuestions,
+    totalAttempts,
   ] = await Promise.all([
     DashboardModel.getTotalUsers(),
     DashboardModel.getTotalCourses(),
     DashboardModel.getTotalExams(),
     DashboardModel.getTotalQuestions(),
+    DashboardModel.getTotalAttempts(),
   ]);
 
   return {
@@ -22,6 +24,7 @@ const getDashboardStats = async () => {
         total_courses:   totalCourses,
         total_exams:     totalExams,
         total_questions: totalQuestions,
+        total_attempts:  totalAttempts,
       },
     },
   };
