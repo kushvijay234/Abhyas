@@ -60,8 +60,30 @@ const getCourseById = async(course_id) => {
     return rows[0];
 };
 
+// Update Course
+const updateCourse = async(course_id, courseData) => {
+    const {
+        title,
+        description,
+        thumbnail,
+        status,
+        category_id = null,
+        duration = null,
+    } = courseData;
+
+    const [result] = await pool.execute(
+        `UPDATE courses
+     SET title = ?, description = ?, thumbnail = ?, status = ?, category_id = ?, duration = ?
+     WHERE course_id = ?`, [title, description, thumbnail, status, category_id, duration, course_id]
+    );
+
+    return result;
+};
+
+
 module.exports = {
     createCourse,
     getAllCourses,
     getCourseById,
+    updateCourse,
 };

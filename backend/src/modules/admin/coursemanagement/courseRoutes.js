@@ -11,6 +11,8 @@ router.get("/", authMiddleware, adminMiddleware, CourseController.getAllCourses)
 
 router.get("/:id", authMiddleware, adminMiddleware, CourseController.getCourseById);
 
+router.put("/:id", authMiddleware, adminMiddleware, CourseController.updateCourse);
+
 
 
 module.exports = router;

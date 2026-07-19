@@ -50,9 +50,31 @@ const getCourseById = async(course_id) => {
     };
 };
 
+// Update Course
+const updateCourse = async(course_id, courseData) => {
+    const existing = await CourseModel.getCourseById(course_id);
+
+    if (!existing) {
+        throw new Error("Course not found");
+    }
+
+    const result = await CourseModel.updateCourse(course_id, courseData);
+
+    if (result.affectedRows === 0) {
+        throw new Error("Course update failed");
+    }
+
+    return {
+        success: true,
+        message: "Course updated successfully",
+    };
+};
+
+
 
 module.exports = {
     createCourse,
     getAllCourses,
     getCourseById,
+    updateCourse,
 };
