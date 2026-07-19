@@ -9,6 +9,8 @@ const getDashboardStats = async () => {
     totalQuestions,
     totalAttempts,
     averageScore,
+    topStudents,
+    recentActivities,
   ] = await Promise.all([
     DashboardModel.getTotalUsers(),
     DashboardModel.getTotalCourses(),
@@ -16,6 +18,8 @@ const getDashboardStats = async () => {
     DashboardModel.getTotalQuestions(),
     DashboardModel.getTotalAttempts(),
     DashboardModel.getAverageScore(),
+    DashboardModel.getTopPerformingStudents(5),
+    DashboardModel.getRecentActivities(10),
   ]);
 
   return {
@@ -29,6 +33,8 @@ const getDashboardStats = async () => {
         total_attempts:  totalAttempts,
         average_score:   averageScore,
       },
+      top_performing_students: topStudents,
+      recent_activities:       recentActivities,
     },
   };
 };

@@ -56,6 +56,23 @@ const getTopPerformingStudents = async (limit = 5) => {
   return rows;
 };
 
+// Recent Activities (latest exam attempts)
+const getRecentActivities = async (limit = 10) => {
+  const [rows] = await pool.query(
+    `SELECT r.result_id, r.score, r.is_passed, r.attempted_at,
+            u.user_name, u.email,
+            e.title AS exam_title
+     FROM results r
+     JOIN users u ON r.user_id = u.user_id
+     JOIN exams e ON r.exam_id = e.exam_id
+     ORDER BY r.attempted_at DESC
+     LIMIT ?`,
+    [limit]
+  );
+
+  return rows;
+};
+
 module.exports = {
   getTotalUsers,
   getTotalCourses,
@@ -64,4 +81,5 @@ module.exports = {
   getTotalAttempts,
   getAverageScore,
   getTopPerformingStudents,
+  getRecentActivities,
 };
