@@ -114,6 +114,14 @@ const deleteExam = async(exam_id) => {
     return result;
 };
 
+// Toggle Publish / Unpublish
+const togglePublish = async(exam_id, is_published) => {
+    const [result] = await pool.execute(
+        `UPDATE exams SET is_published = ? WHERE exam_id = ?`, [is_published ? 1 : 0, exam_id]
+    );
+
+    return result;
+};
 
 
 module.exports = {
@@ -122,4 +130,5 @@ module.exports = {
     getExamById,
     updateExam,
     deleteExam,
+    togglePublish,
 };

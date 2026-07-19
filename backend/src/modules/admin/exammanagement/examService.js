@@ -84,10 +84,33 @@ const deleteExam = async(exam_id) => {
     };
 };
 
+// Publish / Unpublish Exam (toggle)
+const togglePublish = async(exam_id) => {
+    const existing = await ExamModel.getExamById(exam_id);
+
+    if (!existing) {
+        throw new Error("Exam not found");
+    }
+
+    const newStatus = !existing.is_published;
+    const result = await ExamModel.togglePublish(exam_id, newStatus);
+
+    if (result.affectedRows === 0) {
+        throw new Error("Failed to update publish status");
+    }
+
+    return {
+        success: true,
+        message: `Exam ${newStatus ? "published" : "unpublished"} successfully`,
+        data: { is_published: newStatus },
+    };
+};
+
 module.exports = {
     createExam,
     getAllExams,
     getExamById,
     updateExam,
     deleteExam,
+    togglePublish,
 };

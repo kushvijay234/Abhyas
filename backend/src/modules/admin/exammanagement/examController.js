@@ -69,10 +69,25 @@ const deleteExam = async(req, res) => {
     }
 };
 
+// Publish / Unpublish Exam
+const togglePublish = async(req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await ExamService.togglePublish(id);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
 module.exports = {
     createExam,
     getAllExams,
     getExamById,
     updateExam,
     deleteExam,
+    togglePublish,
 };
