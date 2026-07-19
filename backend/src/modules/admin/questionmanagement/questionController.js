@@ -53,3 +53,25 @@ const deleteQuestion = async (req, res) => {
     });
   }
 };
+
+// Assign Questions to Exam
+const assignQuestionsToExam = async (req, res) => {
+  try {
+    const { exam_id, question_ids } = req.body;
+    const result = await QuestionService.assignQuestionsToExam(exam_id, question_ids);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+module.exports = {
+  addQuestion,
+  bulkUploadQuestions,
+  updateQuestion,
+  deleteQuestion,
+  assignQuestionsToExam,
+};

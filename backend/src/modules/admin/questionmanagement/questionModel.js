@@ -84,3 +84,34 @@ const deleteQuestion = async (question_id) => {
 
   return result;
 };
+
+// Find Question By ID
+const findQuestionById = async (question_id) => {
+  const [rows] = await pool.execute(
+    `SELECT * FROM questions WHERE question_id = ?`,
+    [question_id]
+  );
+
+  return rows[0];
+};
+
+// Assign Questions to Exam
+const assignQuestionsToExam = async (exam_id, question_ids) => {
+  const placeholders = question_ids.map(() => "?").join(", ");
+
+  const [result] = await pool.execute(
+    `UPDATE questions SET exam_id = ? WHERE question_id IN (${placeholders})`,
+    [exam_id, ...question_ids]
+  );
+
+  return result;
+};
+
+module.exports = {
+  addQuestion,
+  bulkInsertQuestions,
+  updateQuestion,
+  deleteQuestion,
+  findQuestionById,
+  assignQuestionsToExam,
+};

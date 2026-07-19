@@ -91,3 +91,27 @@ const deleteQuestion = async (question_id) => {
     message: "Question deleted successfully",
   };
 };
+
+// Assign Questions to Exam
+const assignQuestionsToExam = async (exam_id, question_ids) => {
+  if (!exam_id) throw new Error("Exam ID is required");
+
+  if (!Array.isArray(question_ids) || question_ids.length === 0) {
+    throw new Error("A non-empty question_ids array is required");
+  }
+
+  const result = await QuestionModel.assignQuestionsToExam(exam_id, question_ids);
+
+  return {
+    success: true,
+    message: `${result.affectedRows} question(s) assigned to exam successfully`,
+  };
+};
+
+module.exports = {
+  addQuestion,
+  bulkUploadQuestions,
+  updateQuestion,
+  deleteQuestion,
+  assignQuestionsToExam,
+};
