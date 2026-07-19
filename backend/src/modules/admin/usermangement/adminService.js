@@ -13,3 +13,13 @@ const getUserById = async (id) => {
 
   return user;
 };
+
+const deleteUser = async (id) => {
+    const result = await AdminModel.deleteUser(id);
+
+    if (result.affectedRows === 0) {
+        throw new Error("User not found");
+    }
+
+    return result;
+};

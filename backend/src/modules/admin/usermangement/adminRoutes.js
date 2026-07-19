@@ -10,3 +10,6 @@ router.get("/users", authMiddleware, AdminController.getAllUsers);
 // Get User By ID
 router.get("/users/:id", authMiddleware, AdminController.getUserById);
 
+// Delete User
+router.delete("/users/:id", authMiddleware, AdminController.deleteUser);
+

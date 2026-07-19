@@ -33,3 +33,13 @@ const getUserById = async (id) => {
 
   return rows[0];
 };
+
+const deleteUser = async (id) => {
+    const [result] = await pool.query(
+        `DELETE FROM users
+         WHERE user_id = ?`,
+        [id]
+    );
+
+    return result;
+};

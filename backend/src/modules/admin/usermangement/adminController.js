@@ -35,3 +35,22 @@ const getUserById = async (req, res) => {
     });
   }
 };
+
+const deleteUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        await AdminService.deleteUser(id);
+
+        res.status(200).json({
+            success: true,
+            message: "User deleted successfully",
+        });
+
+    } catch (error) {
+        res.status(404).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
