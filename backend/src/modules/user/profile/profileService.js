@@ -36,3 +36,27 @@ const updateProfile = async (user_id, data) => {
     message: "Profile updated successfully",
   };
 };
+
+// Change Password
+const changePassword = async (user_id, current_password, new_password) => {
+  if (!current_password || !new_password) {
+    throw new Error("current_password and new_password are required");
+  }
+  if (new_password.length < 6) {
+    throw new Error("new_password must be at least 6 characters");
+  }
+
+  const record = await ProfileModel.findPasswordById(user_id);
+  if (!record) throw new Error("User not found");
+
+  const isMatch = await bcrypt.compare(current_password, record.password);
+  if (!isMatch) throw new Error("Current password is incorrect");
+
+  const hashed = await bcrypt.hash(new_password, 10);
+  await ProfileModel.updatePassword(user_id, hashed);
+
+  return {
+    success: true,
+    message: "Password changed successfully",
+  };
+};

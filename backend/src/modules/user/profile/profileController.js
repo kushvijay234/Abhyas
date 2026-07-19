@@ -22,3 +22,19 @@ const updateProfile = async (req, res) => {
   }
 };
 
+// Change Password
+const changePassword = async (req, res) => {
+  try {
+    const user_id = req.user.user_id;
+    const { current_password, new_password } = req.body;
+    const result = await ProfileService.changePassword(
+      user_id,
+      current_password,
+      new_password
+    );
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+

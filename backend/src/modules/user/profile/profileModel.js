@@ -20,4 +20,12 @@ const ProfileModel = {
     return result;
   },
 
+  updatePassword: async (user_id, hashedPassword) => {
+    const [result] = await db.execute(
+      `UPDATE users SET password = ? WHERE user_id = ?`,
+      [hashedPassword, user_id]
+    );
+    return result;
+  },
+
   

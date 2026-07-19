@@ -8,3 +8,5 @@ router.get("/", authMiddleware, ProfileController.getProfile);
 
 router.put("/", authMiddleware, ProfileController.updateProfile);
 
+router.put("/change-password", authMiddleware, ProfileController.changePassword);
+
