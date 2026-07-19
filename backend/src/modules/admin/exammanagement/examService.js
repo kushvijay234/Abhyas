@@ -44,8 +44,29 @@ const getExamById = async(exam_id) => {
     };
 };
 
+// Update Exam
+const updateExam = async(exam_id, examData) => {
+    const existing = await ExamModel.getExamById(exam_id);
+
+    if (!existing) {
+        throw new Error("Exam not found");
+    }
+
+    const result = await ExamModel.updateExam(exam_id, examData);
+
+    if (result.affectedRows === 0) {
+        throw new Error("Exam update failed");
+    }
+
+    return {
+        success: true,
+        message: "Exam updated successfully",
+    };
+};
+
 module.exports = {
     createExam,
     getAllExams,
     getExamById,
+    updateExam,
 };

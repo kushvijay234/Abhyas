@@ -82,8 +82,32 @@ const getExamById = async(exam_id) => {
     return rows[0];
 };
 
+// Update Exam
+const updateExam = async(exam_id, examData) => {
+    const {
+        title,
+        description,
+        course_id,
+        total_marks,
+        passing_marks,
+        max_attempts,
+        start_time,
+        end_time,
+    } = examData;
+
+    const [result] = await pool.execute(
+        `UPDATE exams
+     SET title = ?, description = ?, course_id = ?, total_marks = ?,
+         passing_marks = ?, max_attempts = ?, start_time = ?, end_time = ?
+     WHERE exam_id = ?`, [title, description, course_id, total_marks, passing_marks, max_attempts, start_time, end_time, exam_id]
+    );
+
+    return result;
+};
+
 module.exports = {
     createExam,
     getAllExams,
     getExamById,
+    updateExam,
 };

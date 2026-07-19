@@ -14,4 +14,7 @@ router.get("/", authMiddleware, adminMiddleware, ExamController.getAllExams);
 // Get Exam By ID
 router.get("/:id", authMiddleware, adminMiddleware, ExamController.getExamById);
 
+// Update Exam
+router.put("/:id", authMiddleware, adminMiddleware, ExamController.updateExam);
+
 module.exports = router;
