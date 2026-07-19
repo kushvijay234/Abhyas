@@ -55,3 +55,13 @@ const getSummary = async (user_id) => {
     data: summaryData,
   };
 };
+
+// Performance Over Last 10 Exams
+const getPerformance = async (user_id) => {
+  const data = await DashboardModel.getPerformance(user_id);
+  return {
+    success: true,
+    count: data.length,
+    data,
+  };
+};

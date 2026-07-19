@@ -45,6 +45,20 @@ const DashboardModel = {
     return rows[0];
   },
 
+  getPerformance: async (user_id) => {
+    const [rows] = await db.execute(
+      `SELECT e.title AS exam_title, ea.score, ea.total_marks,
+              ea.percentage, ea.submitted_at
+       FROM exam_attempts ea
+       JOIN exams e ON ea.exam_id = e.exam_id
+       WHERE ea.user_id = ? AND ea.status = 'completed'
+       ORDER BY ea.submitted_at DESC
+       LIMIT 10`,
+      [user_id]
+    );
+    return rows;
+  },
+
 };
 
 module.exports = DashboardModel;
