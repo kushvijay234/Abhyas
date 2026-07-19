@@ -65,3 +65,13 @@ const getPerformance = async (user_id) => {
     data,
   };
 };
+
+// Recent Exam Attempts
+const getRecentExams = async (user_id) => {
+  const data = await DashboardModel.getRecentExams(user_id);
+  return {
+    success: true,
+    count: data.length,
+    data,
+  };
+};

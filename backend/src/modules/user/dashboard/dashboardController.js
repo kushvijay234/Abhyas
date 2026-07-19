@@ -21,3 +21,14 @@ const getPerformance = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+// Recent Exams
+const getRecentExams = async (req, res) => {
+  try {
+    const user_id = req.user.user_id;
+    const result = await DashboardService.getRecentExams(user_id);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

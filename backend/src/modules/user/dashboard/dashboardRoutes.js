@@ -8,3 +8,4 @@ router.get("/summary", authMiddleware, DashboardController.getSummary);
 
 router.get("/performance", authMiddleware, DashboardController.getPerformance);
 
+router.get("/recent-exams", authMiddleware, DashboardController.getRecentExams);

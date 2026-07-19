@@ -59,6 +59,21 @@ const DashboardModel = {
     return rows;
   },
 
+  getRecentExams: async (user_id) => {
+    const [rows] = await db.execute(
+      `SELECT ea.attempt_id, ea.score, ea.percentage, ea.status,
+              ea.started_at, ea.submitted_at,
+              e.title AS exam_title
+       FROM exam_attempts ea
+       JOIN exams e ON ea.exam_id = e.exam_id
+       WHERE ea.user_id = ?
+       ORDER BY ea.started_at DESC
+       LIMIT 5`,
+      [user_id]
+    );
+    return rows;
+  },
+
 };
 
 module.exports = DashboardModel;
