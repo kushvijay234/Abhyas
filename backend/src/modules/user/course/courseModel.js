@@ -62,6 +62,56 @@ const CourseModel = {
     return rows.length > 0;
   },
 
+  enroll: async (user_id, course_id) => {
+    const [result] = await db.execute(
+      `INSERT INTO user_enrollments (user_id, course_id) VALUES (?, ?)`,
+      [user_id, course_id]
+    );
+    return result;
+  },
+
+  getCurriculum: async (course_id) => {
+    const [sections] = await db.execute(
+      `SELECT * FROM course_sections WHERE course_id = ? ORDER BY sort_order ASC`,
+      [course_id]
+    );
+
+    if (sections.length === 0) return [];
+
+    const sectionIds = sections.map(s => s.section_id);
+    const placeHolders = sectionIds.map(() => '?').join(',');
+    const [items] = await db.execute(
+      `SELECT ci.*, e.title AS exam_title, e.duration_minutes AS exam_duration_minutes, e.total_marks AS exam_total_marks, e.passing_marks AS exam_passing_marks
+       FROM curriculum_items ci
+       LEFT JOIN exams e ON ci.exam_id = e.exam_id
+       WHERE ci.section_id IN (${placeHolders})
+       ORDER BY ci.sort_order ASC`,
+      sectionIds
+    );
+
+    const itemsBySection = {};
+    items.forEach(item => {
+      if (!itemsBySection[item.section_id]) {
+        itemsBySection[item.section_id] = [];
+      }
+      if (item.type === 'exam' && item.exam_id) {
+        item.examData = {
+          exam_id: item.exam_id,
+          title: item.exam_title,
+          duration_minutes: item.exam_duration_minutes,
+          total_marks: item.exam_total_marks,
+          passing_marks: item.exam_passing_marks
+        };
+      }
+      itemsBySection[item.section_id].push(item);
+    });
+
+    return sections.map(sec => ({
+      ...sec,
+      items: itemsBySection[sec.section_id] || []
+    }));
+  },
+
 };
 
 module.exports = CourseModel;

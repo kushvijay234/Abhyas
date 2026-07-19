@@ -42,3 +42,17 @@ const getMyCourses = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+// Enroll in Course
+const enrollInCourse = async (req, res) => {
+  try {
+    const user_id = req.user.user_id;
+    const { id } = req.params;
+    const result = await CourseService.enrollInCourse(user_id, id);
+    res.status(201).json(result);
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+module.exports = { getCourses, getCourseDetails, getCategories, getMyCourses, enrollInCourse };

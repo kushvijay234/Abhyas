@@ -45,3 +45,25 @@ const getMyCourses = async (user_id) => {
     data,
   };
 };
+
+// Enroll in Course
+const enrollInCourse = async (user_id, course_id) => {
+  if (!course_id) throw new Error("course_id is required");
+
+  // Check if course exists
+  const course = await CourseModel.findById(course_id);
+  if (!course) throw new Error("Course not found");
+
+  // Check if already enrolled
+  const isEnrolled = await CourseModel.checkEnrollment(user_id, course_id);
+  if (isEnrolled) throw new Error("Already enrolled in this course");
+
+  // Perform enrollment
+  await CourseModel.enroll(user_id, course_id);
+  return {
+    success: true,
+    message: "Enrolled in course successfully"
+  };
+};
+
+module.exports = { getCourses, getCourseDetails, getCategories, getMyCourses, enrollInCourse };

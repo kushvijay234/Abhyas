@@ -15,3 +15,8 @@ router.get("/my", authMiddleware, CourseController.getMyCourses);
 
 // GET /api/users/courses/:id             → Get Course Details
 router.get("/:id", authMiddleware, CourseController.getCourseDetails);
+
+// POST /api/users/courses/:id/enroll     → Enroll in Course
+router.post("/:id/enroll", authMiddleware, CourseController.enrollInCourse);
+
+module.exports = router;
