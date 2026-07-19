@@ -18,8 +18,15 @@ const getTotalExams = async () => {
   return rows[0].total;
 };
 
+// Total Questions
+const getTotalQuestions = async () => {
+  const [rows] = await pool.execute(`SELECT COUNT(*) AS total FROM questions`);
+  return rows[0].total;
+};
+
 module.exports = {
   getTotalUsers,
   getTotalCourses,
   getTotalExams,
+  getTotalQuestions,
 };
