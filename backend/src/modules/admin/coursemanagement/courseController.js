@@ -84,6 +84,20 @@ const assignCourseCategory = async(req, res) => {
     }
 };
 
+// Get Course Curriculum
+const getCurriculum = async(req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await CourseService.getCurriculum(id);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(404).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
 module.exports = {
     createCourse,
     getAllCourses,
@@ -91,4 +105,5 @@ module.exports = {
     updateCourse,
     deleteCourse,
     assignCourseCategory,
+    getCurriculum,
 };

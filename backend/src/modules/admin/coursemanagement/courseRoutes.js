@@ -17,6 +17,8 @@ router.delete("/:id", authMiddleware, adminMiddleware, CourseController.deleteCo
 
 router.put("/:id/categories", authMiddleware, adminMiddleware, CourseController.assignCourseCategory);
 
+router.get("/:id/curriculum", authMiddleware, adminMiddleware, CourseController.getCurriculum);
+
 
 
 module.exports = router;

@@ -98,6 +98,38 @@ const assignCourseCategory = async(course_id, category_id) => {
     return result;
 };
 
+// Get Course Curriculum
+const getCurriculum = async(course_id) => {
+    const [sections] = await pool.execute(
+        `SELECT * FROM course_sections WHERE course_id = ? ORDER BY sort_order ASC`, [course_id]
+    );
+
+    if (sections.length === 0) return [];
+
+    const sectionIds = sections.map(s => s.section_id);
+    const placeHolders = sectionIds.map(() => '?').join(',');
+    const [items] = await pool.execute(
+        `SELECT ci.*, e.title AS exam_title
+     FROM curriculum_items ci
+     LEFT JOIN exams e ON ci.exam_id = e.exam_id
+     WHERE ci.section_id IN (${placeHolders})
+     ORDER BY ci.sort_order ASC`,
+        sectionIds
+    );
+
+    const itemsBySection = {};
+    items.forEach(item => {
+        if (!itemsBySection[item.section_id]) {
+            itemsBySection[item.section_id] = [];
+        }
+        itemsBySection[item.section_id].push(item);
+    });
+
+    return sections.map(sec => ({
+        ...sec,
+        items: itemsBySection[sec.section_id] || []
+    }));
+};
 
 module.exports = {
     createCourse,
@@ -106,4 +138,5 @@ module.exports = {
     updateCourse,
     deleteCourse,
     assignCourseCategory,
+    getCurriculum,
 };

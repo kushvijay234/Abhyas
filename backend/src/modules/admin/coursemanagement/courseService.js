@@ -114,6 +114,20 @@ const assignCourseCategory = async(course_id, category_id) => {
     };
 };
 
+// Get Course Curriculum
+const getCurriculum = async(course_id) => {
+    const existing = await CourseModel.getCourseById(course_id);
+    if (!existing) {
+        throw new Error("Course not found");
+    }
+
+    const data = await CourseModel.getCurriculum(course_id);
+    return {
+        success: true,
+        data
+    };
+};
+
 
 module.exports = {
     createCourse,
@@ -122,4 +136,5 @@ module.exports = {
     updateCourse,
     deleteCourse,
     assignCourseCategory,
+    getCurriculum,
 };
