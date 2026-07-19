@@ -80,10 +80,21 @@ const updateCourse = async(course_id, courseData) => {
     return result;
 };
 
+// Delete Course
+const deleteCourse = async(course_id) => {
+    const [result] = await pool.execute(
+        `DELETE FROM courses WHERE course_id = ?`, [course_id]
+    );
+
+    return result;
+};
+
+
 
 module.exports = {
     createCourse,
     getAllCourses,
     getCourseById,
     updateCourse,
+    deleteCourse,
 };

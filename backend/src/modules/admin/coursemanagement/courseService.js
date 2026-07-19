@@ -70,6 +70,25 @@ const updateCourse = async(course_id, courseData) => {
     };
 };
 
+// Delete Course
+const deleteCourse = async(course_id) => {
+    const existing = await CourseModel.getCourseById(course_id);
+
+    if (!existing) {
+        throw new Error("Course not found");
+    }
+
+    const result = await CourseModel.deleteCourse(course_id);
+
+    if (result.affectedRows === 0) {
+        throw new Error("Course deletion failed");
+    }
+
+    return {
+        success: true,
+        message: "Course deleted successfully",
+    };
+};
 
 
 module.exports = {
@@ -77,4 +96,5 @@ module.exports = {
     getAllCourses,
     getCourseById,
     updateCourse,
+    deleteCourse,
 };

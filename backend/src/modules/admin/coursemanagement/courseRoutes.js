@@ -13,6 +13,8 @@ router.get("/:id", authMiddleware, adminMiddleware, CourseController.getCourseBy
 
 router.put("/:id", authMiddleware, adminMiddleware, CourseController.updateCourse);
 
+router.delete("/:id", authMiddleware, adminMiddleware, CourseController.deleteCourse);
+
 
 
 module.exports = router;
