@@ -60,3 +60,18 @@ const changePassword = async (user_id, current_password, new_password) => {
     message: "Password changed successfully",
   };
 };
+
+// Delete Account
+const deleteAccount = async (user_id) => {
+  const user = await ProfileModel.findById(user_id);
+  if (!user) throw new Error("User not found");
+
+  await ProfileModel.deleteUser(user_id);
+
+  return {
+    success: true,
+    message: "Account deleted successfully",
+  };
+};
+
+module.exports = { getProfile, updateProfile, changePassword, deleteAccount };

@@ -28,4 +28,21 @@ const ProfileModel = {
     return result;
   },
 
-  
+  findPasswordById: async (user_id) => {
+    const [rows] = await db.execute(
+      `SELECT password FROM users WHERE user_id = ?`,
+      [user_id]
+    );
+    return rows[0];
+  },
+
+  deleteUser: async (user_id) => {
+    const [result] = await db.execute(
+      `DELETE FROM users WHERE user_id = ?`,
+      [user_id]
+    );
+    return result;
+  },
+};
+
+module.exports = ProfileModel;
