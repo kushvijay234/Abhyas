@@ -22,4 +22,8 @@ router.delete("/:id", authMiddleware, adminMiddleware, ExamController.deleteExam
 
 // Publish / Unpublish Exam (toggles current status)
 router.patch("/:id/publish", authMiddleware, adminMiddleware, ExamController.togglePublish);
+
+// Set Exam Duration & Rules
+router.put("/:id/settings", authMiddleware, adminMiddleware, ExamController.setExamSettings);
+
 module.exports = router;

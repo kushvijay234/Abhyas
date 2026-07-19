@@ -106,6 +106,30 @@ const togglePublish = async(exam_id) => {
     };
 };
 
+// Set Exam Duration & Rules
+const setExamSettings = async(exam_id, settings) => {
+    const existing = await ExamModel.getExamById(exam_id);
+
+    if (!existing) {
+        throw new Error("Exam not found");
+    }
+
+    if (!settings.duration_minutes || Number(settings.duration_minutes) <= 0) {
+        throw new Error("A valid duration (in minutes) is required");
+    }
+
+    const result = await ExamModel.setExamSettings(exam_id, settings);
+
+    if (result.affectedRows === 0) {
+        throw new Error("Failed to update exam settings");
+    }
+
+    return {
+        success: true,
+        message: "Exam duration and rules updated successfully",
+    };
+};
+
 module.exports = {
     createExam,
     getAllExams,
@@ -113,4 +137,5 @@ module.exports = {
     updateExam,
     deleteExam,
     togglePublish,
+    setExamSettings,
 };

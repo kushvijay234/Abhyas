@@ -123,6 +123,26 @@ const togglePublish = async(exam_id, is_published) => {
     return result;
 };
 
+// Set Exam Duration & Rules
+const setExamSettings = async(exam_id, settings) => {
+    const {
+        duration_minutes,
+        instructions,
+        negative_marking,
+        max_attempts,
+        passing_marks,
+    } = settings;
+
+    const [result] = await pool.execute(
+        `UPDATE exams
+     SET duration_minutes = ?, instructions = ?, negative_marking = ?,
+         max_attempts = ?, passing_marks = ?
+     WHERE exam_id = ?`, [duration_minutes, instructions, negative_marking, max_attempts, passing_marks, exam_id]
+    );
+
+    return result;
+};
+
 
 module.exports = {
     createExam,
@@ -131,4 +151,5 @@ module.exports = {
     updateExam,
     deleteExam,
     togglePublish,
+    setExamSettings,
 };
