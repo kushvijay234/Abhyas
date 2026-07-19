@@ -7,3 +7,6 @@ const authMiddleware = require("../../../middleware/authMiddleware");
 router.get("/", authMiddleware, ResultController.getResults);
 
 router.get("/analytics", authMiddleware, ResultController.getAnalytics);
+
+router.get("/exam/:exam_id", authMiddleware, ResultController.getExamResult);
+

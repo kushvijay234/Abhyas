@@ -22,3 +22,16 @@ const getResultById = async (user_id, attempt_id) => {
     data: result,
   };
 };
+
+// Get Latest Result For a Specific Exam
+const getExamResult = async (user_id, exam_id) => {
+  if (!exam_id) throw new Error("exam_id is required");
+
+  const result = await ResultModel.getExamResult(exam_id, user_id);
+  if (!result) throw new Error("No completed result found for this exam");
+
+  return {
+    success: true,
+    data: result,
+  };
+};

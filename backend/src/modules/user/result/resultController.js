@@ -22,3 +22,15 @@ const getResultById = async (req, res) => {
     res.status(404).json({ success: false, message: error.message });
   }
 };
+
+// Get Latest Result For a Specific Exam
+const getExamResult = async (req, res) => {
+  try {
+    const user_id = req.user.user_id;
+    const { exam_id } = req.params;
+    const result = await ResultService.getExamResult(user_id, exam_id);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(404).json({ success: false, message: error.message });
+  }
+};

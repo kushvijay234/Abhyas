@@ -27,4 +27,17 @@ getResultById: async (attempt_id, user_id) => {
     return rows[0];
   },
 
+  getExamResult: async (exam_id, user_id) => {
+    const [rows] = await db.execute(
+      `SELECT ea.*, e.title AS exam_title, e.passing_marks
+       FROM exam_attempts ea
+       JOIN exams e ON ea.exam_id = e.exam_id
+       WHERE ea.exam_id = ? AND ea.user_id = ? AND ea.status = 'completed'
+       ORDER BY ea.submitted_at DESC
+       LIMIT 1`,
+      [exam_id, user_id]
+    );
+    return rows[0];
+  },
+  
   
