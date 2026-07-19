@@ -74,6 +74,51 @@ const DashboardModel = {
     return rows;
   },
 
+  getUpcomingExams: async (user_id) => {
+    const [rows] = await db.execute(
+      `SELECT e.exam_id, e.title, e.duration_minutes, e.total_marks, e.passing_marks,
+              e.start_time AS start_date, e.end_time AS end_date, c.title AS course_name
+       FROM exams e
+       LEFT JOIN courses c ON e.course_id = c.course_id
+       WHERE e.is_published = 1
+         AND e.exam_id NOT IN (
+           SELECT exam_id FROM exam_attempts
+           WHERE user_id = ? AND status = 'completed'
+         )
+       ORDER BY e.start_time ASC
+       LIMIT 5`,
+      [user_id]
+    );
+    return rows;
+  },
+
+  getAttemptDates: async (user_id) => {
+    const [rows] = await db.execute(
+      `SELECT DISTINCT DATE_FORMAT(started_at, '%Y-%m-%d') as attempt_date
+       FROM exam_attempts
+       WHERE user_id = ?
+       ORDER BY attempt_date DESC`,
+      [user_id]
+    );
+    return rows.map(r => r.attempt_date);
+  },
+
+  getCourseProgress: async (user_id) => {
+    const [rows] = await db.execute(
+      `SELECT c.course_id, c.title AS course_title,
+              (SELECT COUNT(*) FROM exams e WHERE e.course_id = c.course_id AND e.is_published = 1) AS total_exams,
+              (SELECT COUNT(DISTINCT ea.exam_id) FROM exam_attempts ea 
+               JOIN exams e ON ea.exam_id = e.exam_id
+               WHERE ea.user_id = ? AND e.course_id = c.course_id AND ea.status = 'completed') AS completed_exams
+       FROM user_enrollments ue
+       JOIN courses c ON ue.course_id = c.course_id
+       WHERE ue.user_id = ?
+       ORDER BY ue.enrolled_at DESC`,
+      [user_id, user_id]
+    );
+    return rows;
+  },
+
 };
 
 module.exports = DashboardModel;

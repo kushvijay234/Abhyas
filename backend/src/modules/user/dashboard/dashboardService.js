@@ -75,3 +75,15 @@ const getRecentExams = async (user_id) => {
     data,
   };
 };
+
+// Upcoming Published Exams (not yet attempted)
+const getUpcomingExams = async (user_id) => {
+  const data = await DashboardModel.getUpcomingExams(user_id);
+  return {
+    success: true,
+    count: data.length,
+    data,
+  };
+};
+
+module.exports = { getSummary, getPerformance, getRecentExams, getUpcomingExams };
