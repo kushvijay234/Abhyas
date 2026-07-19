@@ -13,3 +13,15 @@ const addQuestion = async (req, res) => {
   }
 };
 
+// Bulk Upload Questions
+const bulkUploadQuestions = async (req, res) => {
+  try {
+    const result = await QuestionService.bulkUploadQuestions(req.body.questions);
+    res.status(201).json(result);
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

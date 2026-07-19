@@ -22,3 +22,28 @@ const addQuestion = async (questionData) => {
   };
 };
 
+// Bulk Upload Questions
+const bulkUploadQuestions = async (questions) => {
+  if (!Array.isArray(questions) || questions.length === 0) {
+    throw new Error("A non-empty questions array is required");
+  }
+
+  // Validate each question
+  for (let i = 0; i < questions.length; i++) {
+    const q = questions[i];
+    if (!q.exam_id)        throw new Error(`Question ${i + 1}: exam_id is required`);
+    if (!q.question_text)  throw new Error(`Question ${i + 1}: question_text is required`);
+    if (!q.option_a || !q.option_b || !q.option_c || !q.option_d)
+      throw new Error(`Question ${i + 1}: All four options are required`);
+    if (!["A", "B", "C", "D"].includes(q.correct_option))
+      throw new Error(`Question ${i + 1}: correct_option must be A, B, C, or D`);
+  }
+
+  const result = await QuestionModel.bulkInsertQuestions(questions);
+
+  return {
+    success: true,
+    message: `${result.affectedRows} question(s) uploaded successfully`,
+    data: { inserted: result.affectedRows },
+  };
+};

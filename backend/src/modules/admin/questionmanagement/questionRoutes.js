@@ -7,3 +7,6 @@ const adminMiddleware    = require("../../../middleware/adminMiddleware");
 
 // Add Single Question
 router.post("/", authMiddleware, adminMiddleware, QuestionController.addQuestion);
+
+// Bulk Upload Questions  (body: { questions: [...] })
+router.post("/bulk", authMiddleware, adminMiddleware, QuestionController.bulkUploadQuestions);
