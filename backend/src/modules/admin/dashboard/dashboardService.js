@@ -4,8 +4,10 @@ const DashboardModel = require("./dashboardModel");
 const getDashboardStats = async () => {
   const [
     totalUsers,
+    totalCourses,
   ] = await Promise.all([
     DashboardModel.getTotalUsers(),
+    DashboardModel.getTotalCourses(),
   ]);
 
   return {
@@ -13,6 +15,7 @@ const getDashboardStats = async () => {
     data: {
       overview: {
         total_users:     totalUsers,
+        total_courses:   totalCourses,
       },
     },
   };
