@@ -44,3 +44,17 @@ const getAnalytics = async (user_id) => {
     data,
   };
 };
+
+// Full Answer Review for Assessment Report
+const getAnswerReview = async (user_id, attempt_id) => {
+  if (!attempt_id) throw new Error('attempt_id is required');
+
+  const data = await ResultModel.getAnswerReview(attempt_id, user_id);
+  return {
+    success: true,
+    count: data.length,
+    data,
+  };
+};
+
+module.exports = { getResults, getResultById, getExamResult, getAnalytics, getAnswerReview };

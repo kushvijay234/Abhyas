@@ -59,4 +59,29 @@ getResultById: async (attempt_id, user_id) => {
     return rows[0];
   },
 
-  
+   // Full answer review: questions + correct answers + student's selections in one query.
+  // Used by the Assessment Report page only (after exam is completed).
+  getAnswerReview: async (attempt_id, user_id) => {
+    const [rows] = await db.execute(
+      `SELECT q.question_id, q.question_text,
+              q.option_a, q.option_b, q.option_c, q.option_d,
+              q.correct_option, q.marks,
+              eq.order_no,
+              aa.selected_option,
+              CASE WHEN aa.selected_option = q.correct_option THEN 1 ELSE 0 END AS is_correct
+       FROM exam_attempts ea
+       JOIN exam_questions eq ON ea.exam_id = eq.exam_id
+       JOIN questions q ON eq.question_id = q.question_id
+       LEFT JOIN attempt_answers aa
+              ON aa.attempt_id = ea.attempt_id
+             AND aa.question_id = q.question_id
+       WHERE ea.attempt_id = ? AND ea.user_id = ?
+       ORDER BY eq.order_no ASC`,
+      [attempt_id, user_id]
+    );
+    return rows;
+  },
+};
+
+module.exports = ResultModel;
+
