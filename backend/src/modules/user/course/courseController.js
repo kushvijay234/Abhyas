@@ -10,3 +10,14 @@ const getCourses = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+// Get Course Details
+const getCourseDetails = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await CourseService.getCourseDetails(id);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(404).json({ success: false, message: error.message });
+  }
+};

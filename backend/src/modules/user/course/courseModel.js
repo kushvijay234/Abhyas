@@ -22,6 +22,17 @@ const CourseModel = {
     return rows;
   },
 
+  findById: async (course_id) => {
+    const [rows] = await db.execute(
+      `SELECT c.*, cat.name AS category_name
+       FROM courses c
+       LEFT JOIN categories cat ON c.category_id = cat.category_id
+       WHERE c.course_id = ? AND c.status = 'active'`,
+      [course_id]
+    );
+    return rows[0];
+  },
+
 };
 
 module.exports = CourseModel;

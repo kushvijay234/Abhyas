@@ -9,3 +9,20 @@ const getCourses = async (search, category_id) => {
     data,
   };
 };
+
+// Get Course Details
+const getCourseDetails = async (course_id) => {
+  if (!course_id) throw new Error("course_id is required");
+
+  const course = await CourseModel.findById(course_id);
+  if (!course) throw new Error("Course not found");
+
+  const curriculum = await CourseModel.getCurriculum(course_id);
+  course.curriculum = curriculum;
+
+  return {
+    success: true,
+    data: course,
+  };
+};
+
