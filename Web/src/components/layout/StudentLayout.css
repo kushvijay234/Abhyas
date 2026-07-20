@@ -1,0 +1,155 @@
+/* StudentLayout Component Styles */
+
+.mobile-toggle-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: none;
+}
+
+.student-logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.student-admin-panel-link {
+  color: var(--success) !important;
+}
+
+.student-sidebar-toggle-btn {
+  margin-right: 14px;
+}
+
+.student-search-icon {
+  color: var(--text-muted);
+}
+
+.student-header-right-container {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
+}
+
+.student-notif-container {
+  position: relative;
+}
+
+.student-notif-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+}
+
+.student-notif-header-title {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.student-notif-mark-read-btn {
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  border-radius: 4px;
+}
+
+.student-notif-scroll {
+  overflow-y: auto;
+  flex: 1;
+  max-height: 350px;
+}
+
+.student-notif-empty {
+  padding: 32px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.student-notif-item-content {
+  flex: 1;
+}
+
+.student-notif-item-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.student-notif-title-unread {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--primary);
+}
+
+.student-notif-title-read {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-main);
+}
+
+.student-notif-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.student-notif-message {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.student-notif-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.student-notif-btn-mark {
+  background: none;
+  border: none;
+  color: var(--warning);
+  font-size: 0.75rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.student-notif-btn-delete {
+  background: none;
+  border: none;
+  color: var(--danger);
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.student-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+}
+
+/* Media Queries & Responsive styling */
+@media (max-width: 640px) {
+  .mobile-toggle-btn {
+    display: flex !important;
+  }
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+  .main-content {
+    margin-left: 0;
+  }
+}
