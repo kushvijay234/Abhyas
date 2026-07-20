@@ -1,0 +1,61 @@
+.register-illustration-svg {
+  width: 180px;
+  display: block;
+  margin: 0 auto 24px;
+}
+
+.register-grad-stop1 {
+  stop-color: #052b68;
+  stop-opacity: 1;
+}
+
+.register-grad-stop2 {
+  stop-color: #f97316;
+  stop-opacity: 1;
+}
+
+.register-logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.register-error-badge {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.register-success-badge {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.register-input-wrapper {
+  position: relative;
+}
+
+.register-input-icon {
+  position: absolute;
+  left: 14px;
+  top: 16px;
+  color: var(--text-muted);
+}
+
+.register-input-field {
+  padding-left: 44px;
+}
+
+.register-btn {
+  width: 100%;
+  margin-top: 8px;
+}
