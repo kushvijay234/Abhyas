@@ -1,0 +1,377 @@
+/* ExamResultView Component Styles */
+
+.exam-result-error-container {
+  padding: 40px;
+  text-align: center;
+}
+
+.exam-result-error-message {
+  margin-bottom: 20px;
+  padding: 12px;
+}
+
+.exam-result-header-row {
+  margin-bottom: 32px;
+  text-align: left;
+}
+
+.exam-result-title {
+  margin-bottom: 8px;
+}
+
+.exam-result-subtitle {
+  color: var(--text-muted);
+}
+
+.exam-result-grid {
+  align-items: start;
+  margin-bottom: 32px;
+}
+
+/* ─── Scorecard ──────────────────────────────────────── */
+
+.exam-result-scorecard {
+  grid-column: span 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 24px;
+}
+
+.exam-result-status-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.exam-result-status-circle.circle-pass {
+  background: var(--success-light);
+  color: var(--success-hover);
+}
+
+.exam-result-status-circle.circle-fail {
+  background: var(--danger-light);
+  color: var(--danger-hover);
+}
+
+.exam-result-status-title {
+  font-size: 1.75rem;
+  color: var(--text-bright);
+  margin-bottom: 8px;
+  font-family: var(--font-display);
+}
+
+.exam-result-status-desc {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 32px;
+}
+
+.exam-result-score-indicator {
+  margin-bottom: 32px;
+}
+
+.exam-result-score-pct {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--text-bright);
+  font-family: var(--font-display);
+  line-height: 1;
+}
+
+.exam-result-score-details {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+.exam-result-badge-fill {
+  width: 100%;
+  padding: 12px;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: bold;
+}
+
+/* ─── Details Card ───────────────────────────────────── */
+
+.exam-result-details-card {
+  grid-column: span 2;
+  text-align: left;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.exam-result-section-title {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.exam-result-section-icon {
+  color: var(--primary);
+}
+
+.exam-result-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.exam-result-detail-box {
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+}
+
+.exam-result-detail-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.exam-result-detail-val {
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-top: 4px;
+}
+
+/* ─── Quick Stats Pills ──────────────────────────────── */
+
+.exam-result-quick-stats {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.exam-result-stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.stat-correct {
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--success);
+  border: 1px solid var(--success);
+}
+
+.stat-wrong {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+
+.stat-skipped {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+}
+
+.exam-result-actions {
+  display: flex;
+  gap: 16px;
+  border-top: 1px solid var(--border-color);
+  padding-top: 24px;
+  flex-wrap: wrap;
+}
+
+/* ─── Answer Booklet ─────────────────────────────────── */
+
+.exam-result-booklet-header {
+  text-align: left;
+  margin-bottom: 40px;
+}
+
+.exam-result-booklet-title {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.exam-result-booklet-icon {
+  color: var(--primary);
+}
+
+/* Legend */
+.exam-result-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.dot-correct { background: var(--success); }
+.dot-wrong   { background: var(--danger); }
+.dot-neutral { background: transparent; border: 1px solid var(--border-color); }
+
+.exam-result-booklet-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ─── Question Card States ───────────────────────────── */
+
+.exam-result-question-card {
+  border-left: 4px solid var(--border-color);
+}
+
+.exam-result-question-card.question-correct {
+  border-left-color: var(--success);
+}
+
+.exam-result-question-card.question-wrong {
+  border-left-color: var(--danger);
+}
+
+.exam-result-question-card.question-skipped {
+  border-left-color: var(--text-muted);
+  opacity: 0.85;
+}
+
+.exam-result-question-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.exam-result-question-status-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.exam-result-question-marks {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.exam-result-question-text {
+  color: var(--text-bright);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+/* ─── Option Boxes ───────────────────────────────────── */
+
+.exam-result-options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.exam-result-option-box {
+  position: relative;
+  padding: 12px 14px;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+/* Correct answer — always green */
+.exam-result-option-box.option-correct {
+  border-color: var(--success) !important;
+  background: rgba(34, 197, 94, 0.08) !important;
+}
+
+/* Student's wrong choice — red */
+.exam-result-option-box.option-wrong {
+  border-color: var(--danger) !important;
+  background: rgba(239, 68, 68, 0.08) !important;
+}
+
+/* Letter badge */
+.exam-result-option-letter-box {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+}
+
+.exam-result-option-letter-box.letter-correct {
+  background: var(--success) !important;
+  color: #fff !important;
+  border-color: var(--success) !important;
+}
+
+.exam-result-option-letter-box.letter-wrong {
+  background: var(--danger) !important;
+  color: #fff !important;
+  border-color: var(--danger) !important;
+}
+
+.exam-result-option-letter-box.letter-neutral {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+}
+
+.exam-result-option-text {
+  font-size: 0.88rem;
+  color: var(--text-main);
+  flex: 1;
+  line-height: 1.4;
+}
+
+/* Floating tag labels */
+.option-tag {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.tag-correct {
+  background: var(--success);
+  color: #fff;
+}
+
+.tag-wrong {
+  background: var(--danger);
+  color: #fff;
+}
