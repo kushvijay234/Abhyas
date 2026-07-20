@@ -1,0 +1,119 @@
+/* ExamManage Component Styles */
+
+.exammanage-header-row {
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.exammanage-header-title-box {
+  text-align: left;
+}
+
+.exammanage-header-title {
+  margin-bottom: 8px;
+}
+
+.exammanage-badge-full {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 6px;
+}
+
+.exammanage-empty-card {
+  padding: 60px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.exammanage-empty-icon {
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.exammanage-table-card {
+  text-align: left;
+}
+
+.exammanage-exam-title {
+  font-weight: 600;
+  color: var(--text-bright);
+}
+
+.exammanage-exam-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.exammanage-marks-box {
+  display: flex;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+
+.exammanage-neg-text {
+  color: var(--danger-hover);
+}
+
+.exammanage-status-btn {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  border-radius: var(--radius-sm);
+}
+
+.exammanage-actions-group {
+  display: flex;
+  gap: 8px;
+}
+
+.exammanage-btn-edit {
+  padding: 6px 10px;
+  font-size: 0.8rem;
+}
+
+.exammanage-btn-delete {
+  padding: 6px 10px;
+  font-size: 0.8rem;
+}
+
+/* Modals */
+.exammanage-modal-content {
+  max-width: 640px;
+}
+
+.exammanage-modal-body {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+.exammanage-textarea-sm {
+  min-height: 60px;
+  resize: vertical;
+}
+
+.exammanage-grid-cols-2 {
+  gap: 16px;
+}
+
+.exammanage-modal-select-field {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+.exammanage-grid-cols-3 {
+  gap: 12px;
+}
