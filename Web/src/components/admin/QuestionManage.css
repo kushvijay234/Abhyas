@@ -1,0 +1,238 @@
+/* QuestionManage Component Styles */
+
+.qmanage-header-row {
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.qmanage-header-title-box {
+  text-align: left;
+}
+
+.qmanage-header-title {
+  margin-bottom: 8px;
+}
+
+.qmanage-header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.qmanage-filter-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 16px 24px;
+  text-align: left;
+}
+
+.qmanage-filter-icon {
+  color: var(--primary);
+}
+
+.qmanage-filter-select-wrapper {
+  flex: 1;
+  max-width: 400px;
+}
+
+.qmanage-filter-select {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+.qmanage-pool-size {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.qmanage-badge-full {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 6px;
+}
+
+.qmanage-empty-card {
+  padding: 60px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.qmanage-empty-icon {
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.qmanage-questions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+
+.qmanage-question-card {
+  border-left: 4px solid var(--primary);
+}
+
+.qmanage-question-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.qmanage-question-meta-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.qmanage-weight-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.qmanage-action-btn-sm {
+  padding: 4px 8px;
+  font-size: 0.75rem;
+}
+
+.qmanage-question-prompt {
+  color: var(--text-bright);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.qmanage-options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.qmanage-option-card {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: var(--transition);
+}
+
+.qmanage-option-card.correct {
+  border: 1px solid var(--success);
+  background: var(--success-light);
+}
+
+.qmanage-option-card.incorrect {
+  border: 1px solid var(--border-color);
+  background: transparent;
+}
+
+.qmanage-option-letter-badge {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.qmanage-option-letter-badge.correct {
+  background: var(--success);
+  color: white;
+}
+
+.qmanage-option-letter-badge.incorrect {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+}
+
+.qmanage-option-text {
+  font-size: 0.85rem;
+}
+
+.qmanage-option-text.correct {
+  color: var(--text-bright);
+}
+
+.qmanage-option-text.incorrect {
+  color: var(--text-main);
+}
+
+.qmanage-explanation-box {
+  margin-top: 16px;
+  padding: 12px;
+  background: rgba(255,255,255,0.01);
+  border-left: 2px dashed var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Modals */
+.qmanage-form-modal-content {
+  max-width: 600px;
+}
+
+.qmanage-modal-body {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 450px;
+  overflow-y: auto;
+}
+
+.qmanage-textarea-sm {
+  min-height: 60px;
+  resize: vertical;
+}
+
+.qmanage-grid-cols-2 {
+  gap: 12px;
+}
+
+.qmanage-grid-cols-3 {
+  gap: 12px;
+}
+
+.qmanage-modal-select-field {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+.qmanage-bulk-modal-content {
+  max-width: 500px;
+}
+
+.qmanage-bulk-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.qmanage-bulk-example {
+  font-size: 0.7rem;
+  padding: 10px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+  overflow-x: auto;
+  color: var(--success-hover);
+}
+
+.qmanage-textarea-lg {
+  min-height: 180px;
+  font-family: monospace;
+  font-size: 0.8rem;
+  resize: vertical;
+}

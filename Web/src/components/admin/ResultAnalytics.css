@@ -1,0 +1,132 @@
+/* ResultAnalytics Component Styles */
+
+.resanalytics-header-row {
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.resanalytics-header-title-box {
+  text-align: left;
+}
+
+.resanalytics-header-title {
+  margin-bottom: 8px;
+}
+
+.resanalytics-export-btn {
+  gap: 8px;
+}
+
+.resanalytics-badge-full {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 6px;
+}
+
+.resanalytics-filter-form {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.resanalytics-form-group {
+  margin-bottom: 0;
+}
+
+.resanalytics-select-field {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  font-size: 0.8rem;
+}
+
+.resanalytics-date-field {
+  font-size: 0.8rem;
+}
+
+.resanalytics-search-btn {
+  width: 100%;
+  padding: 12px;
+}
+
+.resanalytics-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.resanalytics-stat-card {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.resanalytics-stat-icon-box {
+  padding: 10px;
+  border-radius: var(--radius-sm);
+}
+
+.resanalytics-stat-icon-box.searched {
+  background: var(--primary-light);
+  color: var(--primary-hover);
+}
+
+.resanalytics-stat-icon-box.passrate {
+  background: var(--success-light);
+  color: var(--success-hover);
+}
+
+.resanalytics-stat-icon-box.avgscore {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--warning);
+}
+
+.resanalytics-stat-content {
+  text-align: left;
+}
+
+.resanalytics-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.resanalytics-stat-val {
+  font-weight: bold;
+  color: var(--text-bright);
+  font-size: 1.25rem;
+}
+
+.resanalytics-empty-card {
+  padding: 60px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.resanalytics-empty-icon {
+  opacity: 0.5;
+  margin-bottom: 16px;
+}
+
+.resanalytics-table-card {
+  text-align: left;
+}
+
+.resanalytics-td-student {
+  font-weight: 600;
+  color: var(--text-bright);
+}
+
+.resanalytics-td-score {
+  font-weight: bold;
+}
