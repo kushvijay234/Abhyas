@@ -1,0 +1,84 @@
+/* AdminLayout Component Styles */
+
+.mobile-admin-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: none;
+}
+
+.admin-logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.admin-brand-danger {
+  color: var(--danger);
+}
+
+.admin-tagline-muted {
+  color: var(--text-muted);
+}
+
+.admin-student-view-link {
+  color: var(--primary) !important;
+}
+
+.admin-header-left {
+  display: flex;
+  align-items: center;
+}
+
+.admin-sidebar-toggle-btn {
+  margin-right: 14px;
+}
+
+.admin-console-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--danger);
+}
+
+.admin-header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.admin-secure-badge {
+  font-weight: bold;
+}
+
+.admin-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--danger);
+}
+
+.admin-page-container {
+  max-width: none !important;
+  width: 100%;
+}
+
+/* Media Queries & Responsive styling */
+@media (max-width: 640px) {
+  .mobile-admin-toggle {
+    display: flex !important;
+  }
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+  .main-content {
+    margin-left: 0;
+  }
+}
