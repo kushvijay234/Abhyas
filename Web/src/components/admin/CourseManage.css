@@ -1,0 +1,326 @@
+/* CourseManage Component Styles */
+
+.coursemanage-curriculum-header {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.coursemanage-curriculum-title-box {
+  text-align: left;
+}
+
+.coursemanage-curriculum-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.coursemanage-curriculum-desc {
+  color: var(--text-muted);
+}
+
+.coursemanage-curriculum-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.coursemanage-curriculum-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  text-align: left;
+}
+
+.coursemanage-curriculum-empty {
+  padding: 40px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.coursemanage-curriculum-empty-icon {
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.coursemanage-curriculum-empty-desc {
+  margin-bottom: 16px;
+}
+
+.coursemanage-section-card {
+  padding: 20px;
+  border: 1px solid var(--border-color);
+}
+
+.coursemanage-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.coursemanage-section-title-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.coursemanage-section-number {
+  font-weight: 700;
+  color: var(--primary);
+  min-width: 80px;
+}
+
+.coursemanage-section-input {
+  font-weight: 600;
+  font-size: 1.05rem;
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 4px 8px;
+}
+
+.coursemanage-section-input:focus {
+  border: 1px solid var(--border-color) !important;
+  background: var(--bg-primary) !important;
+}
+
+.coursemanage-section-action-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.coursemanage-section-btn {
+  padding: 4px 8px;
+}
+
+.coursemanage-section-delete-btn {
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.coursemanage-section-delete-text {
+  font-size: 0.8rem;
+}
+
+.coursemanage-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.coursemanage-section-empty-msg {
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: 0.9rem;
+  padding: 12px;
+}
+
+.coursemanage-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  gap: 16px;
+}
+
+.coursemanage-item-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.coursemanage-item-icon-article {
+  color: var(--warning);
+}
+
+.coursemanage-item-icon-exam {
+  color: var(--success);
+}
+
+.coursemanage-item-text-box {
+  min-width: 0;
+  flex: 1;
+}
+
+.coursemanage-item-title {
+  font-weight: 600;
+  color: var(--text-bright);
+  display: block;
+  font-size: 0.95rem;
+}
+
+.coursemanage-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 2px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+}
+
+.coursemanage-item-exam-link {
+  font-weight: 500;
+  color: var(--success);
+}
+
+.coursemanage-item-action-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.coursemanage-item-btn {
+  padding: 3px 6px;
+}
+
+.coursemanage-item-btn-flex {
+  padding: 3px 6px;
+  display: flex;
+  align-items: center;
+}
+
+.coursemanage-add-item-btn {
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.coursemanage-save-actions-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  gap: 16px;
+}
+
+.coursemanage-save-action-btn {
+  padding: 10px 20px;
+}
+
+/* Modals */
+.coursemanage-item-modal-content {
+  max-width: 550px;
+}
+
+.coursemanage-modal-body-left {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.coursemanage-modal-select-field {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+.coursemanage-notes-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Main Layout Styles */
+.coursemanage-header-row {
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.coursemanage-header-title-box {
+  text-align: left;
+}
+
+.coursemanage-header-title {
+  margin-bottom: 8px;
+}
+
+.coursemanage-badge-full {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 6px;
+}
+
+.coursemanage-courses-empty {
+  padding: 60px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.coursemanage-courses-empty-icon {
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.coursemanage-table-card {
+  text-align: left;
+}
+
+.coursemanage-thumbnail-img {
+  width: 50px;
+  height: 35px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+}
+
+.coursemanage-course-title {
+  font-weight: 600;
+  color: var(--text-bright);
+}
+
+.coursemanage-course-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.coursemanage-actions-group {
+  display: flex;
+  gap: 8px;
+}
+
+.coursemanage-btn-curriculum {
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.coursemanage-btn-edit {
+  padding: 6px 10px;
+  font-size: 0.8rem;
+}
+
+.coursemanage-btn-delete {
+  padding: 6px 10px;
+  font-size: 0.8rem;
+}
