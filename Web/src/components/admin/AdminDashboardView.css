@@ -1,0 +1,182 @@
+/* AdminDashboardView Component Styles */
+
+.admindash-error-badge {
+  padding: 16px;
+  display: block;
+  text-align: center;
+}
+
+.admindash-header-row {
+  margin-bottom: 32px;
+  text-align: left;
+}
+
+.admindash-title {
+  margin-bottom: 8px;
+}
+
+.admindash-subtitle {
+  color: var(--text-muted);
+}
+
+.admindash-overview-grid {
+  margin-bottom: 32px;
+}
+
+.admindash-overview-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.admindash-icon-box {
+  padding: 12px;
+  border-radius: var(--radius-sm);
+}
+
+.admindash-icon-box.students {
+  background: var(--primary-light);
+  color: var(--primary-hover);
+}
+
+.admindash-icon-box.courses {
+  background: var(--success-light);
+  color: var(--success-hover);
+}
+
+.admindash-icon-box.exams {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--warning);
+}
+
+.admindash-icon-box.attempts {
+  background: var(--danger-light);
+  color: var(--danger-hover);
+}
+
+.admindash-card-content {
+  text-align: left;
+}
+
+.admindash-card-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.admindash-card-val {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-bright);
+}
+
+.admindash-layout-grid {
+  margin-bottom: 32px;
+}
+
+.admindash-leaderboard-card {
+  grid-column: span 1;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.admindash-section-title {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admindash-section-icon-trophy {
+  color: #ffd700;
+}
+
+.admindash-section-icon-clock {
+  color: var(--primary);
+}
+
+.admindash-leaderboard-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admindash-empty-leaderboard {
+  color: var(--text-muted);
+  text-align: center;
+  padding: 24px;
+}
+
+.admindash-leaderboard-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+}
+
+.admindash-leaderboard-row-bordered {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admindash-leaderboard-student-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admindash-leaderboard-rank {
+  width: 20px;
+  font-weight: bold;
+  color: var(--text-muted);
+}
+
+.admindash-leaderboard-student-name {
+  font-weight: 600;
+  color: var(--text-bright);
+  font-size: 0.9rem;
+}
+
+.admindash-leaderboard-student-meta {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.admindash-leaderboard-badge {
+  font-weight: bold;
+}
+
+.admindash-log-card {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.admindash-table-container {
+  flex: 1;
+}
+
+.admindash-empty-log {
+  color: var(--text-muted);
+  text-align: center;
+  padding: 40px;
+}
+
+.admindash-log-table {
+  font-size: 0.85rem;
+}
+
+.admindash-log-student-name {
+  font-weight: 600;
+  color: var(--text-bright);
+}
+
+.admindash-log-score {
+  font-weight: bold;
+}
+
+.admindash-log-badge {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+}
