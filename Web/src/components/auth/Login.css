@@ -1,0 +1,51 @@
+.login-illustration-svg {
+  width: 180px;
+  display: block;
+  margin: 0 auto 24px;
+}
+
+.login-grad-stop1 {
+  stop-color: #052b68;
+  stop-opacity: 1;
+}
+
+.login-grad-stop2 {
+  stop-color: #f97316;
+  stop-opacity: 1;
+}
+
+.login-logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.login-error-badge {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.login-input-wrapper {
+  position: relative;
+}
+
+.login-input-icon {
+  position: absolute;
+  left: 14px;
+  top: 16px;
+  color: var(--text-muted);
+}
+
+.login-input-field {
+  padding-left: 44px;
+}
+
+.login-google-icon {
+  width: 18px;
+  height: 18px;
+}
