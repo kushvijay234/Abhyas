@@ -1,0 +1,206 @@
+/* MyExams Component Styles */
+
+.myexams-header-row {
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.myexams-title-container {
+  text-align: left;
+}
+
+.myexams-title {
+  text-align: left;
+  margin-bottom: 8px;
+}
+
+.myexams-subtitle {
+  color: var(--text-muted);
+}
+
+.myexams-tabs-bar {
+  display: flex;
+  gap: 10px;
+}
+
+.myexams-tab-btn {
+  padding: 8px 20px;
+  font-size: 0.85rem;
+}
+
+.myexams-search-container {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.myexams-empty-available {
+  padding: 60px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.myexams-empty-available-icon {
+  margin-bottom: 16px;
+  opacity: 0.5;
+  color: var(--primary);
+}
+
+.myexams-grid {
+  gap: 20px;
+  text-align: left;
+}
+
+.myexams-card {
+  border-left: 4px solid var(--primary);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.myexams-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.myexams-duration-badge {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+}
+
+.myexams-card-title {
+  font-size: 1.2rem;
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.myexams-card-desc {
+  font-size: 0.85rem;
+  color: #6B6555;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.myexams-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border-color);
+  padding-top: 16px;
+  margin-top: auto;
+}
+
+.myexams-card-marks {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.myexams-card-marks-highlight {
+  color: var(--primary);
+}
+
+.myexams-start-btn {
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  border-radius: 8px;
+}
+
+.myexams-history-title {
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+}
+
+.myexams-history-title-icon {
+  color: var(--primary);
+}
+
+.myexams-empty-history {
+  padding: 40px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.myexams-history-exam-title {
+  font-weight: 600;
+  color: var(--text-bright);
+}
+
+.myexams-badge-container {
+  gap: 4px;
+}
+
+.myexams-badge-text {
+  text-transform: uppercase;
+}
+
+.myexams-history-action-btn-secondary {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+}
+
+.myexams-history-action-btn-primary {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+}
+
+.myexams-recommendation-card {
+  background: linear-gradient(135deg, rgba(26,45,107,0.02), rgba(244,121,32,0.02));
+  border: 1px dashed var(--border-hover);
+  padding: 24px;
+  border-radius: 16px;
+  margin-top: 32px;
+}
+
+.myexams-recommendation-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.myexams-recommendation-icon {
+  font-size: 2rem;
+}
+
+.myexams-recommendation-content {
+  text-align: left;
+  flex: 1;
+  min-width: 240px;
+}
+
+.myexams-recommendation-title {
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.myexams-recommendation-badge {
+  font-size: 9px;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  vertical-align: middle;
+}
+
+.myexams-recommendation-desc {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
