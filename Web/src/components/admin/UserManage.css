@@ -1,0 +1,329 @@
+/* UserManage Component Styles */
+
+.usermanage-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.usermanage-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.usermanage-title-box {
+  text-align: left;
+}
+
+.usermanage-title {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.usermanage-subtitle {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+.usermanage-search-bar {
+  gap: 12px;
+}
+
+.usermanage-filter-select {
+  width: 140px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+.usermanage-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.usermanage-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  cursor: default;
+}
+
+.usermanage-stat-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+}
+
+.usermanage-stat-icon-wrapper.total {
+  background: rgba(26,45,107,0.06);
+  color: var(--primary);
+}
+
+.usermanage-stat-icon-wrapper.active {
+  background: var(--success-light);
+  color: var(--success);
+}
+
+.usermanage-stat-icon-wrapper.admin {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+
+.usermanage-stat-content {
+  text-align: left;
+}
+
+.usermanage-stat-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.usermanage-stat-val {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+.usermanage-stat-val.primary {
+  color: var(--primary);
+}
+
+.usermanage-stat-val.success {
+  color: var(--success);
+}
+
+.usermanage-stat-val.danger {
+  color: var(--danger);
+}
+
+.usermanage-badge-full {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.usermanage-loading-container {
+  min-height: 300px;
+}
+
+.usermanage-empty-card {
+  padding: 80px 40px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.usermanage-table-card {
+  text-align: left;
+  padding: 12px 16px;
+  overflow: hidden;
+}
+
+.usermanage-table {
+  width: 100%;
+}
+
+.usermanage-th {
+  border-bottom: 2px solid var(--border-color);
+  font-weight: 700;
+}
+
+.usermanage-tr-row {
+  transition: background-color 0.2s;
+}
+
+.usermanage-td-id {
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.usermanage-student-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.usermanage-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+}
+
+.usermanage-student-name {
+  font-weight: 700;
+  color: var(--text-bright);
+}
+
+.usermanage-td-email {
+  color: var(--text-main);
+}
+
+.usermanage-td-phone {
+  color: var(--text-muted);
+}
+
+.usermanage-badge-role {
+  font-weight: 700;
+  font-size: 10px;
+  text-transform: uppercase;
+  padding: 4px 8px;
+}
+
+.usermanage-badge-status-admin {
+  font-weight: 700;
+  font-size: 10px;
+  text-transform: uppercase;
+  padding: 4px 8px;
+}
+
+.usermanage-select-status {
+  font-weight: 700;
+  font-size: 10px;
+  text-transform: uppercase;
+  padding: 4px 20px 4px 8px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  outline: none;
+  background-position: right 6px center;
+  background-repeat: no-repeat;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-size: 10px;
+  appearance: none;
+  WebkitAppearance: none;
+  MozAppearance: none;
+  transition: var(--transition);
+}
+
+.usermanage-select-status:hover {
+  transform: scale(1.05);
+}
+
+.usermanage-select-status option {
+  background: #fff;
+  font-weight: bold;
+}
+
+.usermanage-select-status option.active {
+  color: #16A34A;
+}
+
+.usermanage-select-status option.inactive {
+  color: #ef4444;
+}
+
+.usermanage-td-date {
+  color: var(--text-muted);
+}
+
+.usermanage-action-cell {
+  text-align: center;
+}
+
+.usermanage-delete-btn {
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  border-radius: 8px;
+  background: var(--danger-light);
+  color: var(--danger);
+  border: 1px solid transparent;
+  box-shadow: none;
+  transition: var(--transition);
+}
+
+.usermanage-delete-btn:hover {
+  background: var(--danger) !important;
+  color: #fff !important;
+}
+
+.usermanage-protected-text {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Modals */
+.usermanage-modal-content {
+  max-width: 440px;
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+}
+
+.usermanage-modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.usermanage-modal-title {
+  color: var(--text-bright);
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+}
+
+.usermanage-modal-body {
+  text-align: center;
+  padding: 24px;
+}
+
+.usermanage-modal-icon {
+  color: var(--danger);
+  margin-bottom: 16px;
+}
+
+.usermanage-modal-confirm-title {
+  color: var(--primary);
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.usermanage-modal-confirm-desc {
+  color: var(--text-main);
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.usermanage-modal-warning-box {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  background: var(--bg-primary);
+  padding: 10px 14px;
+  border-radius: 8px;
+  line-height: 1.4;
+}
+
+.usermanage-modal-footer {
+  padding: 16px 24px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.usermanage-modal-btn-cancel {
+  border-radius: 8px;
+}
+
+.usermanage-modal-btn-delete {
+  border-radius: 8px;
+}
+
+.admin-container .search-input {
+  padding-left: 38px !important;
+}
