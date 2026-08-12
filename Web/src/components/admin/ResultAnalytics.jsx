@@ -251,8 +251,8 @@ export default function ResultAnalytics() {
                   const isPass = isCompleted && row.percentage >= (row.passing_marks || 40);
                   
                   return (
-                    <tr key={row.attempt_id}>
-                      <td>#{row.attempt_id}</td>
+                    <tr key={row.result_id}>
+                      <td>#{row.result_id}</td>
                       <td className="resanalytics-td-student">{row.user_name}</td>
                       <td>{row.exam_title}</td>
                       <td>{isCompleted ? `${row.score}/${row.total_marks}` : '-'}</td>

@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const UserModel = require("../user/userModel");
+const mailer = require("../../utils/mailer");
 
 // Register 
 const registerUser = async (userData) => {
@@ -17,7 +18,13 @@ const registerUser = async (userData) => {
     password: hashedPassword,
   });
 
+  // Send Welcome Email asynchronously
+  mailer.sendWelcomeEmail(userData.email, userData.user_name).catch(err => {
+    console.error("Failed to send welcome email:", err.message);
+  });
+
   return {
+    success: true,
     message: "User registered successfully",
   };
 };
@@ -59,18 +66,56 @@ const loginUser = async (email, password) => {
   };
 };
 
+// Request OTP for forgot password
+const requestPasswordOTP = async (email) => {
+  if (!email) {
+    throw new Error("Email is required");
+  }
 
-// rest password
-const resetPassword = async (email, password) => {
+  const user = await UserModel.findByEmail(email);
+
+  if (!user) {
+    throw new Error("User with this email does not exist");
+  }
+
+  // Generate 6-digit numeric OTP
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  // 10-minute expiry
+  const expiry = new Date(Date.now() + 10 * 60 * 1000);
+
+  await UserModel.updateOTP(email, otp, expiry);
+
+  // Send SMTP email with OTP
+  await mailer.sendOTPEmail(email, otp);
+
+  return {
+    success: true,
+    message: "OTP sent to your email address",
+  };
+};
+
+// Reset password with OTP verification
+const resetPassword = async (email, otp, password) => {
+  if (!email || !otp || !password) {
+    throw new Error("Email, OTP, and new password are required");
+  }
+
   const user = await UserModel.findByEmail(email);
 
   if (!user) {
     throw new Error("User not found");
   }
 
+  // Verify OTP
+  const verifiedUser = await UserModel.verifyOTP(email, otp);
+  if (!verifiedUser) {
+    throw new Error("Invalid or expired OTP");
+  }
+
   const hashedPassword = await bcrypt.hash(password, 10);
 
   await UserModel.updatePassword(email, hashedPassword);
+  await UserModel.clearOTP(email);
 
   return {
     success: true,
@@ -115,6 +160,6 @@ module.exports = {
   registerUser,
   loginUser,
   resetPassword,
+  requestPasswordOTP,
   updateProfile,
-
 };

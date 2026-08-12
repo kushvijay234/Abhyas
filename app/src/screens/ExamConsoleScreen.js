@@ -95,7 +95,7 @@ export default function ExamConsoleScreen({ navigation, route }) {
 
   // Start timer count down (excl. timeLeft from deps to avoid drift)
   useEffect(() => {
-    if (loading || error) return;
+    if (loading) return;
 
     timerRef.current = setInterval(() => {
       setTimeLeft(prev => Math.max(0, prev - 1));

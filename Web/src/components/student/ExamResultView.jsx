@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { api } from '../../services/api';
 import Loader from '../common/Loader';
 import ErrorMessage from '../common/ErrorMessage';
@@ -8,12 +8,15 @@ import {
   CheckCircle, 
   XCircle, 
   HelpCircle,
-  AlertCircle
+  AlertCircle,
+  BookOpen,
+  Clock
 } from 'lucide-react';
 import './ExamResultView.css';
 
 export default function ExamResultView() {
   const { attemptId } = useParams();
+  const navigate = useNavigate();
   const [result, setResult] = useState(null);
   const [reviewItems, setReviewItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -43,6 +46,22 @@ export default function ExamResultView() {
 
     fetchResultData();
   }, [attemptId]);
+
+  const handleEnroll = async (courseId) => {
+    try {
+      setLoading(true);
+      const res = await api.courses.enroll(courseId);
+      if (res.success) {
+        navigate('/my-courses');
+      } else {
+        alert(res.message || 'Failed to enroll in course');
+      }
+    } catch (err) {
+      alert(err.message || 'Error enrolling in course');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) return <Loader />;
 
@@ -165,6 +184,67 @@ export default function ExamResultView() {
           </div>
         </div>
       </div>
+
+      {/* Recommended Courses section */}
+      {result.recommendations && result.recommendations.length > 0 && (
+        <div className="exam-result-recommendations-section">
+          <h3 className="section-title exam-result-recommendations-title">
+            <BookOpen size={20} className="exam-result-recommendations-icon" />
+            <span>Recommended Courses for Your Learning Path</span>
+          </h3>
+          <p className="exam-result-recommendations-desc">
+            Based on your exam performance, we suggest enrolling in these courses to strengthen your knowledge:
+          </p>
+          <div className="recommendations-grid">
+            {result.recommendations.map(course => (
+              <div key={course.course_id} className="recommendation-card">
+                <div className="course-card-img-wrapper">
+                  <img 
+                    src={course.thumbnail || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=400'} 
+                    alt={course.title}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=400';
+                    }}
+                    className="course-card-img"
+                  />
+                  {course.is_associated && (
+                    <span className="badge course-badge-highlight">
+                      Top Match
+                    </span>
+                  )}
+                  <span className="badge course-badge-category">
+                    {course.category_name}
+                  </span>
+                </div>
+                <div className="course-card-body">
+                  <h4 className="course-card-title">{course.title}</h4>
+                  <p className="course-card-desc">{course.description || 'No description provided.'}</p>
+                  
+                  {course.recommendation_reason && (
+                    <div className="recommendation-reason-box">
+                      <span className="reason-label">Why this recommendation?</span>
+                      <p className="reason-text">{course.recommendation_reason}</p>
+                    </div>
+                  )}
+
+                  <div className="course-card-footer">
+                    <span className="course-card-meta-item">
+                      <Clock size={13} /> {course.duration || 'N/A'}
+                    </span>
+                    <button 
+                      onClick={() => handleEnroll(course.course_id)}
+                      className="btn course-card-btn-enroll"
+                    >
+                      Enroll Now
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Answer Booklet */}
       <div className="exam-result-booklet-header">

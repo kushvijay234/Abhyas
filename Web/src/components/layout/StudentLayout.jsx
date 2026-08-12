@@ -18,10 +18,9 @@ import {
   History,
   Menu,
   X,
-  Search,
-  ChevronDown,
   BookMarked,
-  ClipboardList
+  ClipboardList,
+  Sparkles
 } from 'lucide-react';
 
 
@@ -140,6 +139,14 @@ export default function StudentLayout() {
             <LayoutDashboard size={18} />
             <span>Dashboard</span>
           </NavLink>
+          <NavLink to="/ai-tutor" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} title="AI Tutor" onClick={() => setMobileMenuOpen(false)}>
+            <Sparkles size={18} />
+            <span>AI Tutor</span>
+          </NavLink>
+          <NavLink to="/exams" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} title="Browse Exam" onClick={() => setMobileMenuOpen(false)}>
+            <ClipboardList size={18} />
+            <span>Browse Exam</span>
+          </NavLink>
           <NavLink to="/courses" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} title="Browse Courses" onClick={() => setMobileMenuOpen(false)}>
             <BookOpen size={18} />
             <span>Browse Courses</span>
@@ -148,10 +155,7 @@ export default function StudentLayout() {
             <BookMarked size={18} />
             <span>My Courses</span>
           </NavLink>
-          <NavLink to="/my-exams" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} title="My Exams" onClick={() => setMobileMenuOpen(false)}>
-            <ClipboardList size={18} />
-            <span>My Exams</span>
-          </NavLink>
+
           <NavLink to="/history" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} title="Exam History" onClick={() => setMobileMenuOpen(false)}>
             <History size={18} />
             <span>Exam History</span>
@@ -204,11 +208,7 @@ export default function StudentLayout() {
             <Menu size={18} />
           </button>
 
-          {/* Search bar in header */}
-          <div className="search-bar">
-            <Search size={16} className="student-search-icon" />
-            <input type="text" placeholder="Search exams, courses, topics..." />
-          </div>
+
 
           <div className="student-header-right-container">
             {/* Notification Bell */}
@@ -279,7 +279,6 @@ export default function StudentLayout() {
                 className="student-avatar"
               />
               <div className="user-name">{user?.user_name}</div>
-              <ChevronDown size={11} className="chevron" />
             </div>
           </div>
         </header>

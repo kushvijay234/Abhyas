@@ -3,7 +3,7 @@ import { api } from '../../services/api';
 import { FileSpreadsheet, Plus, Edit3, Trash2, CheckCircle, AlertTriangle, Eye, EyeOff } from 'lucide-react';
 import './ExamManage.css';
 
-export default function ExamManage() {
+export default function ExamManage({ isTestOnly = false }) {
   const [exams, setExams] = useState([]);
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,14 +24,15 @@ export default function ExamManage() {
   const [maxAttempts, setMaxAttempts] = useState('1');
   const [negativeMarking, setNegativeMarking] = useState('0.00');
   const [instructions, setInstructions] = useState('');
-  
+  const [recommendedCourses, setRecommendedCourses] = useState([]);
+
   const [saving, setSaving] = useState(false);
 
   const fetchExams = async () => {
     try {
       setLoading(true);
       const [examsRes, coursesRes] = await Promise.all([
-        api.admin.exams.getAll(),
+        api.admin.exams.getAll('', '', isTestOnly ? 'true' : 'false'),
         api.admin.courses.getAll() // Load courses for selection
       ]);
 
@@ -46,41 +47,56 @@ export default function ExamManage() {
 
   useEffect(() => {
     fetchExams();
-  }, []);
+  }, [isTestOnly]);
 
   const handleOpenCreateModal = () => {
     setEditMode(false);
     setExamId(null);
     setTitle('');
     setDescription('');
-    setCourseId(courses.length > 0 ? courses[0].course_id : '');
+    setCourseId(isTestOnly ? '' : (courses.length > 0 ? courses[0].course_id : ''));
     setDurationMinutes('60');
     setTotalMarks('100');
     setPassingMarks('40');
     setMaxAttempts('1');
     setNegativeMarking('0.00');
     setInstructions('');
+    setRecommendedCourses([]);
     setShowModal(true);
   };
 
-  const handleOpenEditModal = (exam) => {
-    setEditMode(true);
-    setExamId(exam.exam_id);
-    setTitle(exam.title || '');
-    setDescription(exam.description || '');
-    setCourseId(exam.course_id || '');
-    setDurationMinutes(String(exam.duration_minutes || '60'));
-    setTotalMarks(String(exam.total_marks || '100'));
-    setPassingMarks(String(exam.passing_marks || '40'));
-    setMaxAttempts(String(exam.max_attempts || '1'));
-    setNegativeMarking(String(exam.negative_marking || '0.00'));
-    setInstructions(exam.instructions || '');
-    setShowModal(true);
+  const handleOpenEditModal = async (exam) => {
+    try {
+      setLoading(true);
+      setError('');
+      setSuccess('');
+      const res = await api.admin.exams.getById(exam.exam_id);
+      if (res.success && res.data) {
+        const fullExam = res.data;
+        setEditMode(true);
+        setExamId(fullExam.exam_id);
+        setTitle(fullExam.title || '');
+        setDescription(fullExam.description || '');
+        setCourseId(fullExam.course_id || '');
+        setDurationMinutes(String(fullExam.duration_minutes || '60'));
+        setTotalMarks(String(fullExam.total_marks || '100'));
+        setPassingMarks(String(fullExam.passing_marks || '40'));
+        setMaxAttempts(String(fullExam.max_attempts || '1'));
+        setNegativeMarking(String(fullExam.negative_marking || '0.00'));
+        setInstructions(fullExam.instructions || '');
+        setRecommendedCourses(fullExam.recommended_courses || []);
+        setShowModal(true);
+      }
+    } catch (err) {
+      setError(err.message || 'Failed to fetch exam details.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSaveExam = async (e) => {
     e.preventDefault();
-    if (!title || !courseId) return;
+    if (!title || (!isTestOnly && !courseId)) return;
 
     setSaving(true);
     setError('');
@@ -90,13 +106,14 @@ export default function ExamManage() {
       const payload = {
         title,
         description: description || null,
-        course_id: parseInt(courseId),
+        course_id: isTestOnly ? null : parseInt(courseId),
         duration_minutes: parseInt(durationMinutes),
         total_marks: parseInt(totalMarks),
         passing_marks: parseInt(passingMarks),
         max_attempts: parseInt(maxAttempts),
         negative_marking: parseFloat(negativeMarking),
-        instructions: instructions || null
+        instructions: instructions || null,
+        recommended_courses: recommendedCourses
       };
 
       if (editMode) {
@@ -154,17 +171,23 @@ export default function ExamManage() {
     <div>
       <div className="exammanage-header-row">
         <div className="exammanage-header-title-box">
-          <h1 className="display-title exammanage-header-title">Exams & Quizzes</h1>
-          <p style={{ color: 'var(--text-muted)' }}>Configure test blueprints, grading guidelines, and time rules.</p>
+          <h1 className="display-title exammanage-header-title">
+            {isTestOnly ? 'Mock Tests & Assessments' : 'Exams & Quizzes'}
+          </h1>
+          <p style={{ color: 'var(--text-muted)' }}>
+            {isTestOnly
+              ? 'Configure independent mock assessments, logical tests, and general skills tests.'
+              : 'Configure course-specific test blueprints, grading guidelines, and time rules.'}
+          </p>
         </div>
 
-        <button onClick={handleOpenCreateModal} className="btn btn-primary" disabled={courses.length === 0}>
+        <button onClick={handleOpenCreateModal} className="btn btn-primary" disabled={!isTestOnly && courses.length === 0}>
           <Plus size={18} />
-          <span>New Exam Blueprint</span>
+          <span>{isTestOnly ? 'New Mock Test' : 'New Exam Blueprint'}</span>
         </button>
       </div>
 
-      {courses.length === 0 && (
+      {!isTestOnly && courses.length === 0 && (
         <div className="badge badge-warning exammanage-badge-full">
           <AlertTriangle size={16} />
           <span>No courses are active. Please create a course track first before mapping exams.</span>
@@ -192,8 +215,12 @@ export default function ExamManage() {
       ) : exams.length === 0 ? (
         <div className="glass-card exammanage-empty-card">
           <FileSpreadsheet size={48} className="exammanage-empty-icon" />
-          <h3>No exams configured</h3>
-          <p>Click "New Exam Blueprint" above to define parameters for your assessment quizzes.</p>
+          <h3>{isTestOnly ? 'No mock tests configured' : 'No exams configured'}</h3>
+          <p>
+            {isTestOnly
+              ? 'Click "New Mock Test" above to define parameters for your independent tests.'
+              : 'Click "New Exam Blueprint" above to define parameters for your assessment quizzes.'}
+          </p>
         </div>
       ) : (
         <div className="glass-card exammanage-table-card">
@@ -201,8 +228,8 @@ export default function ExamManage() {
             <table className="custom-table">
               <thead>
                 <tr>
-                  <th>Exam Title</th>
-                  <th>Course Track</th>
+                  <th>{isTestOnly ? 'Test Title' : 'Exam Title'}</th>
+                  {!isTestOnly && <th>Course Track</th>}
                   <th>Duration</th>
                   <th>Marks Configuration</th>
                   <th>Passing Benchmark</th>
@@ -216,12 +243,14 @@ export default function ExamManage() {
                     <td>
                       <span className="exammanage-exam-title">{e.title}</span>
                       <p className="exammanage-exam-desc">
-                        {e.description || 'General exam track.'}
+                        {e.description || (isTestOnly ? 'General mock test.' : 'General exam track.')}
                       </p>
                     </td>
-                    <td>
-                      <span className="badge badge-primary">{e.course_name}</span>
-                    </td>
+                    {!isTestOnly && (
+                      <td>
+                        <span className="badge badge-primary">{e.course_title || e.course_name || 'No Track'}</span>
+                      </td>
+                    )}
                     <td>{e.duration_minutes} Mins</td>
                     <td>
                       <div className="exammanage-marks-box">
@@ -231,7 +260,7 @@ export default function ExamManage() {
                         )}
                       </div>
                     </td>
-                    <td>{e.passing_marks} Marks ({Math.round((e.passing_marks/e.total_marks)*100)}%)</td>
+                    <td>{e.passing_marks} Marks ({Math.round((e.passing_marks / e.total_marks) * 100)}%)</td>
                     <td>
                       <button
                         onClick={() => handleTogglePublish(e.exam_id, e.title)}
@@ -277,12 +306,16 @@ export default function ExamManage() {
         <div className="modal-overlay">
           <div className="modal-content exammanage-modal-content">
             <div className="modal-header">
-              <h3 style={{ color: 'var(--text-bright)' }}>{editMode ? 'Edit Exam Blueprint' : 'New Exam Blueprint'}</h3>
+              <h3 style={{ color: 'var(--text-bright)' }}>
+                {isTestOnly
+                  ? (editMode ? 'Edit Mock Test Blueprint' : 'New Mock Test')
+                  : (editMode ? 'Edit Exam Blueprint' : 'New Exam Blueprint')}
+              </h3>
             </div>
             <form onSubmit={handleSaveExam}>
               <div className="modal-body exammanage-modal-body">
                 <div className="form-group">
-                  <label className="form-label">Exam Title</label>
+                  <label className="form-label">{isTestOnly ? 'Test Title' : 'Exam Title'}</label>
                   <input
                     type="text"
                     className="form-control"
@@ -303,21 +336,23 @@ export default function ExamManage() {
                   />
                 </div>
 
-                <div className="grid-cols-2 exammanage-grid-cols-2">
-                  <div className="form-group">
-                    <label className="form-label">Associated Course Track</label>
-                    <select
-                      className="form-control coursemanage-modal-select-field"
-                      value={courseId}
-                      onChange={(e) => setCourseId(e.target.value)}
-                      required
-                    >
-                      <option value="">-- Choose Course --</option>
-                      {courses.map(c => (
-                        <option key={c.course_id} value={c.course_id}>{c.title}</option>
-                      ))}
-                    </select>
-                  </div>
+                <div className={isTestOnly ? "" : "grid-cols-2 exammanage-grid-cols-2"}>
+                  {!isTestOnly && (
+                    <div className="form-group">
+                      <label className="form-label">Associated Course Track</label>
+                      <select
+                        className="form-control coursemanage-modal-select-field"
+                        value={courseId}
+                        onChange={(e) => setCourseId(e.target.value)}
+                        required
+                      >
+                        <option value="">-- Choose Course --</option>
+                        {courses.map(c => (
+                          <option key={c.course_id} value={c.course_id}>{c.title}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
 
                   <div className="form-group">
                     <label className="form-label">Duration (Minutes)</label>
@@ -388,6 +423,36 @@ export default function ExamManage() {
                     />
                   </div>
                 </div>
+
+                {isTestOnly && (
+                  <div className="form-group">
+                    <label className="form-label">Explicit Course Recommendations</label>
+                    <div className="exammanage-recommended-courses-list">
+                      {courses.map(c => {
+                        const isChecked = recommendedCourses.includes(c.course_id);
+                        return (
+                          <label key={c.course_id} className="exammanage-checkbox-label">
+                            <input
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setRecommendedCourses([...recommendedCourses, c.course_id]);
+                                } else {
+                                  setRecommendedCourses(recommendedCourses.filter(id => id !== c.course_id));
+                                }
+                              }}
+                            />
+                            <span>{c.title}</span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                    <p className="form-help-text" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+                      Select specific courses that should be strongly recommended to the user after finishing this test.
+                    </p>
+                  </div>
+                )}
 
                 <div className="form-group">
                   <label className="form-label">Instructions Booklet</label>

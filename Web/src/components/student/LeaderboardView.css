@@ -1,0 +1,89 @@
+/* LeaderboardView Component Styles */
+
+.leaderboard-header-row {
+  margin-bottom: 32px;
+  text-align: left;
+}
+
+.leaderboard-title {
+  margin-bottom: 8px;
+}
+
+.leaderboard-subtitle {
+  color: var(--text-muted);
+}
+
+.leaderboard-tabs-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 16px;
+}
+
+.leaderboard-tab-btn {
+  padding: 8px 20px;
+  font-size: 0.85rem;
+}
+
+.leaderboard-filter-container {
+  text-align: left;
+  margin-bottom: 24px;
+  max-width: 400px;
+}
+
+.leaderboard-empty-card {
+  padding: 60px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.leaderboard-empty-icon {
+  opacity: 0.5;
+  margin-bottom: 16px;
+  color: var(--primary);
+}
+
+.leaderboard-rank-header {
+  width: 80px;
+  text-align: center;
+}
+
+.leaderboard-medal-cell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+  font-weight: bold;
+}
+
+.leaderboard-rank-cell {
+  padding-left: 10px;
+  color: var(--text-muted);
+}
+
+.leaderboard-student-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.leaderboard-student-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+}
+
+.leaderboard-student-name {
+  font-weight: 600;
+  color: var(--text-bright);
+}
+
+.leaderboard-score-cell {
+  font-weight: bold;
+  color: var(--primary-hover);
+}

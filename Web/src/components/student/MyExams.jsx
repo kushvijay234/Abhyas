@@ -60,16 +60,21 @@ export default function MyExams() {
     []
   );
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     loadData(search);
   };
 
   const handleStartExam = async (examId) => {
+    const confirmStart = window.confirm(
+      "⚠️ DISCLAIMER:\n" +
+      "1. Once started, this assessment cannot be paused.\n" +
+      "2. The timer will run continuously even if you close the tab.\n" +
+      "3. The assessment will be automatically submitted when the duration expires.\n\n" +
+      "Do you want to start the exam now?"
+    );
+    if (!confirmStart) return;
+
     try {
       setStartingId(examId);
       const res = await api.exams.startAttempt(examId);
@@ -86,7 +91,7 @@ export default function MyExams() {
   };
 
   // Pagination for available exams
-  const itemsPerPage = 8;
+  const itemsPerPage = 10;
   const totalPages = Math.ceil(exams.length / itemsPerPage);
   const indexOfLastExam = currentPage * itemsPerPage;
   const indexOfFirstExam = indexOfLastExam - itemsPerPage;
@@ -99,16 +104,32 @@ export default function MyExams() {
   const indexOfFirstHistory = indexOfLastHistory - historyItemsPerPage;
   const currentHistory = history.slice(indexOfFirstHistory, indexOfLastHistory);
 
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
+  useEffect(() => {
+    if (historyPage > totalHistoryPages && totalHistoryPages > 0) {
+      setHistoryPage(totalHistoryPages);
+    }
+  }, [historyPage, totalHistoryPages]);
+
   return (
     <div>
       {/* Title */}
       <div className="myexams-header-row">
         <div className="myexams-title-container">
           <h1 className="display-title myexams-title">
-            My Exams & Quizzes
+            General Exam Repository
           </h1>
           <p className="myexams-subtitle">
-            Attempt active assessment exams, review your records, and unlock course recommendations.
+            Attempt independent assessments and mock exams to test your skills and unlock course recommendations.
           </p>
         </div>
 
@@ -118,7 +139,7 @@ export default function MyExams() {
             onClick={() => setActiveTab('available')}
             className={`btn ${activeTab === 'available' ? 'btn-primary' : 'btn-secondary'} myexams-tab-btn`}
           >
-            Available Exams
+            Browse General Exams
           </button>
           <button
             onClick={() => setActiveTab('taken')}
@@ -164,6 +185,9 @@ export default function MyExams() {
                     <div>
                       <div className="myexams-card-header">
                         <span className="badge badge-primary">{exam.course_title || 'General / Mock'}</span>
+                        <span className="myexams-duration-badge" style={{ background: 'rgba(249, 115, 22, 0.1)', color: '#f97316' }}>
+                          Attempts: {exam.max_attempts}
+                        </span>
                         <span className="myexams-duration-badge">
                           <Clock size={12} /> {exam.duration_minutes} Mins
                         </span>
@@ -175,6 +199,9 @@ export default function MyExams() {
                       
                       <p className="myexams-card-desc">
                         {exam.description || 'No description or instructions provided.'}
+                      </p>
+                      <p style={{ fontSize: '11px', color: '#dc2626', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', marginTop: '8px', marginBottom: '0' }}>
+                        <span>⚠️</span> Timer cannot be paused. Will auto-submit on expiry.
                       </p>
                     </div>
 
@@ -277,21 +304,6 @@ export default function MyExams() {
         </div>
       )}
 
-      {/* AI Recommendations card */}
-      <div className="glass-card myexams-recommendation-card">
-        <div className="myexams-recommendation-container">
-          <div className="myexams-recommendation-icon">✨</div>
-          <div className="myexams-recommendation-content">
-            <h4 className="myexams-recommendation-title">
-              AI Course Recommendations
-              <span className="badge badge-primary myexams-recommendation-badge">Preview</span>
-            </h4>
-            <p className="myexams-recommendation-desc">
-              Take more assessments to enable AI predictions! Our machine learning agent will automatically analyze your score vectors, locate sub-domain skill deficits, and suggest tailored course paths to maximize your study efficiency.
-            </p>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

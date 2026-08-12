@@ -375,3 +375,103 @@
   background: var(--danger);
   color: #fff;
 }
+
+/* ─── Recommended Courses Section ───────────────────── */
+
+.exam-result-recommendations-section {
+  text-align: left;
+  margin-top: 40px;
+  margin-bottom: 48px;
+}
+
+.exam-result-recommendations-title {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.exam-result-recommendations-icon {
+  color: var(--primary);
+}
+
+.exam-result-recommendations-desc {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 24px;
+}
+
+.recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 992px) {
+  .recommendations-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .recommendations-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.recommendation-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  cursor: default;
+}
+
+.recommendation-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+  box-shadow: var(--shadow-md);
+}
+
+.course-badge-highlight {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: linear-gradient(135deg, #1A2D6B, #213580);
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(26,45,107,0.3);
+  padding: 4px 10px;
+  font-size: 9.5px;
+  font-weight: 700;
+  border: none;
+}
+
+.recommendation-reason-box {
+  margin-top: 12px;
+  margin-bottom: 16px;
+  padding: 10px;
+  background: rgba(244, 121, 32, 0.05);
+  border-left: 3px solid var(--warning);
+  border-radius: var(--radius-sm);
+}
+
+.reason-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--warning);
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.reason-text {
+  font-size: 0.8rem;
+  color: var(--text-main);
+  line-height: 1.35;
+  margin: 0;
+}

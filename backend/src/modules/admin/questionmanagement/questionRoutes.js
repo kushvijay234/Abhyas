@@ -11,6 +11,9 @@ router.post("/", authMiddleware, adminMiddleware, QuestionController.addQuestion
 // Bulk Upload Questions  (body: { questions: [...] })
 router.post("/bulk", authMiddleware, adminMiddleware, QuestionController.bulkUploadQuestions);
 
+// Assign Questions to Exam  (body: { exam_id, question_ids: [...] })
+router.post("/assign", authMiddleware, adminMiddleware, QuestionController.assignQuestionsToExam);
+
 // Update Question
 router.put("/:id", authMiddleware, adminMiddleware, QuestionController.updateQuestion);
 

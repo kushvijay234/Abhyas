@@ -13,4 +13,3 @@ router.put("/change-password", authMiddleware, ProfileController.changePassword)
 router.delete("/", authMiddleware, ProfileController.deleteAccount);
 
 module.exports = router;
-

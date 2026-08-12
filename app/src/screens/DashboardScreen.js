@@ -11,24 +11,34 @@ export default function DashboardScreen({ navigation }) {
   const [performance, setPerformance] = useState([]);
   const [recentExams, setRecentExams] = useState([]);
   const [upcomingExams, setUpcomingExams] = useState([]);
+  const [badges, setBadges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState('');
 
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good morning';
+    if (hour < 17) return 'Good afternoon';
+    return 'Good evening';
+  };
+
   const loadData = async () => {
     try {
       setError('');
-      const [sumRes, perfRes, recentRes, upcomingRes] = await Promise.all([
+      const [sumRes, perfRes, recentRes, upcomingRes, badgesRes] = await Promise.all([
         api.dashboard.getSummary(),
         api.dashboard.getPerformance(),
         api.dashboard.getRecentExams(),
         api.dashboard.getUpcomingExams(),
+        api.auth.getBadges(),
       ]);
 
       if (sumRes.success) setSummary(sumRes.data);
       if (perfRes.success) setPerformance(perfRes.data || []);
       if (recentRes.success) setRecentExams(recentRes.data || []);
       if (upcomingRes.success) setUpcomingExams(upcomingRes.data || []);
+      if (badgesRes.success) setBadges(badgesRes.data || []);
     } catch (err) {
       setError('Failed to load dashboard logs.');
     } finally {
@@ -88,7 +98,7 @@ export default function DashboardScreen({ navigation }) {
     >
       {/* Welcome Banner */}
       <View style={styles.header}>
-        <Text style={styles.greeting}>Good morning,</Text>
+        <Text style={styles.greeting}>{getGreeting()},</Text>
         <Text style={styles.username}>{user?.user_name || 'Student'}!</Text>
         <Text style={styles.subtitle}>
           🔥 {streakCount}-day streak  ·  Rank #{userRank}
@@ -118,25 +128,25 @@ export default function DashboardScreen({ navigation }) {
         </View>
       </View>
 
-      {/* AI Recommendation Promotion Card */}
-      <View style={styles.aiCard}>
-        <Text style={styles.aiEyebrow}>✨ AI Path Suggestion Preview</Text>
-        <Text style={styles.aiTitle}>Custom learning vectors mapping</Text>
+      {/* AI Tutor Card */}
+      <TouchableOpacity 
+        style={styles.aiCard}
+        onPress={() => navigation.navigate('TutorTab')}
+      >
+        <Text style={styles.aiEyebrow}>✨ Study Companion</Text>
+        <Text style={styles.aiTitle}>Learn faster with Abhyas AI Tutor</Text>
         <Text style={styles.aiBody}>
-          Complete your scheduled assessments to map your strengths. Our neural agent will predict course deficits and suggest targeted tracks.
+          Clear your concepts instantly, build custom 4-week study plans, run flashcard sessions, or challenge yourself with instant quizzes!
         </Text>
-      </View>
+      </TouchableOpacity>
 
       {/* Upcoming Exams */}
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>📅 Upcoming Assessments</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('MyExamsTab')}>
-          <Text style={styles.seeAll}>See All</Text>
-        </TouchableOpacity>
       </View>
       <View style={styles.listCard}>
         {upcomingExams.length === 0 ? (
-          <Text style={styles.emptyText}>No exams scheduled today. All clear!</Text>
+          <Text style={styles.emptyText}>No upcoming exams scheduled. Check back later!</Text>
         ) : (
           upcomingExams.slice(0, 3).map((exam, idx) => (
             <View key={exam.exam_id || idx} style={styles.listItem}>
@@ -161,15 +171,12 @@ export default function DashboardScreen({ navigation }) {
       {/* Recent Activities */}
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>📊 Recent Attempts</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('HistoryTab')}>
-          <Text style={styles.seeAll}>View logs</Text>
-        </TouchableOpacity>
       </View>
       <View style={styles.listCard}>
         {recentExams.length === 0 ? (
           <Text style={styles.emptyText}>No recent exam attempts recorded yet.</Text>
         ) : (
-          recentExams.slice(0, 4).map((attempt, idx) => {
+          recentExams.slice(0, 5).map((attempt, idx) => {
             const isPass = attempt.percentage >= 40;
             const scoreColor = isPass ? colors.success : colors.danger;
             return (
@@ -212,6 +219,27 @@ export default function DashboardScreen({ navigation }) {
               </View>
             );
           })
+        )}
+      </View>
+
+      {/* Achievements & Badges */}
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>🎖️ Achievements & Badges</Text>
+      </View>
+      <View style={styles.listCard}>
+        {badges.filter(b => b.isEarned).length === 0 ? (
+          <Text style={styles.emptyText}>No achievements unlocked yet. Keep learning and completing quizzes to earn badges!</Text>
+        ) : (
+          badges.filter(b => b.isEarned).map((b, idx) => (
+            <View key={b.badge_type || idx} style={styles.badgeItemRow}>
+              <Text style={styles.badgeIcon}>{b.icon}</Text>
+              <View style={{ flex: 1, marginLeft: 12 }}>
+                <Text style={styles.badgeTitle}>{b.title}</Text>
+                <Text style={styles.badgeDesc}>{b.description}</Text>
+                <Text style={styles.badgeDate}>Earned: {b.earned_at ? new Date(b.earned_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : 'Just now'}</Text>
+              </View>
+            </View>
+          ))
         )}
       </View>
     </ScrollView>
@@ -418,5 +446,31 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: colors.warning,
     borderRadius: 3,
+  },
+  badgeItemRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(26,45,107,0.06)',
+  },
+  badgeIcon: {
+    fontSize: 32,
+  },
+  badgeTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: colors.textBright,
+  },
+  badgeDesc: {
+    fontSize: 11,
+    color: colors.textMuted,
+    marginTop: 2,
+  },
+  badgeDate: {
+    fontSize: 10,
+    color: colors.success,
+    fontWeight: '600',
+    marginTop: 2,
   },
 });

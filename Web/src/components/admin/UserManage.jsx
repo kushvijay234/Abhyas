@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '../../services/api';
-import { Users, Search, Trash2, ShieldAlert, CheckCircle, AlertTriangle, ShieldCheck, UserCheck } from 'lucide-react';
+import { Users, Search, Trash2, ShieldAlert, CheckCircle, AlertTriangle, ShieldCheck, UserCheck, Award } from 'lucide-react';
 import SearchBar from '../common/SearchBar';
 import './UserManage.css';
 
@@ -26,6 +26,11 @@ export default function UserManage() {
   // Delete modal configuration
   const [deleteConfirmUser, setDeleteConfirmUser] = useState(null);
   const [deleting, setDeleting] = useState(false);
+
+  // Badge management configurations
+  const [manageBadgesUser, setManageBadgesUser] = useState(null);
+  const [userBadges, setUserBadges] = useState([]);
+  const [badgesLoading, setBadgesLoading] = useState(false);
 
   const loadUsers = async (querySearch, filterStatus) => {
     try {
@@ -101,6 +106,54 @@ export default function UserManage() {
     } finally {
       setDeleting(false);
       setDeleteConfirmUser(null);
+    }
+  };
+
+  const handleOpenBadgesModal = async (user) => {
+    setManageBadgesUser(user);
+    setBadgesLoading(true);
+    setError('');
+    setSuccess('');
+    try {
+      const res = await api.admin.users.getBadges(user.user_id || user.id);
+      if (res.success) {
+        setUserBadges(res.data || []);
+      }
+    } catch (err) {
+      setError(err.message || 'Error fetching user achievements.');
+      setManageBadgesUser(null);
+    } finally {
+      setBadgesLoading(false);
+    }
+  };
+
+  const handleToggleBadge = async (badgeType, isEarned) => {
+    if (!manageBadgesUser) return;
+    setBadgesLoading(true);
+    setError('');
+    setSuccess('');
+    const userId = manageBadgesUser.user_id || manageBadgesUser.id;
+    try {
+      if (isEarned) {
+        const res = await api.admin.users.revokeBadge(userId, badgeType);
+        if (res.success) {
+          setSuccess(`Badge revoked successfully.`);
+        }
+      } else {
+        const res = await api.admin.users.awardBadge(userId, badgeType);
+        if (res.success) {
+          setSuccess(`Badge awarded successfully.`);
+        }
+      }
+      
+      const reloadRes = await api.admin.users.getBadges(userId);
+      if (reloadRes.success) {
+        setUserBadges(reloadRes.data || []);
+      }
+    } catch (err) {
+      setError(err.message || 'Error managing user achievements.');
+    } finally {
+      setBadgesLoading(false);
     }
   };
 
@@ -260,12 +313,23 @@ export default function UserManage() {
                     <td className="usermanage-td-date">{new Date(u.created_at).toLocaleDateString()}</td>
                     <td className="usermanage-action-cell">
                       {u.role !== 'admin' ? (
-                        <button
-                          onClick={() => setDeleteConfirmUser(u)}
-                          className="btn btn-danger usermanage-delete-btn"
-                        >
-                          <Trash2 size={14} />
-                        </button>
+                        <>
+                          <button
+                            onClick={() => handleOpenBadgesModal(u)}
+                            className="btn btn-secondary usermanage-badge-btn"
+                            title="Manage Badges"
+                            style={{ marginRight: '8px', padding: '6px 10px', background: '#f3f4f6', border: '1px solid #d1d5db', color: '#1c2660' }}
+                          >
+                            <Award size={14} />
+                          </button>
+                          <button
+                            onClick={() => setDeleteConfirmUser(u)}
+                            className="btn btn-danger usermanage-delete-btn"
+                            title="Delete User"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </>
                       ) : (
                         <span className="usermanage-protected-text">Protected</span>
                       )}
@@ -301,6 +365,91 @@ export default function UserManage() {
               </button>
               <button onClick={handleDeleteUser} className="btn btn-danger usermanage-modal-btn-delete" disabled={deleting}>
                 {deleting ? 'Removing...' : 'Delete User'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Manage Badges Modal */}
+      {manageBadgesUser && (
+        <div className="modal-overlay">
+          <div className="modal-content usermanage-modal-content" style={{ maxWidth: '500px' }}>
+            <div className="modal-header usermanage-modal-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3 className="usermanage-modal-title">🏆 Manage Achievements</h3>
+              <button 
+                onClick={() => setManageBadgesUser(null)} 
+                style={{ background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', color: 'var(--text-muted)' }}
+              >
+                &times;
+              </button>
+            </div>
+            <div className="modal-body usermanage-modal-body" style={{ padding: '20px 0' }}>
+              <div style={{ padding: '0 24px 16px', borderBottom: '1px solid #f3f4f6' }}>
+                <h4 style={{ margin: 0, fontSize: '15px', color: '#111827' }}>Student Information</h4>
+                <p style={{ margin: '4px 0 0', fontSize: '13px', color: '#4b5563' }}>
+                  Name: <strong>{manageBadgesUser.user_name || manageBadgesUser.name}</strong> ({manageBadgesUser.email})
+                </p>
+              </div>
+              
+              <div style={{ maxHeight: '350px', overflowY: 'auto', padding: '16px 24px 0' }}>
+                {badgesLoading ? (
+                  <div style={{ textAlign: 'center', padding: '24px 0' }}>
+                    <div className="spinner" style={{ margin: '0 auto', width: '30px', height: '30px' }}></div>
+                  </div>
+                ) : userBadges.length === 0 ? (
+                  <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '14px' }}>No badges configuration found.</p>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {userBadges.map(b => (
+                      <div 
+                        key={b.badge_type}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '12px',
+                          borderRadius: '8px',
+                          border: '1px solid #e5e7eb',
+                          background: b.isEarned ? '#f9fafb' : '#ffffff',
+                          opacity: b.isEarned ? 1 : 0.75
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                          <span style={{ fontSize: '28px', filter: b.isEarned ? 'none' : 'grayscale(100%) opacity(0.4)' }}>
+                            {b.icon}
+                          </span>
+                          <div>
+                            <div style={{ fontWeight: 'bold', fontSize: '13px', color: b.isEarned ? '#111827' : '#9ca3af' }}>{b.title}</div>
+                            <div style={{ fontSize: '11px', color: '#6b7280' }}>{b.description}</div>
+                          </div>
+                        </div>
+                        
+                        <button
+                          onClick={() => handleToggleBadge(b.badge_type, b.isEarned)}
+                          style={{
+                            padding: '6px 12px',
+                            fontSize: '12px',
+                            fontWeight: '600',
+                            borderRadius: '6px',
+                            cursor: 'pointer',
+                            border: '1px solid',
+                            background: b.isEarned ? '#fee2e2' : '#ecfdf5',
+                            color: b.isEarned ? '#ef4444' : '#10b981',
+                            borderColor: b.isEarned ? '#fca5a5' : '#a7f3d0'
+                          }}
+                        >
+                          {b.isEarned ? 'Revoke' : 'Award'}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="modal-footer usermanage-modal-footer">
+              <button onClick={() => setManageBadgesUser(null)} className="btn btn-secondary usermanage-modal-btn-cancel">
+                Close
               </button>
             </div>
           </div>

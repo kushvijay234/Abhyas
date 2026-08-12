@@ -111,7 +111,6 @@ const CourseModel = {
       items: itemsBySection[sec.section_id] || []
     }));
   },
-
 };
 
 module.exports = CourseModel;

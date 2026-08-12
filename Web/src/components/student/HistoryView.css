@@ -1,0 +1,55 @@
+/* HistoryView Component Styles */
+
+.history-header-row {
+  margin-bottom: 32px;
+  text-align: left;
+}
+
+.history-title {
+  margin-bottom: 8px;
+}
+
+.history-subtitle {
+  color: var(--text-muted);
+}
+
+.history-section-title {
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+}
+
+.history-section-icon {
+  color: var(--primary);
+}
+
+.history-empty-state {
+  padding: 40px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.history-exam-title-cell {
+  font-weight: 600;
+  color: var(--text-bright);
+}
+
+.history-badge-container {
+  gap: 4px;
+}
+
+.history-badge-text {
+  text-transform: uppercase;
+}
+
+.history-action-btn-secondary {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+}
+
+.history-action-btn-primary {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+}

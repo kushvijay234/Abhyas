@@ -44,12 +44,27 @@ const login = async (req, res) => {
 };
 
 
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const result = await UserService.requestPasswordOTP(email);
+
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+
 const resetPassword = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, otp, password } = req.body;
 
     const result = await UserService.resetPassword(
       email,
+      otp,
       password
     );
 
@@ -78,6 +93,7 @@ const updateProfile = async (req, res) => {
 module.exports = {
   register,
   login,
+  forgotPassword,
   resetPassword,
   updateProfile,
 };

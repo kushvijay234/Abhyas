@@ -3,21 +3,24 @@ import './Auth.css';
 import './ResetPassword.css';
 import { useNavigate, Link } from 'react-router-dom';
 import { api } from '../../services/api';
-import { Mail, Key, ShieldAlert, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Mail, Key, ShieldAlert, AlertTriangle, CheckCircle, Hash, Eye, EyeOff } from 'lucide-react';
 import abhyasLogo from '../../assets/abhyaslogo.png';
 
 export default function ResetPassword() {
+  const [step, setStep] = useState(1); 
   const [email, setEmail] = useState('');
+  const [otp, setOtp] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const handleReset = async (e) => {
+  const handleSendOTP = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      setError('Please fill in all fields');
+    if (!email) {
+      setError('Please enter your email address');
       return;
     }
     setError('');
@@ -25,7 +28,39 @@ export default function ResetPassword() {
     setLoading(true);
 
     try {
-      const response = await api.auth.resetPassword(email, password);
+      const response = await api.auth.forgotPassword(email);
+      if (response.success) {
+        setSuccess('One-Time Password (OTP) has been sent to your email!');
+        setTimeout(() => {
+          setSuccess('');
+          setStep(2);
+        }, 1500);
+      } else {
+        setError(response.message || 'Failed to send OTP');
+      }
+    } catch (err) {
+      setError(err.message || 'Error requesting OTP. Please check your email.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    if (!email || !otp || !password) {
+      setError('Please fill in all fields');
+      return;
+    }
+    if (otp.length !== 6) {
+      setError('OTP must be 6 digits');
+      return;
+    }
+    setError('');
+    setSuccess('');
+    setLoading(true);
+
+    try {
+      const response = await api.auth.resetPassword(email, otp, password);
       if (response.success) {
         setSuccess('Password updated successfully! Redirecting to login...');
         setTimeout(() => {
@@ -35,7 +70,25 @@ export default function ResetPassword() {
         setError(response.message || 'Reset failed');
       }
     } catch (err) {
-      setError(err.message || 'Error updating password');
+      setError(err.message || 'Error updating password. Check your OTP.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendOTP = async () => {
+    setError('');
+    setSuccess('');
+    setLoading(true);
+    try {
+      const response = await api.auth.forgotPassword(email);
+      if (response.success) {
+        setSuccess('OTP resent successfully!');
+      } else {
+        setError(response.message || 'Failed to resend OTP');
+      }
+    } catch (err) {
+      setError(err.message || 'Error resending OTP');
     } finally {
       setLoading(false);
     }
@@ -79,7 +132,11 @@ export default function ResetPassword() {
             
             <div className="login-heading">
               <h2>Reset Password</h2>
-              <p>Enter your email and a new password</p>
+              <p>
+                {step === 1 
+                  ? "Enter your registered email to receive a 6-digit OTP" 
+                  : "Enter the OTP sent to your email and your new password"}
+              </p>
             </div>
 
             {error && (
@@ -96,54 +153,140 @@ export default function ResetPassword() {
               </div>
             )}
 
-            <form onSubmit={handleReset}>
-              <div className="input-group">
-                <label className="form-label">Email Address</label>
-                <div className="reset-input-wrapper">
-                  <Mail size={18} className="reset-input-icon" />
-                  <input
-                    type="email"
-                    className="form-control reset-input-field"
-                    placeholder="registered@abhyas.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    disabled={loading}
-                    required
-                  />
+            {step === 1 ? (
+              <form onSubmit={handleSendOTP}>
+                <div className="input-group">
+                  <label className="form-label">Email Address</label>
+                  <div className="reset-input-wrapper">
+                    <Mail size={18} className="reset-input-icon" />
+                    <input
+                      type="email"
+                      className="form-control reset-input-field"
+                      placeholder="registered@abhyas.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      disabled={loading}
+                      required
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className="input-group">
-                <label className="form-label">New Password</label>
-                <div className="reset-input-wrapper">
-                  <Key size={18} className="reset-input-icon" />
-                  <input
-                    type="password"
-                    className="form-control reset-input-field"
-                    placeholder="Min 6 characters"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    disabled={loading}
-                    required
-                  />
+                <button
+                  type="submit"
+                  className="login-btn reset-btn"
+                  disabled={loading}
+                >
+                  {loading ? 'Sending OTP...' : (
+                    <>
+                      <Mail size={18} />
+                      <span>Send OTP</span>
+                    </>
+                  )}
+                </button>
+              </form>
+            ) : (
+              <form onSubmit={handleResetPassword}>
+                <div className="input-group">
+                  <label className="form-label">Email Address</label>
+                  <div className="reset-input-wrapper">
+                    <Mail size={18} className="reset-input-icon" style={{ opacity: 0.5 }} />
+                    <input
+                      type="email"
+                      className="form-control reset-input-field"
+                      value={email}
+                      disabled
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <button
-                type="submit"
-                className="login-btn reset-btn"
-                disabled={loading}
-              >
-                {loading ? 'Updating Password...' : (
-                  <>
-                    <ShieldAlert size={18} />
-                    <span>Reset Password</span>
-                  </>
-                )}
-              </button>
-            </form>
+                <div className="input-group">
+                  <label className="form-label">Verification OTP</label>
+                  <div className="reset-input-wrapper">
+                    <Hash size={18} className="reset-input-icon" />
+                    <input
+                      type="text"
+                      maxLength="6"
+                      className="form-control reset-input-field"
+                      placeholder="Enter 6-digit OTP"
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
+                      disabled={loading}
+                      required
+                    />
+                  </div>
+                </div>
 
-            <div className="signup-text">
+                <div className="input-group">
+                  <label className="form-label">New Password</label>
+                  <div className="reset-input-wrapper" style={{ position: 'relative' }}>
+                    <Key size={18} className="reset-input-icon" />
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      className="form-control reset-input-field"
+                      placeholder="Min 6 characters"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      disabled={loading}
+                      required
+                      style={{ paddingRight: '40px' }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="password-toggle-btn"
+                      style={{
+                        position: 'absolute',
+                        right: '12px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        color: 'var(--text-muted)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: 0
+                      }}
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="login-btn reset-btn"
+                  disabled={loading}
+                >
+                  {loading ? 'Updating Password...' : (
+                    <>
+                      <ShieldAlert size={18} />
+                      <span>Reset Password</span>
+                    </>
+                  )}
+                </button>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px', fontSize: '14px' }}>
+                  <button
+                    type="button"
+                    onClick={() => setStep(1)}
+                    style={{ background: 'none', border: 'none', color: '#1c2660', cursor: 'pointer', padding: 0, fontWeight: 500 }}
+                  >
+                    ← Back to Email
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleResendOTP}
+                    disabled={loading}
+                    style={{ background: 'none', border: 'none', color: '#f97316', cursor: 'pointer', padding: 0, fontWeight: 500 }}
+                  >
+                    Resend OTP
+                  </button>
+                </div>
+              </form>
+            )}
+
+            <div className="signup-text" style={{ marginTop: '24px' }}>
               Remember your password?{' '}
               <Link to="/login">
                 Login Here

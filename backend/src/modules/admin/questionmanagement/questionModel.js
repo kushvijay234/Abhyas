@@ -50,7 +50,6 @@ const bulkInsertQuestions = async (questions) => {
   return result;
 };
 
-
 // Update Question
 const updateQuestion = async (question_id, questionData) => {
   const {
