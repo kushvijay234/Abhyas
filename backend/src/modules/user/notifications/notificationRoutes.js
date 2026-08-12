@@ -17,5 +17,3 @@ router.patch("/:id/read", authMiddleware, NotificationController.markRead);
 router.delete("/:id", authMiddleware, NotificationController.deleteNotification);
 
 module.exports = router;
-
-

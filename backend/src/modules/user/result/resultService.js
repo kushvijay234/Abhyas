@@ -17,6 +17,9 @@ const getResultById = async (user_id, attempt_id) => {
   const result = await ResultModel.getResultById(attempt_id, user_id);
   if (!result) throw new Error("Result not found");
 
+  const recommendations = await ResultModel.getRecommendationsForAttempt(attempt_id, user_id);
+  result.recommendations = recommendations;
+
   return {
     success: true,
     data: result,

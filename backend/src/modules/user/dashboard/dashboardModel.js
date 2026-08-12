@@ -24,10 +24,11 @@ const DashboardModel = {
          (SELECT COUNT(*) FROM users WHERE role = 'student')   AS total_students,
          COALESCE((
            WITH user_averages AS (
-             SELECT user_id, AVG(percentage) as avg_pct
-             FROM exam_attempts
-             WHERE status = 'completed'
-             GROUP BY user_id
+             SELECT ea.user_id, AVG(ea.percentage) as avg_pct
+             FROM exam_attempts ea
+             JOIN users u ON ea.user_id = u.user_id
+             WHERE ea.status = 'completed' AND u.role = 'student'
+             GROUP BY ea.user_id
            ),
            ranked_users AS (
              SELECT user_id, RANK() OVER (ORDER BY avg_pct DESC) as \`rank\`
@@ -37,7 +38,9 @@ const DashboardModel = {
          ), (
            SELECT COUNT(*) + 1 
            FROM (
-             SELECT DISTINCT user_id FROM exam_attempts WHERE status = 'completed'
+             SELECT DISTINCT ea.user_id FROM exam_attempts ea
+             JOIN users u ON ea.user_id = u.user_id
+             WHERE ea.status = 'completed' AND u.role = 'student'
            ) tmp
          ))                                                    AS \`rank\``,
       [user_id, user_id, user_id, user_id, user_id, user_id, user_id]
@@ -77,10 +80,12 @@ const DashboardModel = {
   getUpcomingExams: async (user_id) => {
     const [rows] = await db.execute(
       `SELECT e.exam_id, e.title, e.duration_minutes, e.total_marks, e.passing_marks,
-              e.start_time AS start_date, e.end_time AS end_date, c.title AS course_name
+              e.start_time AS start_date, e.end_time AS end_date, c.title AS course_name,
+              (SELECT COUNT(*) FROM exam_questions WHERE exam_id = e.exam_id) AS total_questions
        FROM exams e
        LEFT JOIN courses c ON e.course_id = c.course_id
        WHERE e.is_published = 1
+         AND e.course_id IS NULL
          AND e.exam_id NOT IN (
            SELECT exam_id FROM exam_attempts
            WHERE user_id = ? AND status = 'completed'
@@ -118,7 +123,7 @@ const DashboardModel = {
     );
     return rows;
   },
-
 };
 
 module.exports = DashboardModel;
+

@@ -3,7 +3,7 @@ import './Auth.css';
 import './Register.css';
 import { useNavigate, Link } from 'react-router-dom';
 import { api } from '../../services/api';
-import { UserPlus, Mail, Key, User, AlertTriangle, CheckCircle } from 'lucide-react';
+import { UserPlus, Mail, Key, User, AlertTriangle, CheckCircle, Eye, EyeOff } from 'lucide-react';
 import abhyasLogo from '../../assets/abhyaslogo.png';
 
 export default function Register() {
@@ -14,6 +14,7 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
@@ -133,17 +134,38 @@ export default function Register() {
 
               <div className="input-group">
                 <label className="form-label">Password</label>
-                <div className="register-input-wrapper">
+                <div className="register-input-wrapper" style={{ position: 'relative' }}>
                   <Key size={18} className="register-input-icon" />
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     className="form-control register-input-field"
                     placeholder="Min 6 characters"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={loading}
                     required
+                    style={{ paddingRight: '40px' }}
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="password-toggle-btn"
+                    style={{
+                      position: 'absolute',
+                      right: '12px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      color: 'var(--text-muted)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: 0
+                    }}
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
                 </div>
               </div>
 

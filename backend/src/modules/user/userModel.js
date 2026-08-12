@@ -37,7 +37,6 @@ const UserModel = {
     return rows[0];
   },
 
-
   deleteUser: async (user_id) => {
     const [result] = await db.execute(`DELETE FROM users WHERE user_id = ?`, [
       user_id,
@@ -45,7 +44,7 @@ const UserModel = {
 
     return result;
   },
-  
+
   // rest password
   updatePassword: async (email, password) => {
     const [result] = await db.execute(
@@ -66,6 +65,35 @@ const UserModel = {
       [user_name, user_id],
     );
 
+    return result;
+  },
+
+  updateOTP: async (email, otp, expiry) => {
+    const [result] = await db.execute(
+      `UPDATE users
+       SET otp_code = ?, otp_expiry = ?
+       WHERE email = ?`,
+      [otp, expiry, email]
+    );
+    return result;
+  },
+
+  verifyOTP: async (email, otp) => {
+    const [rows] = await db.execute(
+      `SELECT * FROM users
+       WHERE email = ? AND otp_code = ? AND otp_expiry > NOW()`,
+      [email, otp]
+    );
+    return rows[0];
+  },
+
+  clearOTP: async (email) => {
+    const [result] = await db.execute(
+      `UPDATE users
+       SET otp_code = NULL, otp_expiry = NULL
+       WHERE email = ?`,
+      [email]
+    );
     return result;
   },
 };

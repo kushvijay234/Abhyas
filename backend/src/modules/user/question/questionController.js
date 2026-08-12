@@ -53,4 +53,3 @@ const getAnswerStatus = async (req, res) => {
 };
 
 module.exports = { getQuestions, saveAnswer, markReview, getAnswerStatus };
-

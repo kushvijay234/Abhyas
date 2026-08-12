@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { api } from '../services/api';
 import colors from '../theme/colors';
-import { Award, CheckCircle2, XCircle, ChevronLeft } from 'lucide-react-native';
+import { Award, CheckCircle2, XCircle, ChevronLeft, BookOpen, Clock, AlertTriangle } from 'lucide-react-native';
 
 export default function ExamResultScreen({ navigation, route }) {
   const { attemptId } = route.params;
@@ -10,24 +10,54 @@ export default function ExamResultScreen({ navigation, route }) {
   const [loading, setLoading] = useState(true);
   const [result, setResult] = useState(null);
   const [reviewItems, setReviewItems] = useState([]);
+  const [myCourseIds, setMyCourseIds] = useState(new Set());
+  const [enrollingId, setEnrollingId] = useState(null);
 
   const fetchResultData = async () => {
     try {
       setLoading(true);
-      const res = await api.results.getById(attemptId);
+      const [res, reviewRes, myCoursesRes] = await Promise.all([
+        api.results.getById(attemptId),
+        api.results.getAnswerReview(attemptId),
+        api.courses.getMy()
+      ]);
+
       if (res.success && res.data) {
         setResult(res.data);
       }
 
-      // Fetch review data (questions + correct options + student selected options)
-      const reviewRes = await api.results.getAnswerReview(attemptId);
       if (reviewRes.success) {
         setReviewItems(reviewRes.data || []);
+      }
+
+      if (myCoursesRes.success) {
+        setMyCourseIds(new Set((myCoursesRes.data || []).map(c => String(c.course_id))));
       }
     } catch (err) {
       Alert.alert('Error', err.message || 'Failed to fetch result details.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleEnroll = async (courseId, title) => {
+    try {
+      setEnrollingId(courseId);
+      const res = await api.courses.enroll(courseId);
+      if (res.success) {
+        Alert.alert('Success', `Successfully enrolled in "${title}"!`);
+        setMyCourseIds(prev => {
+          const next = new Set(prev);
+          next.add(String(courseId));
+          return next;
+        });
+      } else {
+        Alert.alert('Error', res.message || 'Enrollment failed.');
+      }
+    } catch (err) {
+      Alert.alert('Error', err.message || 'Error occurred during enrollment.');
+    } finally {
+      setEnrollingId(null);
     }
   };
 
@@ -59,6 +89,17 @@ export default function ExamResultScreen({ navigation, route }) {
   const isPass = isCompleted && result.percentage >= result.passing_marks;
   const statusColor = isCompleted ? (isPass ? colors.success : colors.danger) : colors.warning;
   const statusLabel = isCompleted ? (isPass ? 'PASSED' : 'FAILED') : 'IN PROGRESS';
+
+  // Stats calculation
+  const totalQ      = reviewItems.length;
+  const answeredQ   = reviewItems.filter(r => r.selected_option).length;
+  const correctQ    = reviewItems.filter(r => {
+    const selected = (r.selected_option || '').toLowerCase();
+    const correct = (r.correct_option || '').toLowerCase();
+    return r.is_correct === 1 || (selected && selected === correct);
+  }).length;
+  const wrongQ      = answeredQ - correctQ;
+  const skippedQ    = totalQ - answeredQ;
 
   return (
     <View style={styles.container}>
@@ -102,7 +143,113 @@ export default function ExamResultScreen({ navigation, route }) {
           <Text style={styles.passingTargetText}>
             Target Passing Score: {result.passing_marks}%
           </Text>
+
+          {isCompleted && (
+            <>
+              <View style={styles.statsDivider} />
+              
+              <View style={styles.quickStatsRow}>
+                <View style={[styles.statPill, { backgroundColor: colors.successLight }]}>
+                  <CheckCircle2 size={12} color={colors.success} />
+                  <Text style={[styles.statText, { color: colors.success }]}>{correctQ} Correct</Text>
+                </View>
+                <View style={[styles.statPill, { backgroundColor: colors.dangerLight }]}>
+                  <XCircle size={12} color={colors.danger} />
+                  <Text style={[styles.statText, { color: colors.danger }]}>{wrongQ} Wrong</Text>
+                </View>
+                <View style={[styles.statPill, { backgroundColor: colors.warningLight }]}>
+                  <AlertTriangle size={12} color={colors.warning} />
+                  <Text style={[styles.statText, { color: colors.warning }]}>{skippedQ} Skipped</Text>
+                </View>
+              </View>
+            </>
+          )}
         </View>
+
+        {/* Recommended Courses Section */}
+        {result.recommendations && result.recommendations.length > 0 && (
+          <View style={styles.recommendationsContainer}>
+            <View style={styles.sectionHeaderRow}>
+              <BookOpen size={18} color={colors.primary} />
+              <Text style={styles.sectionTitle}>Recommended Courses</Text>
+            </View>
+            <Text style={styles.sectionSubtitle}>
+              Based on your exam performance, we suggest enrolling in these courses to strengthen your knowledge:
+            </Text>
+
+            {result.recommendations.map(course => {
+              const enrolled = myCourseIds.has(String(course.course_id));
+              const enrolling = enrollingId === course.course_id;
+
+              return (
+                <View key={course.course_id} style={styles.recCard}>
+                  <View style={styles.recImageWrapper}>
+                    <Image
+                      source={{ uri: course.thumbnail || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=400' }}
+                      style={styles.recThumbnail}
+                      resizeMode="cover"
+                    />
+                    <View style={styles.recBadgeContainer}>
+                      <View style={[styles.recBadge, { backgroundColor: colors.warning }]}>
+                        <Text style={styles.recBadgeText}>{course.category_name || 'General'}</Text>
+                      </View>
+                      {course.is_associated && (
+                        <View style={[styles.recBadge, { backgroundColor: colors.primary }]}>
+                          <Text style={styles.recBadgeText}>Top Match</Text>
+                        </View>
+                      )}
+                      {enrolled && (
+                        <View style={[styles.recBadge, { backgroundColor: colors.success }]}>
+                          <Text style={styles.recBadgeText}>Enrolled</Text>
+                        </View>
+                      )}
+                    </View>
+                  </View>
+
+                  <View style={styles.recDetails}>
+                    <Text style={styles.recTitle}>{course.title}</Text>
+                    <Text style={styles.recDesc} numberOfLines={2}>
+                      {course.description || 'No description provided.'}
+                    </Text>
+
+                    {course.recommendation_reason && (
+                      <View style={styles.reasonBox}>
+                        <Text style={styles.reasonHeader}>Why this recommendation?</Text>
+                        <Text style={styles.reasonText}>{course.recommendation_reason}</Text>
+                      </View>
+                    )}
+
+                    <View style={styles.recFooter}>
+                      <View style={styles.recDurationBlock}>
+                        <Clock size={12} color={colors.textMuted} />
+                        <Text style={styles.recDurationText}>{course.duration || 'N/A'}</Text>
+                      </View>
+
+                      {enrolled ? (
+                        <TouchableOpacity
+                          style={[styles.recActionBtn, styles.recBtnView]}
+                          onPress={() => navigation.navigate('CourseDetails', { id: course.course_id })}
+                        >
+                          <Text style={styles.recActionBtnText}>View Course</Text>
+                        </TouchableOpacity>
+                      ) : (
+                        <TouchableOpacity
+                          style={[styles.recActionBtn, styles.recBtnEnroll]}
+                          onPress={() => handleEnroll(course.course_id, course.title)}
+                          disabled={enrolling}
+                        >
+                          <Text style={styles.recActionBtnText}>
+                            {enrolling ? 'Enrolling...' : 'Enroll Now'}
+                          </Text>
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                  </View>
+                </View>
+              );
+            })}
+          </View>
+        )}
 
         {/* Answer key header */}
         <Text style={styles.answerKeyTitle}>Question Breakdown & Keys</Text>
@@ -400,5 +547,171 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
     lineHeight: 16,
     textAlign: 'left',
+  },
+  statsDivider: {
+    height: 1,
+    backgroundColor: 'rgba(26,45,107,0.06)',
+    width: '100%',
+    marginVertical: 14,
+  },
+  quickStatsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    gap: 8,
+  },
+  statPill: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  statText: {
+    fontSize: 11,
+    fontWeight: '700',
+  },
+  recommendationsContainer: {
+    marginBottom: 28,
+    alignItems: 'flex-start',
+    width: '100%',
+  },
+  sectionHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 6,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: colors.primary,
+  },
+  sectionSubtitle: {
+    fontSize: 12,
+    color: colors.textMuted,
+    lineHeight: 16,
+    marginBottom: 16,
+    textAlign: 'left',
+  },
+  recCard: {
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 12,
+    width: '100%',
+    marginBottom: 16,
+    overflow: 'hidden',
+  },
+  recImageWrapper: {
+    height: 120,
+    width: '100%',
+    position: 'relative',
+  },
+  recThumbnail: {
+    height: '100%',
+    width: '100%',
+  },
+  recBadgeContainer: {
+    position: 'absolute',
+    top: 8,
+    left: 8,
+    right: 8,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+  },
+  recBadge: {
+    paddingHorizontal: 8,
+    height: 20,
+    borderRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  recBadgeText: {
+    fontSize: 9,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    textTransform: 'uppercase',
+  },
+  recDetails: {
+    padding: 16,
+    alignItems: 'flex-start',
+  },
+  recTitle: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: colors.primary,
+    marginBottom: 4,
+    textAlign: 'left',
+  },
+  recDesc: {
+    fontSize: 12,
+    color: colors.textMuted,
+    lineHeight: 16,
+    marginBottom: 12,
+    textAlign: 'left',
+  },
+  reasonBox: {
+    backgroundColor: 'rgba(244,121,32,0.03)',
+    borderLeftWidth: 3,
+    borderLeftColor: colors.warning,
+    padding: 10,
+    borderRadius: 4,
+    marginBottom: 14,
+    width: '100%',
+    alignItems: 'flex-start',
+  },
+  reasonHeader: {
+    fontSize: 11,
+    fontWeight: 'bold',
+    color: colors.warning,
+    marginBottom: 2,
+  },
+  reasonText: {
+    fontSize: 11,
+    color: colors.primary,
+    lineHeight: 15,
+    textAlign: 'left',
+  },
+  recFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(26,45,107,0.06)',
+    paddingTop: 12,
+  },
+  recDurationBlock: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  recDurationText: {
+    fontSize: 11,
+    color: colors.textMuted,
+    fontWeight: '600',
+  },
+  recActionBtn: {
+    height: 30,
+    borderRadius: 6,
+    justifyContent: 'center',
+    paddingHorizontal: 12,
+  },
+  recBtnView: {
+    backgroundColor: colors.background,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  recBtnEnroll: {
+    backgroundColor: colors.primary,
+  },
+  recActionBtnText: {
+    fontSize: 11,
+    fontWeight: 'bold',
+    color: '#ffffff',
   },
 });

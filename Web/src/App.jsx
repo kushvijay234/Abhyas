@@ -1,122 +1,133 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
 
-function App() {
-  const [count, setCount] = useState(0)
+// Layouts
+import StudentLayout from './components/layout/StudentLayout';
+import AdminLayout from './components/layout/AdminLayout';
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+// Auth Components
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
+import ResetPassword from './components/auth/ResetPassword';
 
-      <div className="ticks"></div>
+// Student Pages
+import StudentDashboard from './components/student/Dashboard';
+import CourseBrowser from './components/student/CourseBrowser';
+import CourseDetails from './components/student/CourseDetails';
+import ExamConsole from './components/student/ExamConsole';
+import ExamResultView from './components/student/ExamResultView';
+import HistoryView from './components/student/HistoryView';
+import LeaderboardView from './components/student/LeaderboardView';
+import ProfileView from './components/student/ProfileView';
+import MyExams from './components/student/MyExams';
+import AiTutor from './components/student/AiTutor';
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+// Admin Pages
+import AdminDashboardView from './components/admin/AdminDashboardView';
+import UserManage from './components/admin/UserManage';
+import CourseManage from './components/admin/CourseManage';
+import CategoryManage from './components/admin/CategoryManage';
+import ExamManage from './components/admin/ExamManage';
+import QuestionManage from './components/admin/QuestionManage';
+import ResultAnalytics from './components/admin/ResultAnalytics';
+
+// Route Guards
+function RequireAuth({ children, allowedRole }) {
+  const { user, token } = useAuth();
+  
+  if (!token || !user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (allowedRole) {
+    if (user.role !== allowedRole) {
+      if (allowedRole === 'admin') {
+        return <Navigate to="/dashboard" replace />;
+      }
+    }
+  }
+
+  return children;
 }
 
-export default App
+function PublicOnly({ children }) {
+  const { user, token } = useAuth();
+
+  if (token && user) {
+    if (user.role === 'admin') {
+      return <Navigate to="/admin" replace />;
+    }
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return children;
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/login" element={
+            <PublicOnly>
+              <Login />
+            </PublicOnly>
+          } />
+          <Route path="/register" element={
+            <PublicOnly>
+              <Register />
+            </PublicOnly>
+          } />
+          <Route path="/reset-password" element={
+            <PublicOnly>
+              <ResetPassword />
+            </PublicOnly>
+          } />
+
+          {/* Student Private Routes */}
+          <Route path="/" element={
+            <RequireAuth>
+              <StudentLayout />
+            </RequireAuth>
+          }>
+            <Route index element={<Navigate to="/dashboard" replace />} />
+            <Route path="dashboard" element={<StudentDashboard />} />
+            <Route path="ai-tutor" element={<AiTutor />} />
+            <Route path="courses" element={<CourseBrowser />} />
+            <Route path="my-courses" element={<CourseBrowser onlyEnrolled={true} />} />
+            <Route path="exams" element={<MyExams />} />
+            <Route path="my-exams" element={<MyExams />} />
+            <Route path="courses/:id" element={<CourseDetails />} />
+            <Route path="exam/:attemptId" element={<ExamConsole />} />
+            <Route path="results/:attemptId" element={<ExamResultView />} />
+            <Route path="history" element={<HistoryView />} />
+
+            <Route path="leaderboard" element={<LeaderboardView />} />
+            <Route path="profile" element={<ProfileView />} />
+          </Route>
+
+          {/* Admin Private Routes */}
+          <Route path="/admin" element={
+            <RequireAuth allowedRole="admin">
+              <AdminLayout />
+            </RequireAuth>
+          }>
+            <Route index element={<AdminDashboardView />} />
+            <Route path="users" element={<UserManage />} />
+            <Route path="courses" element={<CourseManage />} />
+            <Route path="categories" element={<CategoryManage />} />
+            <Route path="exams" element={<ExamManage isTestOnly={false} />} />
+            <Route path="tests" element={<ExamManage isTestOnly={true} />} />
+            <Route path="questions" element={<QuestionManage />} />
+            <Route path="results" element={<ResultAnalytics />} />
+          </Route>
+
+          {/* Catch-all Redirect */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
+}

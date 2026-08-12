@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const ExamController = require("./examController");
-const authMiddleware = require("../../../middleware/authMiddleware");
+const ExamController  = require("./examController");
+const authMiddleware  = require("../../../middleware/authMiddleware");
 const adminMiddleware = require("../../../middleware/adminMiddleware");
 
 // Create Exam

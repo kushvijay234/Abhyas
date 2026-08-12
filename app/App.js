@@ -8,7 +8,7 @@ import { AuthProvider, useAuth } from './src/context/AuthContext';
 import colors from './src/theme/colors';
 
 // Icons
-import { LayoutDashboard, BookOpen, ClipboardList, History, Trophy, User } from 'lucide-react-native';
+import { LayoutDashboard, BookOpen, ClipboardList, History, Trophy, User, Sparkles } from 'lucide-react-native';
 
 // Screens
 import LoginScreen from './src/screens/LoginScreen';
@@ -22,6 +22,8 @@ import ExamResultScreen from './src/screens/ExamResultScreen';
 import HistoryScreen from './src/screens/HistoryScreen';
 import LeaderboardScreen from './src/screens/LeaderboardScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
+import AiTutorScreen from './src/screens/AiTutorScreen';
+import AiTutorChatScreen from './src/screens/AiTutorChatScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -42,6 +44,8 @@ function HomeTabs() {
             return <History size={size} color={color} />;
           } else if (route.name === 'LeaderboardTab') {
             return <Trophy size={size} color={color} />;
+          } else if (route.name === 'TutorTab') {
+            return <Sparkles size={size} color={color} />;
           } else if (route.name === 'ProfileTab') {
             return <User size={size} color={color} />;
           }
@@ -80,6 +84,11 @@ function HomeTabs() {
         name="CoursesTab" 
         component={CourseBrowserScreen} 
         options={{ title: 'Courses', headerTitle: 'Course Catalogue' }} 
+      />
+      <Tab.Screen 
+        name="TutorTab" 
+        component={AiTutorScreen} 
+        options={{ title: 'AI Tutor', headerTitle: 'Abhyas AI Tutor' }} 
       />
       <Tab.Screen 
         name="MyExamsTab" 
@@ -145,6 +154,11 @@ function NavigationController() {
             />
             <Stack.Screen name="ExamConsole" component={ExamConsoleScreen} />
             <Stack.Screen name="ExamResult" component={ExamResultScreen} />
+            <Stack.Screen 
+              name="AiTutorChat" 
+              component={AiTutorChatScreen} 
+              options={{ headerShown: false }} 
+            />
           </>
         )}
       </Stack.Navigator>

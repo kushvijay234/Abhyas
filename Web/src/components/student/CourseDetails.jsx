@@ -216,6 +216,15 @@ export default function CourseDetails() {
 
   // Start Assessment
   const handleStartExam = async (examId) => {
+    const confirmStart = window.confirm(
+      "⚠️ DISCLAIMER:\n" +
+      "1. Once started, this assessment cannot be paused.\n" +
+      "2. The timer will run continuously even if you close the tab.\n" +
+      "3. The assessment will be automatically submitted when the duration expires.\n\n" +
+      "Do you want to start the exam now?"
+    );
+    if (!confirmStart) return;
+
     try {
       setStartingId(examId);
       const res = await api.exams.startAttempt(examId);
@@ -569,6 +578,10 @@ export default function CourseDetails() {
                       <strong>{activeItem.examData?.duration_minutes} Mins</strong>
                     </div>
                     <div className="e-stat">
+                      <span>Attempts Allowed</span>
+                      <strong>{activeItem.examData?.max_attempts || 1}</strong>
+                    </div>
+                    <div className="e-stat">
                       <span>Total Marks</span>
                       <strong>{activeItem.examData?.total_marks} Marks</strong>
                     </div>
@@ -577,6 +590,10 @@ export default function CourseDetails() {
                       <strong>{activeItem.examData?.passing_marks} Marks</strong>
                     </div>
                   </div>
+
+                  <p style={{ fontSize: '12px', color: '#dc2626', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', margin: '14px 0 16px' }}>
+                    <span>⚠️</span> Once started, this assessment cannot be paused. It will auto-submit on expiry.
+                  </p>
 
                   <button 
                     onClick={() => handleStartExam(activeItem.examData.exam_id)}

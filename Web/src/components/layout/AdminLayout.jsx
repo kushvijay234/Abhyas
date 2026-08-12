@@ -16,7 +16,8 @@ import {
   Menu,
   X,
   ChevronDown,
-  Grid
+  Grid,
+  ClipboardList
 } from 'lucide-react';
 
 export default function AdminLayout() {
@@ -91,9 +92,13 @@ export default function AdminLayout() {
             <Grid size={17} />
             <span>Category Manager</span>
           </NavLink>
-          <NavLink to="/admin/exams" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} title="Exam Manager" onClick={() => setMobileMenuOpen(false)}>
+          <NavLink to="/admin/exams" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} title="Course Exam Manager" onClick={() => setMobileMenuOpen(false)}>
             <FileSpreadsheet size={17} />
-            <span>Exam Manager</span>
+            <span>Course Exam Manager</span>
+          </NavLink>
+          <NavLink to="/admin/tests" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} title="Test Manager" onClick={() => setMobileMenuOpen(false)}>
+            <ClipboardList size={17} />
+            <span>Test Manager</span>
           </NavLink>
           <NavLink to="/admin/questions" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} title="Question Pool" onClick={() => setMobileMenuOpen(false)}>
             <HelpCircle size={17} />

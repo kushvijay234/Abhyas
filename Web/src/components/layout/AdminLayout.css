@@ -26,7 +26,12 @@
 }
 
 .admin-student-view-link {
-  color: var(--primary) !important;
+  color: #F47920 !important;
+  font-weight: 600;
+}
+
+.admin-student-view-link svg {
+  stroke: #F47920 !important;
 }
 
 .admin-header-left {

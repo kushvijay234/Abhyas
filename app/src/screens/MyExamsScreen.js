@@ -53,19 +53,31 @@ export default function MyExamsScreen({ navigation }) {
   };
 
   const handleStartExam = async (examId) => {
-    try {
-      setStartingId(examId);
-      const res = await api.exams.startAttempt(examId);
-      if (res.success && res.attempt_id) {
-        navigation.navigate('ExamConsole', { attemptId: res.attempt_id });
-      } else {
-        Alert.alert('Error', res.message || 'Could not start exam attempt.');
-      }
-    } catch (err) {
-      Alert.alert('Error', err.message || 'Error starting exam.');
-    } finally {
-      setStartingId(null);
-    }
+    Alert.alert(
+      "⚠️ DISCLAIMER",
+      "1. Once started, this assessment cannot be paused.\n2. The timer will run continuously even if you close the app.\n3. The assessment will be automatically submitted when the duration expires.\n\nDo you want to start the exam now?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Yes, Start",
+          onPress: async () => {
+            try {
+              setStartingId(examId);
+              const res = await api.exams.startAttempt(examId);
+              if (res.success && res.attempt_id) {
+                navigation.navigate('ExamConsole', { attemptId: res.attempt_id });
+              } else {
+                Alert.alert('Error', res.message || 'Could not start exam attempt.');
+              }
+            } catch (err) {
+              Alert.alert('Error', err.message || 'Error starting exam.');
+            } finally {
+              setStartingId(null);
+            }
+          }
+        }
+      ]
+    );
   };
 
   const activeExamsCount = exams.length;
@@ -135,9 +147,14 @@ export default function MyExamsScreen({ navigation }) {
                 <View key={exam.exam_id} style={styles.examItem}>
                   <View style={styles.examHeader}>
                     <Text style={styles.examCourseTag}>{exam.course_title || 'General / Mock'}</Text>
-                    <View style={styles.examDurationBlock}>
-                      <Clock size={12} color={colors.textMuted} />
-                      <Text style={styles.examDurationText}>{exam.duration_minutes}m</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                      <View style={styles.examAttemptsBadge}>
+                        <Text style={styles.examAttemptsBadgeText}>Attempts: {exam.max_attempts}</Text>
+                      </View>
+                      <View style={styles.examDurationBlock}>
+                        <Clock size={12} color={colors.textMuted} />
+                        <Text style={styles.examDurationText}>{exam.duration_minutes}m</Text>
+                      </View>
                     </View>
                   </View>
 
@@ -234,16 +251,7 @@ export default function MyExamsScreen({ navigation }) {
           </View>
         )}
 
-        {/* AI Recommendations */}
-        <View style={styles.aiRecommendCard}>
-          <Text style={styles.aiTextEmoji}>✨</Text>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.aiCardHeader}>AI Course Suggestion Engine</Text>
-            <Text style={styles.aiCardBody}>
-              Once you log multiple exam records, our machine-learning model will classify deficits and suggest courses automatically. Attempt quizzes to unlock predictions!
-            </Text>
-          </View>
-        </View>
+
       </ScrollView>
     </View>
   );
@@ -475,30 +483,15 @@ const styles = StyleSheet.create({
     color: colors.primary,
     fontWeight: '700',
   },
-  aiRecommendCard: {
-    flexDirection: 'row',
-    gap: 12,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: colors.borderHover,
-    borderRadius: 12,
-    backgroundColor: 'rgba(26,45,107,0.01)',
-    marginTop: 20,
+  examAttemptsBadge: {
+    backgroundColor: 'rgba(249, 115, 22, 0.1)',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
   },
-  aiTextEmoji: {
-    fontSize: 20,
-  },
-  aiCardHeader: {
-    fontSize: 13,
-    fontWeight: 'bold',
-    color: colors.primary,
-    marginBottom: 4,
-    textAlign: 'left',
-  },
-  aiCardBody: {
-    fontSize: 12,
-    color: colors.textMuted,
-    lineHeight: 16,
-    textAlign: 'left',
+  examAttemptsBadgeText: {
+    color: '#f97316',
+    fontSize: 10,
+    fontWeight: '700',
   },
 });

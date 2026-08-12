@@ -38,6 +38,7 @@ const generateReport = async (filters = {}) => {
 
   let query = `
     SELECT r.result_id, r.score, r.total_marks, r.is_passed,
+           r.status, r.percentage,
            r.time_taken_minutes, r.attempted_at,
            u.user_name, u.email,
            e.title AS exam_title

@@ -87,3 +87,4 @@ const getUpcomingExams = async (user_id) => {
 };
 
 module.exports = { getSummary, getPerformance, getRecentExams, getUpcomingExams };
+

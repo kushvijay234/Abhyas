@@ -155,19 +155,31 @@ export default function CourseDetailsScreen({ navigation, route }) {
   };
 
   const handleStartExam = async (examId) => {
-    try {
-      setStartingId(examId);
-      const res = await api.exams.startAttempt(examId);
-      if (res.success && res.attempt_id) {
-        navigation.navigate('ExamConsole', { attemptId: res.attempt_id });
-      } else {
-        Alert.alert('Error', res.message || 'Could not start exam attempt.');
-      }
-    } catch (err) {
-      Alert.alert('Error', err.message || 'Error starting exam.');
-    } finally {
-      setStartingId(null);
-    }
+    Alert.alert(
+      "⚠️ DISCLAIMER",
+      "1. Once started, this assessment cannot be paused.\n2. The timer will run continuously even if you close the app.\n3. The assessment will be automatically submitted when the duration expires.\n\nDo you want to start the exam now?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Yes, Start",
+          onPress: async () => {
+            try {
+              setStartingId(examId);
+              const res = await api.exams.startAttempt(examId);
+              if (res.success && res.attempt_id) {
+                navigation.navigate('ExamConsole', { attemptId: res.attempt_id });
+              } else {
+                Alert.alert('Error', res.message || 'Could not start exam attempt.');
+              }
+            } catch (err) {
+              Alert.alert('Error', err.message || 'Error starting exam.');
+            } finally {
+              setStartingId(null);
+            }
+          }
+        }
+      ]
+    );
   };
 
   const toggleSection = (idx) => {
@@ -360,7 +372,11 @@ export default function CourseDetailsScreen({ navigation, route }) {
                 </View>
                 <View style={styles.examStatBox}>
                   <Text style={styles.examStatLabel}>Passing</Text>
-                  <Text style={styles.examStatVal}>{activeItem.examData?.passing_marks}</Text>
+                  <Text style={styles.examStatVal}>{activeItem.examData?.passing_marks}%</Text>
+                </View>
+                <View style={styles.examStatBox}>
+                  <Text style={styles.examStatLabel}>Attempts</Text>
+                  <Text style={styles.examStatVal}>{activeItem.examData?.max_attempts || 1}</Text>
                 </View>
               </View>
 
@@ -795,7 +811,7 @@ const styles = StyleSheet.create({
   },
   examStatBox: {
     alignItems: 'center',
-    width: 70,
+    flex: 1,
   },
   examStatLabel: {
     fontSize: 10,
