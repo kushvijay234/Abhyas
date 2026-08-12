@@ -1,7 +1,104 @@
+const fs = require("fs");
+const path = require("path");
+
+const executeSqlFile = async (connection, sqlText) => {
+  const lines = sqlText.split(/\r?\n/);
+  let cleanSql = "";
+  for (let line of lines) {
+    const trimmed = line.trim();
+    if (trimmed.startsWith("--") || trimmed.startsWith("#") || trimmed === "") {
+      continue;
+    }
+    const commentIdx = line.indexOf("--");
+    if (commentIdx !== -1) {
+      line = line.substring(0, commentIdx);
+    }
+    cleanSql += line + "\n";
+  }
+
+  const statements = cleanSql
+    .split(";")
+    .map(stmt => stmt.trim())
+    .filter(stmt => stmt.length > 0);
+
+  for (const statement of statements) {
+    const upperStmt = statement.toUpperCase();
+    if (upperStmt.startsWith("USE ") || upperStmt.startsWith("CREATE DATABASE ")) {
+      continue;
+    }
+    
+    try {
+      await connection.query(statement);
+    } catch (err) {
+      if (!upperStmt.startsWith("DROP ")) {
+        console.error(`Error executing statement: ${statement.substring(0, 100)}...`);
+        console.error(`Reason: ${err.message}`);
+        throw err;
+      }
+    }
+  }
+};
+
 const runMigrations = async (connection) => {
   try {
     console.log("Running database migrations...");
-    // Retrieve columns from the users table
+
+    // Check if the 'users' table exists
+    const [tables] = await connection.query("SHOW TABLES LIKE 'users'");
+    const usersTableExists = tables.length > 0;
+
+    if (!usersTableExists) {
+      console.log("Database tables do not exist. Initializing schema...");
+      
+      const schemaPaths = [
+        path.join(__dirname, "schema.sql"),
+        path.join(__dirname, "../schema.sql"),
+        path.join(__dirname, "../../schema.sql"),
+        path.join(__dirname, "../../../schema.sql")
+      ];
+      
+      let schemaSql = "";
+      for (const p of schemaPaths) {
+        if (fs.existsSync(p)) {
+          console.log(`Found schema.sql at: ${p}`);
+          schemaSql = fs.readFileSync(p, "utf8");
+          break;
+        }
+      }
+      
+      if (schemaSql) {
+        await executeSqlFile(connection, schemaSql);
+        console.log("Database schema initialized successfully.");
+        
+        const seedPaths = [
+          path.join(__dirname, "seed.sql"),
+          path.join(__dirname, "../seed.sql"),
+          path.join(__dirname, "../../seed.sql"),
+          path.join(__dirname, "../../../seed.sql")
+        ];
+        
+        let seedSql = "";
+        for (const p of seedPaths) {
+          if (fs.existsSync(p)) {
+            console.log(`Found seed.sql at: ${p}`);
+            seedSql = fs.readFileSync(p, "utf8");
+            break;
+          }
+        }
+        
+        if (seedSql) {
+          console.log("Seeding initial database data...");
+          await executeSqlFile(connection, seedSql);
+          console.log("Database seeded successfully.");
+        } else {
+          console.log("Warning: seed.sql not found. Skipping seeding.");
+        }
+      } else {
+        throw new Error("schema.sql not found! Cannot initialize database schema.");
+      }
+    }
+
+    // Retrieve columns from the users table to run any dynamic migrations
     const [columns] = await connection.query("SHOW COLUMNS FROM users");
     const hasOtpCode = columns.some(col => col.Field === 'otp_code');
     const hasOtpExpiry = columns.some(col => col.Field === 'otp_expiry');
