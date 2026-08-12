@@ -96,15 +96,6 @@ export default function ProfileScreen() {
     }
   };
 
-  const handleUpdateAPI = async () => {
-    try {
-      await AsyncStorage.setItem('abhyas_api_url', apiUrl);
-      setBaseURL(apiUrl);
-      Alert.alert('Success', 'API base URL updated successfully!');
-    } catch (err) {
-      Alert.alert('Error', 'Failed to save configuration.');
-    }
-  };
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContainer}>
@@ -190,26 +181,6 @@ export default function ProfileScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* API Endpoint configuration */}
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <Globe size={18} color={colors.primary} />
-          <Text style={styles.cardTitle}>API Host Settings</Text>
-        </View>
-
-        <Text style={styles.label}>Backend Endpoint URL</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="http://192.168.1.X:5000/api"
-          value={apiUrl}
-          onChangeText={setApiUrl}
-          autoCapitalize="none"
-        />
-
-        <TouchableOpacity style={[styles.actionBtn, { backgroundColor: colors.textMuted }]} onPress={handleUpdateAPI} disabled={loading}>
-          <Text style={styles.actionBtnText}>Update API Endpoint</Text>
-        </TouchableOpacity>
-      </View>
 
       {/* Log out */}
       <TouchableOpacity style={styles.logoutBtn} onPress={logout}>

@@ -126,27 +126,6 @@ export default function LoginScreen({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-
-        {/* Config button */}
-        <TouchableOpacity style={styles.configToggle} onPress={() => setShowConfig(!showConfig)}>
-          <Text style={styles.configToggleText}>{showConfig ? 'Hide API Config' : 'Show API Config'}</Text>
-        </TouchableOpacity>
-
-        {showConfig && (
-          <View style={styles.configCard}>
-            <Text style={styles.configLabel}>Backend API Endpoint URL</Text>
-            <TextInput
-              style={styles.configInput}
-              placeholder="http://192.168.1.X:5000/api"
-              autoCapitalize="none"
-              value={apiUrl}
-              onChangeText={setApiUrl}
-            />
-            <Text style={styles.configHint}>
-              Note: Android Emulator uses 'http://10.0.2.2:5000/api'. For real devices, insert your local machine IP (e.g. http://192.168.1.15:5000/api).
-            </Text>
-          </View>
-        )}
       </ScrollView>
     </KeyboardAvoidingView>
   );
