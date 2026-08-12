@@ -18,10 +18,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFF9F2"
-      }
+      },
+      "package": "com.kushvijay234.abhyas"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "432e4954-f1b0-41cf-9447-3a752a4a7147"
+      }
     }
   }
 }
