@@ -28,6 +28,9 @@
       "eas": {
         "projectId": "432e4954-f1b0-41cf-9447-3a752a4a7147"
       }
-    }
+    },
+    "plugins": [
+      "./plugins/withCustomGradle.js"
+    ]
   }
 }
