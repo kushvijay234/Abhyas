@@ -12,12 +12,15 @@ export default function LoginScreen({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const getDynamicHost = () => {
-    const scriptURL = NativeModules.SourceCode?.scriptURL || '';
-    const match = scriptURL.match(/^https?:\/\/([^:/]+)(:\d+)?/);
-    if (match && match[1] && match[1] !== 'localhost' && match[1] !== '127.0.0.1') {
-      return `http://${match[1]}:5000/api`;
+    if (__DEV__) {
+      const scriptURL = NativeModules.SourceCode?.scriptURL || '';
+      const match = scriptURL.match(/^https?:\/\/([^:/]+)(:\d+)?/);
+      if (match && match[1] && match[1] !== 'localhost' && match[1] !== '127.0.0.1') {
+        return `http://${match[1]}:5000/api`;
+      }
+      return 'http://10.0.2.2:5000/api';
     }
-    return 'http://10.0.2.2:5000/api';
+    return 'https://abhyas-backend-g8pp.onrender.com/api';
   };
 
   const [apiUrl, setApiUrl] = useState(getDynamicHost());

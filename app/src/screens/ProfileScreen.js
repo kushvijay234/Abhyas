@@ -19,7 +19,7 @@ export default function ProfileScreen() {
   const [newPassword, setNewPassword] = useState('');
   
   // API URL state
-  const [apiUrl, setApiUrl] = useState('http://10.0.2.2:5000/api');
+  const [apiUrl, setApiUrl] = useState(__DEV__ ? 'http://10.0.2.2:5000/api' : 'https://abhyas-backend-g8pp.onrender.com/api');
   
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState(null);
