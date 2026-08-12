@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-let defaultURL = 'http://10.0.2.2:5000/api'; // Android Emulator default. For iOS, use http://localhost:5000/api. For physical, use host local IP.
+let defaultURL = 'https://abhyas-backend-g8pp.onrender.com/api'; // Android Emulator default. For iOS, use http://localhost:5000/api. For physical, use host local IP.
 
 const axiosInstance = axios.create({
   baseURL: defaultURL,
