@@ -15,11 +15,14 @@ const getTransporter = () => {
   return nodemailer.createTransport({
     host,
     port: parseInt(port),
-    secure: port == 465, // true for 465, false for other ports
+    secure: parseInt(port) === 465, // true for 465, false for other ports
     auth: {
       user,
       pass,
     },
+    connectionTimeout: 5000, // 5 seconds connection timeout
+    greetingTimeout: 5000,   // 5 seconds greeting timeout
+    socketTimeout: 10000,    // 10 seconds socket inactivity timeout
   });
 };
 
