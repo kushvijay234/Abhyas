@@ -118,6 +118,14 @@ export default function StudentLayout() {
         {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
       </button>
 
+      {/* Mobile Sidebar Overlay */}
+      {mobileMenuOpen && (
+        <div 
+          className="sidebar-overlay" 
+          onClick={() => setMobileMenuOpen(false)} 
+        />
+      )}
+
       {/* Sidebar */}
       <aside className={`sidebar ${mobileMenuOpen ? 'mobile-open' : ''}`}>
         <div className="sidebar-logo">

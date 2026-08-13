@@ -535,3 +535,51 @@
   padding: 12px 14px !important;
   border-radius: 8px !important;
 }
+
+/* Sidebar Backdrop Overlay on Mobile */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 99; /* Below sidebar's 100 */
+  animation: fadeInOverlay 0.2s ease-out;
+}
+
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* General Layout Responsive Overrides */
+@media (max-width: 640px) {
+  .header {
+    padding: 0 12px !important;
+  }
+  
+  .sidebar-toggle {
+    display: none !important; /* Hide desktop toggle */
+  }
+  
+  .user-name {
+    display: none !important; /* Hide user name string next to avatar */
+  }
+  
+  .user-btn {
+    padding: 4px !important; /* Compact button */
+  }
+  
+  .notifications-dropdown {
+    width: calc(100vw - 24px) !important;
+    right: -12px !important;
+  }
+
+  .admin-console-title {
+    font-size: 0.95rem !important;
+  }
+  
+  .admin-secure-badge {
+    display: none !important;
+  }
+}

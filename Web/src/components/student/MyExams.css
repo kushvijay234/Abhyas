@@ -204,3 +204,39 @@
   font-size: 0.85rem;
   line-height: 1.4;
 }
+
+.myexams-card-header {
+  display: flex;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 640px) {
+  .myexams-header-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .myexams-tabs-bar {
+    width: 100% !important;
+    flex-direction: column !important;
+  }
+  .myexams-tab-btn {
+    flex: 1 !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .myexams-card-footer {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+  .myexams-start-btn {
+    width: 100% !important;
+  }
+}

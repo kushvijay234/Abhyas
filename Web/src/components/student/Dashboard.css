@@ -756,3 +756,33 @@
   white-space: nowrap;
   font-weight: 500;
 }
+
+@media (max-width: 640px) {
+  .banner-inner {
+    flex-direction: column !important;
+    gap: 20px !important;
+  }
+  
+  .dashboard-banner-rank-wrapper {
+    align-self: center !important;
+    text-align: center !important;
+  }
+  
+  .topper-you {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 6px !important;
+  }
+  
+  .topper-row {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 6px !important;
+  }
+  
+  .topper-name {
+    margin-left: 0 !important;
+  }
+}

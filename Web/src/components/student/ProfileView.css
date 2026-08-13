@@ -127,3 +127,15 @@
   min-height: 80px;
   resize: vertical;
 }
+
+@media (max-width: 768px) {
+  .profile-form-column {
+    grid-column: span 3 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .profile-form-column {
+    grid-column: span 1 !important;
+  }
+}
