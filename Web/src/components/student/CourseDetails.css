@@ -1053,3 +1053,51 @@
   margin-right: 4px;
   color: var(--success);
 }
+
+@media (max-width: 768px) {
+  .player-grid {
+    flex-direction: column !important;
+    overflow-y: auto !important;
+  }
+  
+  .curriculum-sidebar {
+    width: 100% !important;
+    border-left: none !important;
+    border-top: 1px solid var(--border-color) !important;
+    overflow-y: visible !important;
+    height: auto !important;
+  }
+
+  .main-content-pane {
+    padding: 16px !important;
+    overflow-y: visible !important;
+    flex: none !important;
+  }
+  
+  .video-player-frame {
+    margin-bottom: 12px !important;
+  }
+
+  .player-topbar {
+    padding: 0 12px !important;
+  }
+
+  .progress-container-block {
+    width: 120px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .landing-hero {
+    padding: 20px 16px !important;
+    margin: 0 -16px 24px -16px !important;
+  }
+  
+  .landing-hero h1 {
+    font-size: 1.6rem !important;
+  }
+  
+  .learning-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
