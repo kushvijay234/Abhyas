@@ -24,7 +24,6 @@ export default function LoginScreen({ navigation }) {
   };
 
   const [apiUrl, setApiUrl] = useState(getDynamicHost());
-  const [showConfig, setShowConfig] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const { login } = useAuth();

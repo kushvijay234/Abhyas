@@ -1,24 +1,40 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { api } from '../services/api';
 
 const AuthContext = createContext(null);
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(true);
+function getStoredUser() {
+  if (typeof window === 'undefined') return null;
 
-  // Restore credentials from localStorage on mount
-  useEffect(() => {
+  try {
     const savedToken = localStorage.getItem('abhyas_token');
     const savedUser = localStorage.getItem('abhyas_user');
-    
+
     if (savedToken && savedUser) {
-      setToken(savedToken);
-      setUser(JSON.parse(savedUser));
+      return JSON.parse(savedUser);
     }
-    setLoading(false);
-  }, []);
+  } catch (error) {
+    console.error('Unable to restore saved session:', error);
+  }
+
+  return null;
+}
+
+function getStoredToken() {
+  if (typeof window === 'undefined') return null;
+
+  try {
+    return localStorage.getItem('abhyas_token');
+  } catch (error) {
+    console.error('Unable to read saved token:', error);
+    return null;
+  }
+}
+
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(getStoredUser);
+  const [token, setToken] = useState(getStoredToken);
+  const [loading, setLoading] = useState(false);
 
   const login = async (email, password) => {
     const response = await api.auth.login(email, password);
@@ -60,7 +76,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 }
