@@ -3,13 +3,13 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 
 // Layouts
-const StudentLayout = lazy(()=> import('./components/layout/StudentLayout'));
-const AdminLayout= lazy(()=>import('./components/layout/AdminLayout'));
+import StudentLayout from "./components/layout/StudentLayout";
+import AdminLayout from "./components/layout/AdminLayout";
 
 // Auth Components
-const Login = lazy(()=>import('./components/auth/Login'));
-const Register = lazy(()=>import('./components/auth/Register'));
-const ResetPassword= lazy(()=>import('./components/auth/ResetPassword'));
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
+import ResetPassword from './components/auth/ResetPassword';
 
 // Student Pages
 const StudentDashboard = lazy(()=>import('./components/student/Dashboard'));
