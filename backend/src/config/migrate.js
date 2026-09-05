@@ -113,6 +113,37 @@ const runMigrations = async (connection) => {
       await connection.query("ALTER TABLE users ADD COLUMN otp_expiry TIMESTAMP NULL DEFAULT NULL");
     }
 
+    // Course curriculum tables are required by both student and admin course APIs.
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS course_sections (
+        section_id INT AUTO_INCREMENT PRIMARY KEY,
+        course_id INT NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        sort_order INT NOT NULL DEFAULT 1,
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (course_id) REFERENCES courses(course_id)
+          ON DELETE CASCADE ON UPDATE CASCADE
+      )
+    `);
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS curriculum_items (
+        curriculum_item_id INT AUTO_INCREMENT PRIMARY KEY,
+        section_id INT NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        type ENUM('article', 'video', 'exam') NOT NULL DEFAULT 'article',
+        duration VARCHAR(50) DEFAULT NULL,
+        video_url VARCHAR(500) DEFAULT NULL,
+        notes TEXT DEFAULT NULL,
+        exam_id INT DEFAULT NULL,
+        sort_order INT NOT NULL DEFAULT 1,
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (section_id) REFERENCES course_sections(section_id)
+          ON DELETE CASCADE ON UPDATE CASCADE,
+        FOREIGN KEY (exam_id) REFERENCES exams(exam_id)
+          ON DELETE SET NULL ON UPDATE CASCADE
+      )
+    `);
+
     // Create user_badges table if not exists
     console.log("Checking for 'user_badges' table...");
     await connection.query(`
