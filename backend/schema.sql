@@ -208,6 +208,51 @@ CREATE TABLE exams (
 
 
 -- =============================================================================
+-- 5A. COURSE CURRICULUM TABLES
+-- Stores ordered sections and learning items belonging to a course.
+-- =============================================================================
+CREATE TABLE course_sections (
+    section_id INT AUTO_INCREMENT,
+    course_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    sort_order INT NOT NULL DEFAULT 1,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT pk_course_sections PRIMARY KEY (section_id),
+    CONSTRAINT fk_course_sections_course
+        FOREIGN KEY (course_id)
+        REFERENCES courses(course_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE curriculum_items (
+    curriculum_item_id INT AUTO_INCREMENT,
+    section_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    type ENUM('article', 'video', 'exam') NOT NULL DEFAULT 'article',
+    duration VARCHAR(50) DEFAULT NULL,
+    video_url VARCHAR(500) DEFAULT NULL,
+    notes TEXT DEFAULT NULL,
+    exam_id INT DEFAULT NULL,
+    sort_order INT NOT NULL DEFAULT 1,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT pk_curriculum_items PRIMARY KEY (curriculum_item_id),
+    CONSTRAINT fk_curriculum_items_section
+        FOREIGN KEY (section_id)
+        REFERENCES course_sections(section_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_curriculum_items_exam
+        FOREIGN KEY (exam_id)
+        REFERENCES exams(exam_id)
+        ON DELETE SET NULL
+        ON UPDATE CASCADE
+);
+
+
+-- =============================================================================
 -- 6. QUESTIONS TABLE
 -- Stores multiple choice questions mapped to exams.
 -- =============================================================================

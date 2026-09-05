@@ -18,7 +18,8 @@ const getCourseDetails = async (req, res) => {
     const result = await CourseService.getCourseDetails(id);
     res.status(200).json(result);
   } catch (error) {
-    res.status(404).json({ success: false, message: error.message });
+    const status = error.message === "Course not found" ? 404 : 500;
+    res.status(status).json({ success: false, message: error.message });
   }
 };
 
